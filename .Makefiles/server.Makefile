@@ -47,7 +47,7 @@ $(OBJ_DIR)/$(DIR)/%.o: $(SRC_DIR)/$(DIR)/%.c $(INCLUDE) $(DEPENDENCIES) | $(OBJ_
 	@printf "\033[0m\033[38;5;124m[$(DIR) \033[38;5;7m%3u%%\033[38;5;124m] \033[0m🍇  \033[38;5;207m$(@:$(OBJ_DIR)/$(DIR)/%.o=%.o) done\033[0m\n" $(PERCENT)
 
 $(NAME): $(OBJ)
-	@$(CC) -o $@ $(OBJ) -L $(LIBFT) -lft -L $(LIBSOCKET) -lsocket
+	@$(CC) -o $@ $(OBJ) -L $(LIBSOCKET) -lsocket -L $(LIBFT) -lft
 	$(eval COMPILED=true)
 
 clean:
