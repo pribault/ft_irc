@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/19 17:18:48 by pribault          #+#    #+#             */
-/*   Updated: 2018/03/29 17:22:16 by pribault         ###   ########.fr       */
+/*   Updated: 2018/04/02 13:45:40 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,8 @@ void		server_manage_incoming_messages(t_server *server, fd_set *set,
 		{
 			if (FD_ISSET(client->fd, err_set))
 			{
-				server_remove_client(server, client);
+				if (server->client_excpt)
+					server->client_excpt(server, client);
 				(*n_evts)--;
 			}
 			else if (FD_ISSET(client->fd, set))

@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/15 14:06:03 by pribault          #+#    #+#             */
-/*   Updated: 2018/03/31 17:05:57 by pribault         ###   ########.fr       */
+/*   Updated: 2018/04/02 18:59:37 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,8 @@ void		print_next_arg(va_list va, char *new, size_t *j, char c)
 {
 	if (c == 'd' || c == 'i')
 		print_number(va, new, j, "0123456789");
+	else if (c == 'u')
+		print_unsigned_base_join(va, new, j, "0123456789");
 	else if (c == 'x')
 		print_number(va, new, j, "0123456789abcdef");
 	else if (c == 'p')

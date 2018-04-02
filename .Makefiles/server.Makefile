@@ -1,12 +1,16 @@
 NAME = server
 CC = clang
-SRC =	server.c
+SRC =	server.c flags.c\
+		client_callbacks.c\
+		message_callbacks.c\
+		get_packet.c message.c\
+		output.c
 DIR = server
 SRC_DIR = src
 OBJ_DIR = .obj
 OBJ = $(SRC:%.c=$(OBJ_DIR)/$(DIR)/%.o)
 FLAGS = -Wall -Wextra
-INCLUDES =	server.h
+INCLUDES =	server.h protocol.h
 INCLUDE = $(INCLUDES:%.h=include/%.h)
 N = 0
 MAX = $(words $(OBJ))
@@ -46,7 +50,7 @@ $(OBJ_DIR)/$(DIR)/%.o: $(SRC_DIR)/$(DIR)/%.c $(INCLUDE) $(DEPENDENCIES) | $(OBJ_
 	@$(eval PERCENT=$(shell echo $$((($(N)*100)/$(MAX)))))
 	@printf "\033[0m\033[38;5;124m[$(DIR) \033[38;5;7m%3u%%\033[38;5;124m] \033[0m🍇  \033[38;5;207m$(@:$(OBJ_DIR)/$(DIR)/%.o=%.o) done\033[0m\n" $(PERCENT)
 
-$(NAME): $(OBJ)
+$(NAME): $(OBJ) $(LIBFT)/libft.a $(LIBSOCKET)/libsocket.a
 	@$(CC) -o $@ $(OBJ) -L $(LIBSOCKET) -lsocket -L $(LIBFT) -lft
 	$(eval COMPILED=true)
 

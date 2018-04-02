@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/01 18:59:09 by pribault          #+#    #+#             */
-/*   Updated: 2018/04/02 10:00:27 by pribault         ###   ########.fr       */
+/*   Updated: 2018/04/02 16:37:45 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 
 # include "libft.h"
 # include "libsocket.h"
+# include "protocol.h"
 
 /*
 ***************
