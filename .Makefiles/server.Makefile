@@ -59,7 +59,7 @@ clean:
 
 fclean: clean
 	@rm -f $(NAME)
-	@echo "\033[0m\033[38;5;124m[$(DIR) ∎∎∎∎] \033[0m\033[38;5;87m$(NAME) and $(LIBSO) removed\033[0m"
+	@echo "\033[0m\033[38;5;124m[$(DIR) ∎∎∎∎] \033[0m\033[38;5;87m$(NAME) removed\033[0m"
 
 norme:
 	@norminette $(OBJ:$(OBJ_DIR)/%.o=$(SRC_DIR)/%.c) $(INCLUDE)
