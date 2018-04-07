@@ -1,30 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   protocol.h                                         :+:      :+:    :+:   */
+/*   output.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/04/02 15:55:08 by pribault          #+#    #+#             */
-/*   Updated: 2018/04/02 18:32:59 by pribault         ###   ########.fr       */
+/*   Created: 2018/04/07 14:53:38 by pribault          #+#    #+#             */
+/*   Updated: 2018/04/07 15:45:57 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PROTOCOL_H
-# define PROTOCOL_H
+#include "client.h"
 
-# include "inttypes.h"
-
-typedef enum	e_type
+void	enqueue_write(t_server *server, void *client, void *ptr,
+		size_t size)
 {
-	TYPE_STR,
-	TYPE_MAX
-}				t_type;
+	t_msg	msg;
 
-typedef struct	s_header
+	msg.ptr = ptr;
+	msg.size = size;
+	server_enqueue_write(server, client, &msg);
+}
+
+void	enqueue_str_by_fd(t_env *env, int fd, char *s)
 {
-	uint64_t	size;
-	uint8_t		type;
-}				t_header;
+	t_msg	msg;
 
-#endif
+	msg = (t_msg){s, ft_strlen(s)};
+	server_enqueue_write_by_fd(env->server, fd, &msg);
+}

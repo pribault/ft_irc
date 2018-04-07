@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/01 18:54:30 by pribault          #+#    #+#             */
-/*   Updated: 2018/04/02 19:04:45 by pribault         ###   ########.fr       */
+/*   Updated: 2018/04/07 19:22:40 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 
 # include "libft.h"
 # include "libsocket.h"
-# include "protocol.h"
+# include "rfc.h"
 
 # include <arpa/inet.h>
 
@@ -53,7 +53,10 @@ typedef enum	e_server_error
 	ERROR_UNKNOWN_PROTOCOL,
 	ERROR_UNKNOWN_DOMAIN,
 	ERROR_PACKET_TOO_SMALL,
-	ERROR_ALLOCATION_RETURN
+	ERROR_ALLOCATION_RETURN,
+	ERROR_UNHANDLE_PACKET,
+	ERROR_UNKNOWN_PACKET,
+	ERROR_SETUP_FDS
 }				t_server_error;
 
 /*
@@ -64,10 +67,10 @@ typedef enum	e_server_error
 
 typedef struct	s_data
 {
+	void		*client;
 	void		*ptr;
 	uint64_t	size;
-	uint64_t	expected;
-	char		name[NAME_MAX_LEN];
+	char		nick[NAME_MAX_LEN];
 	t_vector	channels;
 	uint8_t		permissions;
 }				t_data;
@@ -85,18 +88,17 @@ typedef struct	s_env
 	uint32_t	opt;
 	int			in;
 	int			out;
+	int			err;
 	t_protocol	protocol;
 	t_domain	domain;
 	t_vector	channels;
 }				t_env;
 
-typedef struct	s_command
+typedef struct	s_cmd
 {
-	uint8_t		type;
-	void		(*function)(t_env *, void *, void *, uint64_t);
-	uint64_t	min_size;
-	uint64_t	max_size;
-}				t_command;
+	char		*name;
+	void		(*function)(t_env *, t_data *, char *);
+}				t_cmd;
 
 /*
 ******************
@@ -140,14 +142,20 @@ void			message_trashed(t_server *server, void *client, t_msg *msg);
 **	packet management
 */
 
-void			get_packet(t_env *env, void *client, t_header *ptr,
-				uint64_t size);
-void			handle_message(t_env *env, void *client, t_header *msg);
+void			treat_packet(t_server *server, void *client, void *ptr,
+				size_t size);
+void			command_pass(t_env *env, t_data *client, char *s);
+void			command_nick(t_env *env, t_data *client, char *s);
+void			command_user(t_env *env, t_data *client, char *s);
 
 /*
 **	output
 */
 
+void			enqueue_response(t_server *server, void *client,
+				char *response);
+void			enqueue_write(t_server *server, void *client, void *ptr,
+				size_t size);
 void			enqueue_str_by_fd(t_env *env, int fd, char *s);
 
 #endif

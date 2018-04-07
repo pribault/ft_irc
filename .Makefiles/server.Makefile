@@ -1,16 +1,15 @@
 NAME = server
-CC = clang
+CC = gcc
 SRC =	server.c flags.c\
 		client_callbacks.c\
 		message_callbacks.c\
-		get_packet.c message.c\
-		output.c
+		output.c packet.c
 DIR = server
 SRC_DIR = src
 OBJ_DIR = .obj
 OBJ = $(SRC:%.c=$(OBJ_DIR)/$(DIR)/%.o)
 FLAGS = -Wall -Wextra
-INCLUDES =	server.h protocol.h
+INCLUDES =	server.h rfc.h
 INCLUDE = $(INCLUDES:%.h=include/%.h)
 N = 0
 MAX = $(words $(OBJ))

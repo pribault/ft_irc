@@ -1,13 +1,16 @@
 NAME = client
 CC = clang
 SRC =	client.c flags.c\
-		client_callbacks.c
+		client_callbacks.c\
+		message_callbacks.c\
+		packet.c output.c\
+		send.c
 DIR = client
 SRC_DIR = src
 OBJ_DIR = .obj
 OBJ = $(SRC:%.c=$(OBJ_DIR)/$(DIR)/%.o)
 FLAGS = -Wall -Wextra
-INCLUDES =	client.h protocol.h
+INCLUDES =	client.h rfc.h
 INCLUDE = $(INCLUDES:%.h=include/%.h)
 N = 0
 MAX = $(words $(OBJ))

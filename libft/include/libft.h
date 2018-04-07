@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/03 16:13:23 by pribault          #+#    #+#             */
-/*   Updated: 2018/04/01 20:00:12 by pribault         ###   ########.fr       */
+/*   Updated: 2018/04/07 12:32:08 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -273,6 +273,8 @@ void				ft_memdel(void **ap);
 void				ft_memdump(void *ptr, size_t size);
 void				*ft_memdup(void *ptr, size_t size);
 void				*ft_memmove(void *dst, const void *src, size_t len);
+void				*ft_memschr(const void *big, const void *little,
+					size_t n1, size_t n2);
 void				*ft_memset(void *b, int c, size_t len);
 
 /*
@@ -337,6 +339,7 @@ void				ft_circ_buffer_set_trash_callback(t_circ_buffer *buffer,
 char				*ft_get_file_name_from_path(char *path);
 char				*ft_getenv(char **env, char *name);
 char				**ft_multisplit(char *str, char *sep);
+char				**ft_multisplit_stop(char *str, char *sep, char *stop);
 char				*ft_reduce_path(char *path);
 char				*ft_strcat(char *s1, const char *s2);
 char				*ft_strchr(const char *s, int c);

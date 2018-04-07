@@ -60,9 +60,11 @@ SRC =	ft_abs.c\
 		ft_memdump.c\
 		ft_memdup.c\
 		ft_memmove.c\
+		ft_memschr.c\
 		ft_memset.c\
 		ft_mod.c\
 		ft_multisplit.c\
+		ft_multisplit_stop.c\
 		ft_nbrlen.c\
 		ft_power.c\
 		ft_putchar.c\

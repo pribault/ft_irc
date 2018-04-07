@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/02 11:36:42 by pribault          #+#    #+#             */
-/*   Updated: 2018/04/02 17:34:19 by pribault         ###   ########.fr       */
+/*   Updated: 2018/04/07 15:28:04 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,10 @@ void	print_usage(void)
 	ft_printf(" %savailable options:%s\n", COLOR_HALF, COLOR_CLEAR);
 	ft_printf("  %s--help%s or %s-h%s: %sprint usage%s\n", COLOR_UNDERLINED,
 		COLOR_CLEAR, COLOR_UNDERLINED, COLOR_CLEAR, COLOR_HALF, COLOR_CLEAR);
+	ft_printf("  %s--protocol%s <protocool>: %stcp or udp%s\n",
+		COLOR_UNDERLINED, COLOR_CLEAR, COLOR_HALF, COLOR_CLEAR);
+	ft_printf("  %s--domain%s <domain>: %sipv4 or ipv6%s\n", COLOR_UNDERLINED,
+		COLOR_CLEAR, COLOR_HALF, COLOR_CLEAR);
 	printed = FT_TRUE;
 }
 
@@ -33,7 +37,7 @@ void	get_default(char *s, t_env *env)
 	if (!state)
 		env->port = s;
 	else
-		ft_error(2, ERROR_SETTING_DEFAULT, s);
+		ft_error(env->err, ERROR_SETTING_DEFAULT, s);
 	state++;
 }
 
@@ -45,7 +49,7 @@ void	get_protocol(t_env *env, char **args, int n)
 	else if (!ft_strcmp(args[0], "udp") || !ft_strcmp(args[0], "UDP"))
 		env->protocol = UDP;
 	else
-		ft_error(2, ERROR_UNKNOWN_PROTOCOL, args[0]);
+		ft_error(env->err, ERROR_UNKNOWN_PROTOCOL, args[0]);
 }
 
 void	get_domain(t_env *env, char **args, int n)
@@ -56,7 +60,7 @@ void	get_domain(t_env *env, char **args, int n)
 	else if (!ft_strcmp(args[0], "ipv6") || !ft_strcmp(args[0], "IPV6"))
 		env->domain = IPV6;
 	else
-		ft_error(2, ERROR_UNKNOWN_DOMAIN, args[0]);
+		ft_error(env->err, ERROR_UNKNOWN_DOMAIN, args[0]);
 }
 
 void	set_verbose(t_env *env)

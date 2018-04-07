@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/01 18:38:44 by pribault          #+#    #+#             */
-/*   Updated: 2018/04/02 19:06:22 by pribault         ###   ########.fr       */
+/*   Updated: 2018/04/07 15:01:27 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,9 @@ static t_error	g_errors[] =
 	{ERROR_UNKNOWN_DOMAIN, "unknown protocol '%s', allowed: ipv4/ipv6", 0},
 	{ERROR_PACKET_TOO_SMALL, "packet received too small to contain header", 0},
 	{ERROR_ALLOCATION_RETURN, "cannot allocate memory", 0},
+	{ERROR_UNHANDLE_PACKET, "unhandle packet type %s", 0},
+	{ERROR_UNKNOWN_PACKET, "unknown packet received:\n%s", 0},
+	{ERROR_SETUP_FDS, "cannot setup fds", ERROR_EXIT},
 	{0, NULL, 0}
 };
 
@@ -52,14 +55,11 @@ int		init_env(t_env *env, int argc, char **argv)
 	env->domain = IPV4;
 	ft_get_flags(argc, argv, ft_get_flag_array((void*)&g_short_flags,
 		(void*)&g_long_flags, (void*)&get_default), env);
-	if (!(env->in = open("/dev/stdin", O_RDONLY)))
+	if ((env->in = open("/dev/stdin", O_RDONLY)) == -1 ||
+		(env->out = open("/dev/stdout", O_WRONLY)) == -1 ||
+		(env->err = open("/dev/stderr", O_WRONLY)) == -1)
 	{
-		ft_error(2, ERROR_FILE, "/dev/stdin");
-		return (0);
-	}
-	if (!(env->out = open("/dev/stdout", O_WRONLY)))
-	{
-		ft_error(2, ERROR_FILE, "/dev/stdout");
+		ft_error(2, ERROR_SETUP_FDS, NULL);
 		return (0);
 	}
 	return (1);
@@ -68,11 +68,13 @@ int		init_env(t_env *env, int argc, char **argv)
 void	start_server(t_env *env)
 {
 	if (!(env->server = server_new()))
-		return (ft_error(2, ERROR_ALLOCATION, NULL));
+		return (ft_error(env->err, ERROR_ALLOCATION, NULL));
 	server_set_callback(env->server, SERVER_CLIENT_ADD_CB, &client_add);
 	server_set_callback(env->server, SERVER_CLIENT_DEL_CB, &client_del);
-	server_set_callback(env->server, SERVER_CLIENT_EXCEPTION_CB, &client_excpt);
-	server_set_callback(env->server, SERVER_SERVER_EXCEPTION_CB, &server_excpt);
+	server_set_callback(env->server, SERVER_CLIENT_EXCEPTION_CB,
+		&client_excpt);
+	server_set_callback(env->server, SERVER_SERVER_EXCEPTION_CB,
+		&server_excpt);
 	server_set_callback(env->server, SERVER_MSG_RECV_CB, &message_received);
 	server_set_callback(env->server, SERVER_MSG_SEND_CB, &message_sended);
 	server_set_callback(env->server, SERVER_MSG_TRASH_CB, &message_trashed);
