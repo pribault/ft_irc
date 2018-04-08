@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/08 18:36:05 by pribault          #+#    #+#             */
-/*   Updated: 2018/04/09 00:21:59 by pribault         ###   ########.fr       */
+/*   Updated: 2018/04/09 00:25:20 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,22 +72,20 @@ static char	*prefix_getter(char *prefix, char *s)
 
 char		*get_prefix(t_prefix *prefix, char *s)
 {
-	ft_bzero(prefix, sizeof(t_prefix));
+	prefix->name[0] = '\0';
+	prefix->user[0] = '\0';
+	prefix->host[0] = '\0';
 	if (!(s = prefix_getter((char*)&prefix->name, s)) ||
 		(is_host_name_valid((char*)&prefix->name) == FT_FALSE &&
 		is_pseudo_valid((char*)&prefix->name) == FT_FALSE))
 		return (NULL);
 	if (*s == '!')
-	{
 		if (!(s = prefix_getter((char*)&prefix->user, s + 1)) ||
 			is_username_valid((char*)&prefix->user) == FT_FALSE)
 			return (NULL);
-	}
 	if (*s == '@')
-	{
 		if (!(s = prefix_getter((char*)&prefix->host, s + 1)) ||
 			is_host_name_valid((char*)&prefix->host) == FT_FALSE)
 			return (NULL);
-	}
 	return ((*s == ' ') ? s + 1 : NULL);
 }

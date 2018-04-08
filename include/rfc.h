@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/07 10:39:27 by pribault          #+#    #+#             */
-/*   Updated: 2018/04/09 00:16:26 by pribault         ###   ########.fr       */
+/*   Updated: 2018/04/09 00:37:04 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,18 +50,50 @@
 # define NICK		"NICK"
 # define USER		"USER"
 
-/*
-**	ping poooooong
-*/
+# define OPER		"OPER"
+# define MODE		"MODE"
+# define SERVICE	"SERVICE"
+# define QUIT		"QUIT"
+# define SQUIT		"SQUIT"
+# define JOIN		"JOIN"
+# define PART		"PART"
+# define TOPIC		"TOPIC"
+# define NAMES		"NAMES"
+# define LIST		"LIST"
+# define INVITE		"INVITE"
+# define KICK		"KICK"
 
+# define PRIVMSG	"PRIVMSG"
+# define NOTICE		"NOTICE"
+
+# define MOTD		"MOTD"
+# define LUSERS		"LUSERS"
+# define VERSION	"VERSION"
+# define STATS		"STATS"
+# define LINKS		"LINKS"
+# define TIME		"TIME"
+# define CONNECT	"CONNECT"
+# define TRACE		"TRACE"
+# define ADMIN		"ADMIN"
+# define INFO		"INFO"
+# define SERVLIST	"SERVLIST"
+# define SQUERY		"SQUERY"
+# define WHO		"WHO"
+# define WHOIS		"WHOIS"
+# define WHOWAS		"WHOWAS"
+# define KILL		"KILL"
 # define PING		"PING"
 # define PONG		"PONG"
-
-/*
-**	messages
-*/
-
-# define NOTICE		"NOTICE"
+# define ERROR		"ERROR"
+# define AWAY		"AWAY"
+# define REHASH		"REHASH"
+# define DIE		"DIE"
+# define RESTART	"RESTART"
+# define SUMMON		"SUMMON"
+# define USERS		"USERS"
+# define WALLOPS	"WALLOPS"
+# define USERHOST	"USERHOST"
+# define ISON		"ISON"
 
 /*
 **	responses
