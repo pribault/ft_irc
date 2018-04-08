@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/01 18:38:42 by pribault          #+#    #+#             */
-/*   Updated: 2018/04/07 17:34:33 by pribault         ###   ########.fr       */
+/*   Updated: 2018/04/08 11:47:26 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ int		init_env(t_env *env, int argc, char **argv)
 	env->port = NULL;
 	env->protocol = TCP;
 	env->domain = IPV4;
+	env->client = NULL;
 	ft_get_flags(argc, argv, ft_get_flag_array((void*)&g_short_flags,
 		(void*)&g_long_flags, (void*)&get_default), env);
 	if ((env->in = open("/dev/stdin", O_RDONLY)) == -1 ||
@@ -88,12 +89,7 @@ int		main(int argc, char **argv)
 		return (1);
 	}
 	start_server(&env);
-	if (!(server_connect(env.server, (t_method){env.protocol, env.domain},
-		env.address, env.port)))
-	{
-		ft_error(2, ERROR_CANNOT_CONNECT, env.address);
-		return (1);
-	}
+	enqueue_str_by_fd(&env, env.out, ft_strdup("Enter your username:\n"));
 	while (1)
 		server_poll_events(env.server);
 	return (0);

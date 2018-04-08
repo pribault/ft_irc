@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/01 18:59:09 by pribault          #+#    #+#             */
-/*   Updated: 2018/04/07 19:22:48 by pribault         ###   ########.fr       */
+/*   Updated: 2018/04/08 19:03:45 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,20 +70,17 @@ typedef struct	s_data
 typedef struct	s_env
 {
 	t_server	*server;
+	void		*client;
 	char		*address;
 	char		*port;
+	char		*username;
+	char		*real_name;
 	int			in;
 	int			out;
 	int			err;
 	t_protocol	protocol;
 	t_domain	domain;
 }				t_env;
-
-typedef struct	s_cmd
-{
-	char		*name;
-	void		(*function)(t_env *, t_data *, char *);
-}				t_cmd;
 
 /*
 ******************
@@ -134,14 +131,24 @@ void			enqueue_str_by_fd(t_env *env, int fd, char *s);
 */
 
 void			send_nick(t_server *server, void *client, char *nick);
-void			send_user(t_server *server, void *client);
+void			send_user(t_server *server, void *client, char *username,
+				char *realname);
 void			send_pong(t_server *server, void *client);
 
 /*
-**	commands functions
+**	receive functions
 */
 
-void			command_ping(t_env *env, t_data *client, char *s);
-void			command_notice(t_env *env, t_data *client, char *s);
+void			recv_ping(t_env *env, t_data *client, char *s);
+void			recv_notice(t_env *env, t_data *client, char *s);
+
+/*
+**	command functions
+*/
+
+void			get_user_command(t_env *env, char *ptr, size_t size);
+char			*get_prefix(t_prefix *prefix, char *s);
+char			*get_command(char *command, char *s);
+char			*get_param(char *param, char *s);
 
 #endif

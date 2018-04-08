@@ -4,7 +4,9 @@ SRC =	client.c flags.c\
 		client_callbacks.c\
 		message_callbacks.c\
 		packet.c output.c\
-		send.c
+		send.c user_command.c\
+		prefix.c command.c\
+		param.c
 DIR = client
 SRC_DIR = src
 OBJ_DIR = .obj

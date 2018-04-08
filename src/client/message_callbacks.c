@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/07 14:47:29 by pribault          #+#    #+#             */
-/*   Updated: 2018/04/07 21:29:31 by pribault         ###   ########.fr       */
+/*   Updated: 2018/04/08 20:20:01 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,8 @@ void	concatenate_messages(t_server *server, void *client, t_msg *msg,
 	if (!(data->ptr = reallocf(data->ptr, data->size + ptr - msg->ptr)))
 		ft_error(env->err, ERROR_ALLOCATION, NULL);
 	ft_memcpy(data->ptr + data->size, msg->ptr, ptr - msg->ptr);
-	treat_packet(server, client, data->ptr, data->size);
-	msg->size -= (ptr - msg->ptr + CRLF_SIZE);
+	treat_packet(server, client, data->ptr, data->size + msg->size);
+	msg->size -= ((ptr - msg->ptr) + CRLF_SIZE);
 	msg->ptr = ptr + CRLF_SIZE;
 	ft_memdel(&data->ptr);
 	data->size = 0;
@@ -47,6 +47,8 @@ void	message_received(t_server *server, void *client, t_msg *msg)
 
 	env = server_get_data(server);
 	data = server_client_get_data(client);
+	if (server_get_client_fd(client) == env->in)
+		return (get_user_command(env, msg->ptr, msg->size));
 	while (msg->size)
 		if ((ptr = ft_memschr(msg->ptr, CRLF, msg->size, CRLF_SIZE)))
 		{
@@ -55,7 +57,7 @@ void	message_received(t_server *server, void *client, t_msg *msg)
 			else
 			{
 				treat_packet(server, client, msg->ptr, ptr - msg->ptr);
-				msg->size -= (ptr - msg->ptr + CRLF_SIZE);
+				msg->size -= ((ptr - msg->ptr) + CRLF_SIZE);
 				msg->ptr = ptr + CRLF_SIZE;
 			}
 		}
