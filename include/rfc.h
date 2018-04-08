@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/07 10:39:27 by pribault          #+#    #+#             */
-/*   Updated: 2018/04/08 19:20:29 by pribault         ###   ########.fr       */
+/*   Updated: 2018/04/08 22:17:47 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,18 +83,11 @@
 # define PARAMS_MAX		15
 # define PARAMS_LEN		32
 
-typedef enum		e_prefix_type
-{
-	PREFIX_NONE,
-	PREFIX_SERVER,
-	PREFIX_USER,
-	PREFIX_HOST
-}					t_prefix_type;
-
 typedef struct		s_prefix
 {
 	char			name[PREFIX_MAX];
-	t_prefix_type	type;
+	char			user[PREFIX_MAX];
+	char			host[PREFIX_MAX];
 }					t_prefix;
 
 typedef struct		s_message
@@ -102,8 +95,9 @@ typedef struct		s_message
 	t_prefix		prefix;
 	char			command[COMMAND_MAX];
 	char			params[PARAMS_MAX][PARAMS_LEN];
+	char			*end;
 }					t_message;
 
-# define PREFIX_DEFAULT	(t_prefix){{'\0'}, PREFIX_NONE}
+# define PREFIX_DEFAULT	(t_prefix){{'\0'}, {'\0'}, {'\0'}}
 
 #endif

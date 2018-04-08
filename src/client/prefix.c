@@ -6,13 +6,13 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/08 18:36:05 by pribault          #+#    #+#             */
-/*   Updated: 2018/04/08 18:36:44 by pribault         ###   ########.fr       */
+/*   Updated: 2018/04/08 22:17:14 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "client.h"
 
-t_bool	is_host_name_valid(char *s)
+t_bool		is_host_name_valid(char *s)
 {
 	uint32_t	i;
 
@@ -27,7 +27,7 @@ t_bool	is_host_name_valid(char *s)
 	return ((i < 25) ? FT_TRUE : FT_FALSE);
 }
 
-t_bool	is_pseudo_valid(char *s)
+t_bool		is_pseudo_valid(char *s)
 {
 	uint32_t	i;
 
@@ -44,27 +44,37 @@ t_bool	is_pseudo_valid(char *s)
 	return (FT_TRUE);
 }
 
-char	*get_prefix(t_prefix *prefix, char *s)
+static char	*prefix_getter(char *prefix, char *s)
 {
-	int			i;
+	uint32_t	i;
 
 	i = 0;
-	while (s[i] && s[i] != ' ')
+	while (s[i] && s[i] != ' ' && s[i] != '@' && s[i] != '!')
 		i++;
-	if (s[i - 1] == '!')
-		prefix->type = PREFIX_USER;
-	else if (s[i - 1] == '@')
-		prefix->type = PREFIX_HOST;
-	else
-		prefix->type = PREFIX_SERVER;
-	if (!s[i] || i >= PREFIX_MAX)
+	if (i >= PREFIX_MAX)
+	{
+		ft_printf("here4\n");
 		return (NULL);
-	ft_memcpy(&prefix->name, s, i);
-	prefix->name[i] = '\0';
-	if ((prefix->type == PREFIX_SERVER &&
-		is_host_name_valid((char*)&prefix->name) == FT_FALSE) ||
-		((prefix->type == PREFIX_USER || prefix->type == PREFIX_HOST) &&
-			is_pseudo_valid((char*)&prefix->name) == FT_FALSE))
+	}
+	ft_memcpy(prefix, s, i);
+	prefix[i] = '\0';
+	return (s + i);
+}
+
+char		*get_prefix(t_prefix *prefix, char *s)
+{
+	ft_bzero(prefix, sizeof(t_prefix));
+	if (!(s = prefix_getter((char*)&prefix->name, s)))
 		return (NULL);
-	return (&s[i + 1]);
+	if (*s == '!')
+	{
+		if (!(s = prefix_getter((char*)&prefix->user, s + 1)))
+			return (NULL);
+	}
+	if (*s == '@')
+	{
+		if (!(s = prefix_getter((char*)&prefix->host, s + 1)))
+			return (NULL);
+	}
+	return ((*s == ' ') ? s + 1 : NULL);
 }
