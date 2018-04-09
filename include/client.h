@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/01 18:59:09 by pribault          #+#    #+#             */
-/*   Updated: 2018/04/09 17:39:52 by pribault         ###   ########.fr       */
+/*   Updated: 2018/04/09 22:42:32 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -163,6 +163,7 @@ void			send_pong(t_server *server, void *client);
 **	receive functions
 */
 
+void			recv_unknown(t_env *env, t_data *data, t_message *msg);
 void			recv_welcome(t_env *env, t_data *data, t_message *msg);
 void			recv_yourhost(t_env *env, t_data *data, t_message *msg);
 void			recv_created(t_env *env, t_data *data, t_message *msg);
@@ -176,6 +177,7 @@ void			recv_motd(t_env *env, t_data *data, t_message *msg);
 void			recv_motdend(t_env *env, t_data *data, t_message *msg);
 void			recv_lchannels(t_env *env, t_data *data, t_message *msg);
 void			recv_lme(t_env *env, t_data *data, t_message *msg);
+void			recv_mode(t_env *env, t_data *data, t_message *msg);
 
 /*
 **	command functions

@@ -6,11 +6,19 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/09 17:34:31 by pribault          #+#    #+#             */
-/*   Updated: 2018/04/09 17:39:43 by pribault         ###   ########.fr       */
+/*   Updated: 2018/04/09 22:43:01 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "client.h"
+
+void	recv_motd(t_env *env, t_data *data, t_message *msg)
+{
+	(void)data;
+	enqueue_str_by_fd(env, env->out, ft_joinf("[%s%s%s (%s%s%s)] %s%s%s\n",
+			COLOR_NAME, &msg->prefix.name[0], COLOR_CLEAR, COLOR_INFO,
+			"Motd", COLOR_CLEAR, COLOR_HALF, msg->end, COLOR_CLEAR));
+}
 
 void	recv_motdstart(t_env *env, t_data *data, t_message *msg)
 {
@@ -34,4 +42,12 @@ void	recv_lme(t_env *env, t_data *data, t_message *msg)
 	enqueue_str_by_fd(env, env->out, ft_joinf("[%s%s%s (%s%s%s)] %s%s%s\n",
 			COLOR_NAME, &msg->prefix.name[0], COLOR_CLEAR, COLOR_SYSTEM,
 			"Server", COLOR_CLEAR, COLOR_HALF, msg->end, COLOR_CLEAR));
+}
+
+void	recv_mode(t_env *env, t_data *data, t_message *msg)
+{
+	(void)data;
+	enqueue_str_by_fd(env, env->out, ft_joinf("[%s%s%s (%s%s%s)] %s%s%s\n",
+			COLOR_NAME, &msg->prefix.name[0], COLOR_CLEAR, COLOR_SYSTEM,
+			"Mode", COLOR_CLEAR, COLOR_HALF, msg->end, COLOR_CLEAR));
 }

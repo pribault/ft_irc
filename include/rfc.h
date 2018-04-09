@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/07 10:39:27 by pribault          #+#    #+#             */
-/*   Updated: 2018/04/09 17:49:59 by pribault         ###   ########.fr       */
+/*   Updated: 2018/04/09 23:24:34 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -319,7 +319,7 @@
 # define COMMAND_MAX	64
 
 # define PARAMS_MAX		15
-# define PARAMS_LEN		32
+# define PARAMS_LEN		128
 
 typedef struct		s_prefix
 {
@@ -334,6 +334,7 @@ typedef struct		s_message
 	char			command[COMMAND_MAX];
 	char			params[PARAMS_MAX][PARAMS_LEN];
 	char			*end;
+	uint8_t			n_params;
 }					t_message;
 
 # define PREFIX_DEFAULT	(t_prefix){{'\0'}, {'\0'}, {'\0'}}
