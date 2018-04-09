@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/07 10:39:27 by pribault          #+#    #+#             */
-/*   Updated: 2018/04/09 12:46:01 by pribault         ###   ########.fr       */
+/*   Updated: 2018/04/09 17:49:59 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,54 +46,69 @@
 **	PASS is optionnal
 */
 
-# define PASS		"PASS"
-# define NICK		"NICK"
-# define USER		"USER"
+# define ADMIN		"ADMIN"
+# define AWAY		"AWAY"
 
-# define OPER		"OPER"
-# define MODE		"MODE"
-# define SERVICE	"SERVICE"
-# define QUIT		"QUIT"
-# define SQUIT		"SQUIT"
-# define JOIN		"JOIN"
-# define PART		"PART"
-# define TOPIC		"TOPIC"
-# define NAMES		"NAMES"
-# define LIST		"LIST"
+# define CONNECT	"CONNECT"
+
+# define DIE		"DIE"
+
+# define ERROR		"ERROR"
+
+# define INFO		"INFO"
 # define INVITE		"INVITE"
-# define KICK		"KICK"
+# define ISON		"ISON"
 
-# define PRIVMSG	"PRIVMSG"
+# define JOIN		"JOIN"
+
+# define KICK		"KICK"
+# define KILL		"KILL"
+
+# define LINKS		"LINKS"
+# define LIST		"LIST"
+# define LUSERS		"LUSERS"
+
+# define MODE		"MODE"
+# define MOTD		"MOTD"
+
+# define NAMES		"NAMES"
+# define NICK		"NICK"
 # define NOTICE		"NOTICE"
 
-# define MOTD		"MOTD"
-# define LUSERS		"LUSERS"
-# define VERSION	"VERSION"
-# define STATS		"STATS"
-# define LINKS		"LINKS"
-# define TIME		"TIME"
-# define CONNECT	"CONNECT"
-# define TRACE		"TRACE"
-# define ADMIN		"ADMIN"
-# define INFO		"INFO"
+# define OPER		"OPER"
+
+# define PART		"PART"
+# define PASS		"PASS"
+# define PING		"PING"
+# define PONG		"PONG"
+# define PRIVMSG	"PRIVMSG"
+
+# define QUIT		"QUIT"
+
+# define REHASH		"REHASH"
+# define RESTART	"RESTART"
+
+# define SERVICE	"SERVICE"
 # define SERVLIST	"SERVLIST"
 # define SQUERY		"SQUERY"
+# define SQUIT		"SQUIT"
+# define STATS		"STATS"
+# define SUMMON		"SUMMON"
+
+# define TIME		"TIME"
+# define TOPIC		"TOPIC"
+# define TRACE		"TRACE"
+
+# define USER		"USER"
+# define USERHOST	"USERHOST"
+# define USERS		"USERS"
+
+# define VERSION	"VERSION"
+
+# define WALLOPS	"WALLOPS"
 # define WHO		"WHO"
 # define WHOIS		"WHOIS"
 # define WHOWAS		"WHOWAS"
-# define KILL		"KILL"
-# define PING		"PING"
-# define PONG		"PONG"
-# define ERROR		"ERROR"
-# define AWAY		"AWAY"
-# define REHASH		"REHASH"
-# define DIE		"DIE"
-# define RESTART	"RESTART"
-# define SUMMON		"SUMMON"
-# define USERS		"USERS"
-# define WALLOPS	"WALLOPS"
-# define USERHOST	"USERHOST"
-# define ISON		"ISON"
 
 /*
 **	responses

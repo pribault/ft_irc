@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/01 18:59:09 by pribault          #+#    #+#             */
-/*   Updated: 2018/04/09 12:53:52 by pribault         ###   ########.fr       */
+/*   Updated: 2018/04/09 17:39:52 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,28 +38,18 @@
 # define COLOR_ITALIC		"\e[3m"
 # define COLOR_UNDERLINED	"\e[4m"
 # define COLOR_CLEAR		"\e[0m"
-# define COLOR_BLACK	COLOR(0, 0, 0)
-# define COLOR_BLUE	COLOR(0, 51, 102)
-# define COLOR_R1	COLOR(128, 0, 0)
-# define COLOR_R2	COLOR(153, 0, 0)
-# define COLOR_R3	COLOR(179, 0, 0)
-# define COLOR_R4	COLOR(204, 0, 0)
-# define COLOR_R5	COLOR(230, 0, 0)
-# define COLOR_R6	COLOR(255, 0, 0)
-# define COLOR_C1	COLOR(0, 128, 128)
-# define COLOR_C2	COLOR(0, 153, 153)
-# define COLOR_C3	COLOR(0, 179, 179)
-# define COLOR_C4	COLOR(0, 204, 204)
-# define COLOR_C5	COLOR(0, 230, 230)
-# define COLOR_C6	COLOR(0, 255, 255)
-# define COLOR_NAME	ft_get_term_color(COLOR_BLUE, COLOR_BLACK, EFFECT_NOBACK)
-# define COLOR_WLCM	ft_get_term_color(COLOR_C2, COLOR_BLACK, EFFECT_NOBACK)
-# define COLOR_YHST	ft_get_term_color(COLOR_C3, COLOR_BLACK, EFFECT_NOBACK)
-# define COLOR_CRTD	ft_get_term_color(COLOR_C4, COLOR_BLACK, EFFECT_NOBACK)
-# define COLOR_NOTICE	ft_get_term_color(COLOR_R1, COLOR_BLACK, EFFECT_NOBACK)
-# define COLOR_MOTD	ft_get_term_color(COLOR_C6, COLOR_BLACK, EFFECT_NOBACK)
-# define COLOR_INFO	COLOR_WLCM
-# define COLOR_UNKNOWN	COLOR_NOTICE
+# define COLOR_BK0		COLOR(0, 0, 0)
+# define COLOR_R0		COLOR(153, 0, 0)
+# define COLOR_G0		COLOR(0, 102, 0)
+# define COLOR_B0		COLOR(0, 102, 204)
+# define COLOR_Y0		COLOR(255, 153, 0)
+# define COLOR_C0		COLOR(0, 204, 255)
+# define COLOR_M0		COLOR(153, 51, 153)
+# define COLOR_ERROR	ft_get_term_color(COLOR_R0, COLOR_BK0, EFFECT_NOBACK)
+# define COLOR_SYSTEM	ft_get_term_color(COLOR_Y0, COLOR_BK0, EFFECT_NOBACK)
+# define COLOR_INFO		ft_get_term_color(COLOR_C0, COLOR_BK0, EFFECT_NOBACK)
+# define COLOR_VERBOSE	ft_get_term_color(COLOR_G0, COLOR_BK0, EFFECT_NOBACK)
+# define COLOR_NAME		ft_get_term_color(COLOR_B0, COLOR_BK0, EFFECT_NOBACK)
 
 /*
 *************
@@ -181,7 +171,11 @@ void			recv_bounce(t_env *env, t_data *data, t_message *msg);
 void			recv_notice(t_env *env, t_data *data, t_message *msg);
 void			recv_lusers(t_env *env, t_data *data, t_message *msg);
 void			recv_lops(t_env *env, t_data *data, t_message *msg);
+void			recv_motdstart(t_env *env, t_data *data, t_message *msg);
 void			recv_motd(t_env *env, t_data *data, t_message *msg);
+void			recv_motdend(t_env *env, t_data *data, t_message *msg);
+void			recv_lchannels(t_env *env, t_data *data, t_message *msg);
+void			recv_lme(t_env *env, t_data *data, t_message *msg);
 
 /*
 **	command functions

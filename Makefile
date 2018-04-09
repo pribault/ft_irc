@@ -9,8 +9,6 @@ LIBSOCKET = libsocket
 
 .PHONY: all clean fclean re $(CLIENT) $(SERVER) $(LIBFT) $(LIBSOCKET)
 
-.SILENT:
-
 all: $(CLIENT) $(SERVER)
 
 $(LIBFT):

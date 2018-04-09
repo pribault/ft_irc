@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/07 14:48:20 by pribault          #+#    #+#             */
-/*   Updated: 2018/04/09 12:57:48 by pribault         ###   ########.fr       */
+/*   Updated: 2018/04/09 17:40:11 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,18 +22,21 @@ t_cmd	g_recv[] =
 	{NOTICE, &recv_notice},
 	{RPL_LUSERCLIENT, &recv_lusers},
 	{RPL_LUSEROP, &recv_lops},
+	{RPL_MOTDSTART, &recv_motdstart},
 	{RPL_MOTD, &recv_motd},
+	{RPL_ENDOFMOTD, &recv_motdend},
+	{RPL_LUSERCHANNELS, &recv_lchannels},
+	{RPL_LUSERME, &recv_lme},
 	{NULL, NULL}
 };
 
 void	recv_unknown(t_env *env, t_data *data, t_message *msg)
 {
-	(void)env;
 	(void)data;
-	ft_printf("[%s%s%s (%s??? %s%s)] ",
-		COLOR_NAME, &msg->prefix.name[0], COLOR_CLEAR,
-		COLOR_UNKNOWN, &msg->command, COLOR_CLEAR);
-	ft_printf("%s%s%s\n", COLOR_HALF, msg->end, COLOR_CLEAR);
+	enqueue_str_by_fd(env, env->out,
+		ft_joinf("[%s%s%s (%s??? %s%s)] %s%s%s\n", COLOR_NAME,
+			&msg->prefix.name[0], COLOR_CLEAR, COLOR_ERROR, &msg->command,
+			COLOR_CLEAR, COLOR_HALF, msg->end, COLOR_CLEAR));
 }
 
 t_bool	get_message(t_message *msg, char *s)
@@ -76,14 +79,19 @@ void	debug_message(t_env *env, t_data *data, t_message *msg)
 {
 	uint8_t	i;
 
-	(void)env;
 	(void)data;
-	ft_printf("name=%s user=%s host=%s\ncommand=%s\nargs:\n",
-		&msg->prefix.name, &msg->prefix.user, &msg->prefix.host,
-		&msg->command);
+	enqueue_str_by_fd(env, env->out,
+		ft_joinf("[%sDEBUG%s] name=%s user=%s host=%s\n",
+			COLOR_VERBOSE, COLOR_CLEAR, &msg->prefix.name, &msg->prefix.user,
+			&msg->prefix.host));
+	enqueue_str_by_fd(env, env->out, ft_joinf("[%sDEBUG%s] command=%s\n",
+		COLOR_VERBOSE, COLOR_CLEAR, &msg->command));
+	enqueue_str_by_fd(env, env->out, ft_joinf("[%sDEBUG%s] args:\n",
+		COLOR_VERBOSE, COLOR_CLEAR));
 	i = (uint8_t)-1;
 	while (msg->params[++i][0])
-		ft_printf("\t%s\n", &msg->params[i]);
+		enqueue_str_by_fd(env, env->out, ft_joinf("[%sDEBUG%s] \t%s\n",
+			COLOR_VERBOSE, COLOR_CLEAR, &msg->params[i]));
 }
 
 void	treat_packet(t_server *server, void *client, void *ptr, size_t size)
