@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/07 14:48:20 by pribault          #+#    #+#             */
-/*   Updated: 2018/04/09 23:33:52 by pribault         ###   ########.fr       */
+/*   Updated: 2018/04/09 23:56:46 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ t_bool	get_message(t_message *msg, char *s)
 	if (!(s = get_command((char*)&msg->command, s)))
 		return (FT_FALSE);
 	msg->n_params = 0;
-	while (msg->n_params < PARAMS_MAX - 1 &&
+	while (msg->n_params < PARAMS_MAX &&
 		(s = get_param((char*)&msg->params[msg->n_params], s)) &&
 		msg->params[msg->n_params][0])
 		msg->n_params++;
