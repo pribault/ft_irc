@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/01 18:59:09 by pribault          #+#    #+#             */
-/*   Updated: 2018/04/08 19:03:45 by pribault         ###   ########.fr       */
+/*   Updated: 2018/04/09 09:00:11 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,13 @@
 # define COLOR_ITALIC		"\e[3m"
 # define COLOR_UNDERLINED	"\e[4m"
 # define COLOR_CLEAR		"\e[0m"
+# define COLOR_BLACK	COLOR(0, 0, 0)
+# define COLOR_BLUE	COLOR(0, 51, 102)
+# define COLOR_R1	COLOR(196, 64, 64)
+# define COLOR_R2	COLOR(196, 0, 0)
+# define COLOR_NAME	ft_get_term_color(COLOR_BLUE, COLOR_BLACK, EFFECT_NOBACK)
+# define COLOR_WLCM	ft_get_term_color(COLOR_R1, COLOR_BLACK, EFFECT_NOBACK)
+# define COLOR_YHST	ft_get_term_color(COLOR_R2, COLOR_BLACK, EFFECT_NOBACK)
 
 /*
 *************
@@ -81,6 +88,12 @@ typedef struct	s_env
 	t_protocol	protocol;
 	t_domain	domain;
 }				t_env;
+
+typedef struct	s_cmd
+{
+	char		*name;
+	void		(*function)(t_env *, t_data *, t_message *);
+}				t_cmd;
 
 /*
 ******************
@@ -139,8 +152,8 @@ void			send_pong(t_server *server, void *client);
 **	receive functions
 */
 
-void			recv_ping(t_env *env, t_data *client, char *s);
-void			recv_notice(t_env *env, t_data *client, char *s);
+void			recv_welcome(t_env *env, t_data *data, t_message *msg);
+void			recv_yourhost(t_env *env, t_data *data, t_message *msg);
 
 /*
 **	command functions

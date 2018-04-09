@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/03 16:13:23 by pribault          #+#    #+#             */
-/*   Updated: 2018/04/08 21:15:34 by pribault         ###   ########.fr       */
+/*   Updated: 2018/04/09 08:50:13 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@ typedef enum		e_color_effect
 	EFFECT_BLINK = 5,
 	EFFECT_NONE = 6,
 	EFFECT_REVERTED = 7,
+	EFFECT_NOBACK = 8
 }					t_color_effect;
 
 typedef struct		s_color

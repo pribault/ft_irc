@@ -6,11 +6,38 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/07 14:48:20 by pribault          #+#    #+#             */
-/*   Updated: 2018/04/08 22:19:36 by pribault         ###   ########.fr       */
+/*   Updated: 2018/04/09 08:58:37 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "client.h"
+
+t_cmd	g_recv[] =
+{
+	{RPL_WELCOME, &recv_welcome},
+	{RPL_YOURHOST, &recv_yourhost},
+	{NULL, NULL}
+};
+
+void	recv_welcome(t_env *env, t_data *data, t_message *msg)
+{
+	(void)env;
+	(void)data;
+	ft_printf("[%s%s%s (%s%s%s)] ",
+		COLOR_NAME, &msg->prefix.name[0], COLOR_CLEAR,
+		COLOR_WLCM, "Welcome", COLOR_CLEAR);
+	ft_printf("%s%s%s\n", COLOR_HALF, msg->end, COLOR_CLEAR);
+}
+
+void	recv_yourhost(t_env *env, t_data *data, t_message *msg)
+{
+	(void)env;
+	(void)data;
+	ft_printf("[%s%s%s (%s%s%s)] ",
+		COLOR_NAME, &msg->prefix.name[0], COLOR_CLEAR,
+		COLOR_YHST, "YourHost", COLOR_CLEAR);
+	ft_printf("%s%s%s\n", COLOR_HALF, msg->end, COLOR_CLEAR);
+}
 
 t_bool	get_message(t_message *msg, char *s)
 {
@@ -36,7 +63,7 @@ void	treat_packet(t_server *server, void *client, void *ptr, size_t size)
 	t_env		*env;
 	t_data		*data;
 	char		*s;
-	// uint32_t	i;
+	uint32_t	i;
 
 	env = server_get_data(server);
 	data = server_client_get_data(client);
@@ -46,16 +73,11 @@ void	treat_packet(t_server *server, void *client, void *ptr, size_t size)
 	s[size] = '\0';
 	if (get_message(&message, s) == FT_TRUE)
 	{
-		// ft_printf("name=%s user=%s host=%s\n",
-		// 	&message.prefix.name, &message.prefix.user, &message.prefix.host);
-		// ft_printf("command=%s\n", &message.command);
-		// i = (uint32_t)-1;
-		// while (message.params[++i][0])
-		// 	ft_printf("\t%u: %s\n", i, &message.params[i]);
-		// ft_printf("end=%s\n", message.end);
-		ft_printf("[OK] %s\n", s);
+		i = (uint32_t)-1;
+		while (g_recv[++i].name)
+			if (!ft_strcmp(g_recv[i].name, &message.command[0]) &&
+				g_recv[i].function)
+				g_recv[i].function(env, data, &message);
 	}
-	else
-		ft_printf("[ERROR] %s\n", s);
 	free(s);
 }
