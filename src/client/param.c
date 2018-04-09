@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/08 19:02:20 by pribault          #+#    #+#             */
-/*   Updated: 2018/04/09 23:14:42 by pribault         ###   ########.fr       */
+/*   Updated: 2018/04/10 00:49:34 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,9 @@ char	*get_param(char *param, char *s)
 	param[0] = '\0';
 	if (s[0] == ' ')
 	{
-		i = 0;
-		while (s[++i] == ' ')
+		while (*(++s) == ' ')
 			;
+		i = 0;
 		if (s[i] == ':')
 		{
 			while (ft_isof(s[++i], PARAM_WHITE))
@@ -31,10 +31,10 @@ char	*get_param(char *param, char *s)
 		{
 			while (!ft_isof(s[++i], PARAM_WHITE))
 				;
-			if (i >= PARAMS_LEN)
+			if (i >= PARAMS_LEN - 1)
 				return (NULL);
-			ft_memcpy(param, &s[1], i - 1);
-			param[i - 1] = '\0';
+			ft_memcpy(param, s, i);
+			param[i] = '\0';
 		}
 		return (&s[i]);
 	}

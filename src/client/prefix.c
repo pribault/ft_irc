@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/08 18:36:05 by pribault          #+#    #+#             */
-/*   Updated: 2018/04/09 00:25:20 by pribault         ###   ########.fr       */
+/*   Updated: 2018/04/10 00:50:01 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ static char	*prefix_getter(char *prefix, char *s)
 	i = 0;
 	while (s[i] && s[i] != ' ' && s[i] != '@' && s[i] != '!')
 		i++;
-	if (i >= PREFIX_MAX)
+	if (i >= PREFIX_MAX - 1)
 		return (NULL);
 	ft_memcpy(prefix, s, i);
 	prefix[i] = '\0';
