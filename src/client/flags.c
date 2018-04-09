@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/01 20:08:15 by pribault          #+#    #+#             */
-/*   Updated: 2018/04/07 15:27:58 by pribault         ###   ########.fr       */
+/*   Updated: 2018/04/09 12:53:45 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,4 +64,9 @@ void	get_domain(t_env *env, char **args, int n)
 		env->domain = IPV6;
 	else
 		ft_error(2, ERROR_UNKNOWN_DOMAIN, args[0]);
+}
+
+void	set_verbose(t_env *env)
+{
+	env->opt ^= OPT_VERBOSE;
 }

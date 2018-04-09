@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/01 18:38:42 by pribault          #+#    #+#             */
-/*   Updated: 2018/04/08 11:47:26 by pribault         ###   ########.fr       */
+/*   Updated: 2018/04/09 12:53:07 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,15 @@
 static t_short_flag	g_short_flags[] =
 {
 	{'h', (void*)&print_usage},
+	{'v', (void*)&set_verbose},
 	{0, NULL}
 };
 
 static t_long_flag	g_long_flags[] =
 {
 	{"help", 0, {0}, (void*)&print_usage},
+	{"protocol", 1, {PARAM_STR}, (void*)&get_protocol},
+	{"domain", 1, {PARAM_STR}, (void*)&get_domain},
 	{NULL, 0, {0}, NULL}
 };
 
@@ -50,6 +53,7 @@ int		init_env(t_env *env, int argc, char **argv)
 	env->protocol = TCP;
 	env->domain = IPV4;
 	env->client = NULL;
+	env->opt = 0;
 	ft_get_flags(argc, argv, ft_get_flag_array((void*)&g_short_flags,
 		(void*)&g_long_flags, (void*)&get_default), env);
 	if ((env->in = open("/dev/stdin", O_RDONLY)) == -1 ||

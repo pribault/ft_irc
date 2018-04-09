@@ -32,8 +32,6 @@ DEPENDENCIES =	$(LIBFT_INC:%.h=$(LIBFT_INC_DIR)/%.h)\
 
 .PHONY: clean fclean all re norme
 
-.SILENT:
-
 all: $(NAME)
 	@if [ $(COMPILED) = true ]; then echo "\033[0m\033[38;5;124m[$(DIR) ∎∎∎∎] \033[0m🐼  \033[38;5;199m$(NAME) done\033[0m"; else echo "\033[0m\033[38;5;124m[$(DIR) ∎∎∎∎] \033[0m🦋  \033[38;5;199mnothing to be done for $(NAME)\033[0m"; fi
 

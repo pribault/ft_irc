@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/01 18:59:09 by pribault          #+#    #+#             */
-/*   Updated: 2018/04/09 09:00:11 by pribault         ###   ########.fr       */
+/*   Updated: 2018/04/09 12:53:52 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,8 @@
 ***************
 */
 
+# define OPT_VERBOSE	BYTE(0)
+
 # define COLOR_BOLD			"\e[1m"
 # define COLOR_HALF			"\e[2m"
 # define COLOR_ITALIC		"\e[3m"
@@ -38,11 +40,26 @@
 # define COLOR_CLEAR		"\e[0m"
 # define COLOR_BLACK	COLOR(0, 0, 0)
 # define COLOR_BLUE	COLOR(0, 51, 102)
-# define COLOR_R1	COLOR(196, 64, 64)
-# define COLOR_R2	COLOR(196, 0, 0)
+# define COLOR_R1	COLOR(128, 0, 0)
+# define COLOR_R2	COLOR(153, 0, 0)
+# define COLOR_R3	COLOR(179, 0, 0)
+# define COLOR_R4	COLOR(204, 0, 0)
+# define COLOR_R5	COLOR(230, 0, 0)
+# define COLOR_R6	COLOR(255, 0, 0)
+# define COLOR_C1	COLOR(0, 128, 128)
+# define COLOR_C2	COLOR(0, 153, 153)
+# define COLOR_C3	COLOR(0, 179, 179)
+# define COLOR_C4	COLOR(0, 204, 204)
+# define COLOR_C5	COLOR(0, 230, 230)
+# define COLOR_C6	COLOR(0, 255, 255)
 # define COLOR_NAME	ft_get_term_color(COLOR_BLUE, COLOR_BLACK, EFFECT_NOBACK)
-# define COLOR_WLCM	ft_get_term_color(COLOR_R1, COLOR_BLACK, EFFECT_NOBACK)
-# define COLOR_YHST	ft_get_term_color(COLOR_R2, COLOR_BLACK, EFFECT_NOBACK)
+# define COLOR_WLCM	ft_get_term_color(COLOR_C2, COLOR_BLACK, EFFECT_NOBACK)
+# define COLOR_YHST	ft_get_term_color(COLOR_C3, COLOR_BLACK, EFFECT_NOBACK)
+# define COLOR_CRTD	ft_get_term_color(COLOR_C4, COLOR_BLACK, EFFECT_NOBACK)
+# define COLOR_NOTICE	ft_get_term_color(COLOR_R1, COLOR_BLACK, EFFECT_NOBACK)
+# define COLOR_MOTD	ft_get_term_color(COLOR_C6, COLOR_BLACK, EFFECT_NOBACK)
+# define COLOR_INFO	COLOR_WLCM
+# define COLOR_UNKNOWN	COLOR_NOTICE
 
 /*
 *************
@@ -82,6 +99,7 @@ typedef struct	s_env
 	char		*port;
 	char		*username;
 	char		*real_name;
+	uint32_t	opt;
 	int			in;
 	int			out;
 	int			err;
@@ -107,6 +125,9 @@ typedef struct	s_cmd
 
 void			print_usage(void);
 void			get_default(char *s, t_env *env);
+void			get_protocol(t_env *env, char **args, int n);
+void			get_domain(t_env *env, char **args, int n);
+void			set_verbose(t_env *env);
 
 /*
 **	client callbacks
@@ -154,6 +175,13 @@ void			send_pong(t_server *server, void *client);
 
 void			recv_welcome(t_env *env, t_data *data, t_message *msg);
 void			recv_yourhost(t_env *env, t_data *data, t_message *msg);
+void			recv_created(t_env *env, t_data *data, t_message *msg);
+void			recv_myinfo(t_env *env, t_data *data, t_message *msg);
+void			recv_bounce(t_env *env, t_data *data, t_message *msg);
+void			recv_notice(t_env *env, t_data *data, t_message *msg);
+void			recv_lusers(t_env *env, t_data *data, t_message *msg);
+void			recv_lops(t_env *env, t_data *data, t_message *msg);
+void			recv_motd(t_env *env, t_data *data, t_message *msg);
 
 /*
 **	command functions
