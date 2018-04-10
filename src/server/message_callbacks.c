@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/02 13:51:38 by pribault          #+#    #+#             */
-/*   Updated: 2018/04/07 19:30:25 by pribault         ###   ########.fr       */
+/*   Updated: 2018/04/10 08:54:34 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,8 @@ void	concatenate_messages(t_server *server, void *client, t_msg *msg,
 	if (!(data->ptr = reallocf(data->ptr, data->size + ptr - msg->ptr)))
 		ft_error(env->err, ERROR_ALLOCATION, NULL);
 	ft_memcpy(data->ptr + data->size, msg->ptr, ptr - msg->ptr);
-	treat_packet(server, client, data->ptr, data->size);
-	msg->size -= (ptr - msg->ptr - CRLF_SIZE);
+	treat_packet(server, client, data->ptr, data->size + msg->size);
+	msg->size -= ((ptr - msg->ptr) + CRLF_SIZE);
 	msg->ptr = ptr + CRLF_SIZE;
 	ft_memdel(&data->ptr);
 	data->size = 0;
@@ -57,7 +57,7 @@ void	message_received(t_server *server, void *client, t_msg *msg)
 			else
 			{
 				treat_packet(server, client, msg->ptr, ptr - msg->ptr);
-				msg->size -= (ptr - msg->ptr + CRLF_SIZE);
+				msg->size -= ((ptr - msg->ptr) + CRLF_SIZE);
 				msg->ptr = ptr + CRLF_SIZE;
 			}
 		}

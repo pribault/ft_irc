@@ -6,68 +6,94 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/07 11:18:20 by pribault          #+#    #+#             */
-/*   Updated: 2018/04/08 14:23:19 by pribault         ###   ########.fr       */
+/*   Updated: 2018/04/10 08:55:14 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "server.h"
 
-static t_cmd	g_commands[] =
+t_cmd	g_recv[] =
 {
-	{PASS, &command_pass},
-	{NICK, &command_nick},
-	{USER, &command_user},
-	{NULL, NULL},
+	{NULL, NULL}
 };
 
-void	command_pass(t_env *env, t_data *client, char *s)
+t_bool	get_message(t_message *msg, char *s)
 {
-	(void)env;
-	(void)client;
-	(void)s;
-	ft_printf("nick\n");
+	msg->prefix = PREFIX_DEFAULT;
+	if (s[0] == ':')
+		if (!(s = get_prefix(&msg->prefix, s + 1)))
+			return (FT_FALSE);
+	if (!(s = get_command((char*)&msg->command, s)))
+		return (FT_FALSE);
+	msg->n_params = 0;
+	while (msg->n_params < PARAMS_MAX &&
+		(s = get_param((char*)&msg->params[msg->n_params], s)) &&
+		msg->params[msg->n_params][0])
+		msg->n_params++;
+	msg->end = s;
+	return ((s) ? FT_TRUE : FT_FALSE);
 }
 
-void	command_nick(t_env *env, t_data *client, char *s)
+void	search_function(t_env *env, t_data *data, t_message *msg)
 {
-	(void)env;
-	(void)client;
-	(void)s;
-	ft_printf("nick\n");
+	t_bool		found;
+	uint32_t	i;
+
+	i = (uint32_t)-1;
+	found = FT_FALSE;
+	while (found == FT_FALSE && g_recv[++i].name)
+		if (!ft_strcmp(g_recv[i].name, &msg->command[0]) &&
+			g_recv[i].function)
+		{
+			g_recv[i].function(env, data, msg);
+			found = FT_TRUE;
+		}
+	if (found == FT_FALSE)
+		recv_unknown(env, data, msg);
 }
 
-void	command_user(t_env *env, t_data *client, char *s)
+void	debug_message(t_env *env, t_data *data, t_message *msg)
 {
-	(void)env;
-	(void)client;
-	(void)s;
-	ft_printf("user\n");
+	uint8_t	i;
+
+	(void)data;
+	enqueue_str_by_fd(env, env->out,
+		ft_joinf("[%sDEBUG%s] name=%s user=%s host=%s\n",
+			COLOR_VERBOSE, COLOR_CLEAR, &msg->prefix.name, &msg->prefix.user,
+			&msg->prefix.host));
+	enqueue_str_by_fd(env, env->out, ft_joinf("[%sDEBUG%s] command=%s\n",
+		COLOR_VERBOSE, COLOR_CLEAR, &msg->command));
+	enqueue_str_by_fd(env, env->out, ft_joinf("[%sDEBUG%s] args:\n",
+		COLOR_VERBOSE, COLOR_CLEAR));
+	i = (uint8_t)-1;
+	while (++i < msg->n_params)
+		enqueue_str_by_fd(env, env->out, ft_joinf("[%sDEBUG%s] \t%s\n",
+			COLOR_VERBOSE, COLOR_CLEAR, &msg->params[i]));
 }
 
 void	treat_packet(t_server *server, void *client, void *ptr, size_t size)
 {
-	t_env		*env;
-	t_data		*data;
-	uint64_t	i;
-	char		*s;
+	static t_message	*msg = NULL;
+	t_env				*env;
+	t_data				*data;
+	char				*s;
 
+	if (!msg && !(msg = malloc(sizeof(t_message))))
+		return (ft_error(2, ERROR_ALLOCATION, NULL));
 	env = server_get_data(server);
 	data = server_client_get_data(client);
 	if (!(s = malloc(size + 1)))
 		return (ft_error(env->err, ERROR_ALLOCATION, NULL));
 	ft_memcpy(s, ptr, size);
 	s[size] = '\0';
-	ft_printf("%s\n", s);
-	i = (uint64_t)-1;
-	while (g_commands[++i].name)
-		if (!ft_strncmp(s, g_commands[i].name, ft_strlen(g_commands[i].name)))
-		{
-			if (g_commands[i].function)
-				return (g_commands[i].function(env, data, s));
-			else
-				return (ft_error(env->err, ERROR_UNHANDLE_PACKET,
-					g_commands[i].name));
-		}
-	ft_error(env->err, ERROR_UNKNOWN_PACKET, s);
+	if (get_message(msg, s) == FT_TRUE)
+	{
+		if (env->opt & OPT_VERBOSE)
+			debug_message(env, data, msg);
+		search_function(env, data, msg);
+	}
+	else if (env->opt & OPT_VERBOSE)
+		enqueue_str_by_fd(env, env->out, ft_joinf("[%sERROR%s] %s\n",
+			COLOR_ERROR, COLOR_CLEAR, s));
 	free(s);
 }

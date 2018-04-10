@@ -3,7 +3,9 @@ CC = gcc
 SRC =	server.c flags.c\
 		client_callbacks.c\
 		message_callbacks.c\
-		output.c packet.c
+		output.c packet.c\
+		prefix.c param.c\
+		command.c receive.c
 DIR = server
 SRC_DIR = src
 OBJ_DIR = .obj
