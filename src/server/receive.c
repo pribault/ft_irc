@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/10 08:56:44 by pribault          #+#    #+#             */
-/*   Updated: 2018/04/10 17:10:14 by pribault         ###   ########.fr       */
+/*   Updated: 2018/04/10 18:22:22 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,8 +45,10 @@ void	recv_nick(t_env *env, t_data *data, t_message *msg)
 		ft_joinf("[%s%s%s (%s%s%s)] %s%s%s\n", COLOR_NAME,
 			&msg->prefix.name[0], COLOR_CLEAR, COLOR_SYSTEM, &msg->command,
 			COLOR_CLEAR, COLOR_HALF, msg->end, COLOR_CLEAR));
+	if (data->username)
+		send_nick(env, data, (char*)&msg->params[0]);
 	ft_memcpy(&data->nickname, &msg->params[0],
-		ft_strlen((char*)&msg->params[0]));
+		ft_strlen((char*)&msg->params[0]) + 1);
 }
 
 void	recv_user(t_env *env, t_data *data, t_message *msg)

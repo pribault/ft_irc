@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/07 14:48:20 by pribault          #+#    #+#             */
-/*   Updated: 2018/04/10 16:55:10 by pribault         ###   ########.fr       */
+/*   Updated: 2018/04/10 18:12:37 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,14 @@
 
 t_cmd	g_recv[] =
 {
+	{NOTICE, &recv_notice},
+	{MODE, &recv_mode},
+	{NICK, &recv_nick},
 	{RPL_WELCOME, &recv_welcome},
 	{RPL_YOURHOST, &recv_yourhost},
 	{RPL_CREATED, &recv_created},
 	{RPL_MYINFO, &recv_myinfo},
 	{RPL_BOUNCE, &recv_bounce},
-	{NOTICE, &recv_notice},
 	{RPL_LUSERCLIENT, &recv_lusers},
 	{RPL_LUSEROP, &recv_lops},
 	{RPL_MOTDSTART, &recv_motdstart},
@@ -27,7 +29,6 @@ t_cmd	g_recv[] =
 	{RPL_ENDOFMOTD, &recv_motdend},
 	{RPL_LUSERCHANNELS, &recv_lchannels},
 	{RPL_LUSERME, &recv_lme},
-	{MODE, &recv_mode},
 	{ERR_NONICKNAMEGIVEN, &recv_error},
 	{ERR_ERRONEUSNICKNAME, &recv_error},
 	{NULL, NULL}

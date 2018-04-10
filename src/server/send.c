@@ -6,11 +6,21 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/10 10:46:50 by pribault          #+#    #+#             */
-/*   Updated: 2018/04/10 13:41:38 by pribault         ###   ########.fr       */
+/*   Updated: 2018/04/10 18:12:07 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "server.h"
+
+void	send_error(t_env *env, t_data *data, char *error, char *comment)
+{
+	char	*s;
+
+	if (!(s = ft_joinf(":%s %s :%s%s", env->name,
+		error, comment, CRLF)))
+		ft_error(2, ERROR_ALLOCATION, NULL);
+	enqueue_write(env->server, data->client, s, ft_strlen(s));
+}
 
 void	send_welcome(t_env *env, t_data *data)
 {
@@ -23,12 +33,12 @@ void	send_welcome(t_env *env, t_data *data)
 	enqueue_write(env->server, data->client, s, ft_strlen(s));
 }
 
-void	send_error(t_env *env, t_data *data, char *error, char *comment)
+void	send_nick(t_env *env, t_data *data, char *nick)
 {
 	char	*s;
 
-	if (!(s = ft_joinf(":%s %s :%s%s", env->name,
-		error, comment, CRLF)))
+	if (!(s = ft_joinf(":%s!%s@%s %s :%s%s", &data->nickname, data->username,
+		env->name, NICK, nick, CRLF)))
 		ft_error(2, ERROR_ALLOCATION, NULL);
 	enqueue_write(env->server, data->client, s, ft_strlen(s));
 }

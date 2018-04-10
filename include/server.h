@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/01 18:54:30 by pribault          #+#    #+#             */
-/*   Updated: 2018/04/10 17:06:00 by pribault         ###   ########.fr       */
+/*   Updated: 2018/04/10 17:54:48 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@
 # define SERVNAME		"SERVNAME"
 # define PORT			"PORT"
 
-# define DEFAULT_SERVNAME	"Unicooooorn IRC"
+# define DEFAULT_SERVNAME	"MyIRC"
 # define DEFAULT_PORT		"6667"
 
 /*
@@ -228,6 +228,7 @@ void			recv_user(t_env *env, t_data *data, t_message *msg);
 
 void			send_error(t_env *env, t_data *data, char *error, char *comment);
 void			send_welcome(t_env *env, t_data *data);
+void			send_nick(t_env *env, t_data *data, char *nick);
 
 /*
 **	verif functions
