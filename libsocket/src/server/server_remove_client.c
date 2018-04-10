@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/19 19:22:39 by pribault          #+#    #+#             */
-/*   Updated: 2018/03/28 11:35:03 by pribault         ###   ########.fr       */
+/*   Updated: 2018/04/10 21:47:31 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,8 @@ void		server_remove_client(t_server *server, t_client *client)
 	vector = &server->clients;
 	if (server->client_del)
 		server->client_del(server, client);
+	if (client->addr.str)
+		free(client->addr.str);
 	close(client->fd);
 	if ((void*)client >= vector->ptr &&
 		(void*)client < vector->ptr + vector->size)

@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/01 18:54:30 by pribault          #+#    #+#             */
-/*   Updated: 2018/04/10 17:54:48 by pribault         ###   ########.fr       */
+/*   Updated: 2018/04/11 00:17:40 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@
 # include "rfc.h"
 
 # include <arpa/inet.h>
+# include <netdb.h>
 
 /*
 ***************
@@ -96,7 +97,8 @@ typedef enum	e_server_error
 	ERROR_SETUP_FDS,
 	ERROR_LOADING_CONFIG,
 	ERROR_PORT_PARAMS,
-	ERROR_SERVNAME_PARAMS
+	ERROR_SERVNAME_PARAMS,
+	ERROR_CANNOT_START
 }				t_server_error;
 
 /*
@@ -119,6 +121,9 @@ typedef struct	s_data
 typedef struct	s_channel
 {
 	char		*name;
+	char		*topic;
+	char		*perms;
+	uint8_t		permissions;
 	t_vector	clients;
 }				t_channel;
 
@@ -221,6 +226,8 @@ void			enqueue_str_by_fd(t_env *env, int fd, char *s);
 void			recv_unknown(t_env *env, t_data *data, t_message *msg);
 void			recv_nick(t_env *env, t_data *data, t_message *msg);
 void			recv_user(t_env *env, t_data *data, t_message *msg);
+void			recv_list(t_env *env, t_data *data, t_message *msg);
+void			recv_join(t_env *env, t_data *data, t_message *msg);
 
 /*
 **	send functions
@@ -229,11 +236,21 @@ void			recv_user(t_env *env, t_data *data, t_message *msg);
 void			send_error(t_env *env, t_data *data, char *error, char *comment);
 void			send_welcome(t_env *env, t_data *data);
 void			send_nick(t_env *env, t_data *data, char *nick);
+void			send_list(t_env *env, t_data *data, t_channel *channel);
+void			send_listend(t_env *env, t_data *data);
 
 /*
 **	verif functions
 */
 
 t_bool			is_nickname_valid(char *nick);
+
+/*
+**	channel functions
+*/
+
+t_channel		*find_channel(t_vector *vector, char *name);
+void			add_client_to_channel(t_channel *channel, t_data *data);
+void			create_channel(t_vector *vector, char *name, t_data *data);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/01 18:38:44 by pribault          #+#    #+#             */
-/*   Updated: 2018/04/10 16:04:17 by pribault         ###   ########.fr       */
+/*   Updated: 2018/04/11 00:55:08 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ static t_error	g_errors[] =
 	{ERROR_LOADING_CONFIG, "cannot load config", ERROR_EXIT},
 	{ERROR_PORT_PARAMS, "'%u' PORT take two parameters", 0},
 	{ERROR_SERVNAME_PARAMS, "'%u' SERVNAME take two parameters", 0},
+	{ERROR_CANNOT_START, "cannot start server on port %s", ERROR_EXIT},
 	{0, NULL, 0}
 };
 
@@ -56,7 +57,8 @@ int		init_env(t_env *env, int argc, char **argv)
 	env->port = NULL;
 	env->protocol = TCP;
 	env->domain = IPV4;
-	ft_vector_init(&env->clients, sizeof(t_client*), ALLOC_MALLOC);
+	ft_vector_init(&env->clients, ALLOC_MALLOC, sizeof(void *));
+	ft_vector_init(&env->channels, ALLOC_MALLOC, sizeof(t_channel));
 	if (!load_config(env))
 		ft_error(2, ERROR_LOADING_CONFIG, NULL);
 	ft_get_flags(argc, argv, ft_get_flag_array((void*)&g_short_flags,
@@ -85,9 +87,9 @@ void	start_server(t_env *env)
 	server_set_callback(env->server, SERVER_MSG_SEND_CB, &message_sended);
 	server_set_callback(env->server, SERVER_MSG_TRASH_CB, &message_trashed);
 	server_attach_data(env->server, env);
-	server_start(env->server, (t_method){TCP, IPV4}, env->port);
+	if (!server_start(env->server, (t_method){TCP, IPV4}, env->port))
+		ft_error(2, ERROR_CANNOT_START, env->port);
 	server_add_client_by_fd(env->server, env->in);
-	ft_vector_init(&env->channels, sizeof(t_channel*), 0);
 }
 
 int		main(int argc, char **argv)

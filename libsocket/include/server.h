@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/18 22:51:48 by pribault          #+#    #+#             */
-/*   Updated: 2018/04/09 17:32:15 by pribault         ###   ########.fr       */
+/*   Updated: 2018/04/10 21:36:22 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,13 @@ typedef enum				e_callback
 ******************
 */
 
+typedef struct				s_addr
+{
+	struct sockaddr_storage	addr;
+	socklen_t				len;
+	char					*str;
+}							t_addr;
+
 typedef struct				s_method
 {
 	t_protocol				protocol;
@@ -104,8 +111,7 @@ typedef struct				s_msg
 typedef struct				s_client
 {
 	int						fd;
-	struct sockaddr_storage	addr;
-	socklen_t				addr_len;
+	t_addr					addr;
 	struct timeval			last;
 	void					*data;
 	t_write_type			write_type;
@@ -168,7 +174,7 @@ void						server_enqueue_write_by_fd(t_server *server,
 void						server_enqueue_write_by_address(t_server *server,
 							struct sockaddr_storage *address, t_msg *msg);
 void						server_add_client_by_fd(t_server *server, int fd);
-struct sockaddr_storage		*server_get_client_address(t_client *client);
+t_addr						*server_get_client_address(t_client *client);
 void						server_client_attach_data(t_client *client,
 							void *data);
 void						*server_client_get_data(t_client *client);

@@ -1,18 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_vector_get.c                                    :+:      :+:    :+:   */
+/*   user_commands.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/09/01 01:43:35 by pribault          #+#    #+#             */
-/*   Updated: 2018/04/11 00:36:46 by pribault         ###   ########.fr       */
+/*   Created: 2018/04/10 23:50:53 by pribault          #+#    #+#             */
+/*   Updated: 2018/04/10 23:54:29 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "client.h"
 
-void	*ft_vector_get(t_vector *vector, size_t n)
+void				cmd_nick(t_env *env, char *s)
 {
-	return ((!vector) ? NULL : vector->ptr + vector->type * n);
+	send_nick(env->server, env->client, s);
+}
+
+void				cmd_list(t_env *env, char *s)
+{
+	(void)s;
+	send_list(env->server, env->client);
+}
+
+void				cmd_join(t_env *env, char *s)
+{
+	(void)s;
+	send_join(env->server, env->client, s);
 }

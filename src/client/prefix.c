@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/08 18:36:05 by pribault          #+#    #+#             */
-/*   Updated: 2018/04/10 18:13:14 by pribault         ###   ########.fr       */
+/*   Updated: 2018/04/10 21:52:58 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,14 +17,14 @@ t_bool		is_host_name_valid(char *s)
 	uint32_t	i;
 
 	i = 0;
-	while (s[i] && i < 25)
+	while (s[i] && i < PREFIX_MAX - 1)
 	{
 		if (!ft_isof(s[i], PARAM_LETTERS) && !ft_isof(s[i], PARAM_NUMBER) &&
 			s[i] != '-' && s[i] != '.')
 			return (FT_FALSE);
 		i++;
 	}
-	return ((i < 25) ? FT_TRUE : FT_FALSE);
+	return ((i < PREFIX_MAX - 1) ? FT_TRUE : FT_FALSE);
 }
 
 t_bool		is_pseudo_valid(char *s)

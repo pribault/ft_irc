@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/08 11:09:20 by pribault          #+#    #+#             */
-/*   Updated: 2018/04/10 17:39:08 by pribault         ###   ########.fr       */
+/*   Updated: 2018/04/10 23:51:23 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,13 +15,10 @@
 static t_user_cmd	g_cmds[] =
 {
 	{"/nick", &cmd_nick},
+	{"/list", &cmd_list},
+	{"/join", &cmd_join},
 	{NULL, NULL}
 };
-
-void				cmd_nick(t_env *env, char *s)
-{
-	send_nick(env->server, env->client, s);
-}
 
 static void			treat_command_2(t_env *env, char *s)
 {

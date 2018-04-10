@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/29 16:43:32 by pribault          #+#    #+#             */
-/*   Updated: 2018/03/31 18:36:22 by pribault         ###   ########.fr       */
+/*   Updated: 2018/04/10 21:35:59 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,12 +29,12 @@ void		server_get_incoming_message(t_server *server, int *n_evts)
 	int			ret;
 
 	client.fd = server->sockfd;
-	client.addr_len = sizeof(struct sockaddr_storage);
+	client.addr.len = sizeof(struct sockaddr_storage);
 	if ((ret = recvfrom(server->sockfd, &buffer, READ_BUFFER_SIZE,
-		0, (void*)&client.addr, &client.addr_len)) == -1)
+		0, (void*)&client.addr.addr, &client.addr.len)) == -1)
 		return ;
 	(*n_evts)--;
-	if (!(new = server_find_client_by_address(server, &client.addr)) &&
+	if (!(new = server_find_client_by_address(server, &client.addr.addr)) &&
 		server->client_add)
 		server_add_client_udp(server, &client);
 	if (server->msg_recv)
