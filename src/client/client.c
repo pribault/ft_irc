@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/01 18:38:42 by pribault          #+#    #+#             */
-/*   Updated: 2018/04/09 12:53:07 by pribault         ###   ########.fr       */
+/*   Updated: 2018/04/10 17:39:53 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ static t_error	g_errors[] =
 	{ERROR_SETUP_FDS, "cannot setup fds", ERROR_EXIT},
 	{ERROR_UNHANDLE_PACKET, "unhandle packet type %s", 0},
 	{ERROR_UNKNOWN_PACKET, "unknown packet received:\n%s", 0},
+	{ERROR_UNKNOWN_COMMAND, "unknown command '%s'", 0},
 	{0, NULL, 0}
 };
 

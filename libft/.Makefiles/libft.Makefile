@@ -113,6 +113,7 @@ SRC =	ft_abs.c\
 		ft_vector_add.c\
 		ft_vector_del.c\
 		ft_vector_del_one.c\
+		ft_vector_find.c\
 		ft_vector_get.c\
 		ft_vector_init.c\
 		ft_vector_printhex.c\

@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/07 10:39:27 by pribault          #+#    #+#             */
-/*   Updated: 2018/04/09 23:24:34 by pribault         ###   ########.fr       */
+/*   Updated: 2018/04/10 17:06:46 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -308,7 +308,7 @@
 
 # define PARAM_NUMBER	"0123456789"
 # define PARAM_LETTERS	"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
-# define PARAM_SPECIAL	"-[]\\`^{}"
+# define PARAM_SPECIAL	"[]\\'_^{|}"
 # define PARAM_WHITE	" \r\n"
 
 /*

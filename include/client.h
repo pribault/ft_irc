@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/01 18:59:09 by pribault          #+#    #+#             */
-/*   Updated: 2018/04/09 22:42:32 by pribault         ###   ########.fr       */
+/*   Updated: 2018/04/10 17:38:58 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,8 @@ typedef enum	e_client_error
 	ERROR_CANNOT_CONNECT,
 	ERROR_SETUP_FDS,
 	ERROR_UNHANDLE_PACKET,
-	ERROR_UNKNOWN_PACKET
+	ERROR_UNKNOWN_PACKET,
+	ERROR_UNKNOWN_COMMAND
 }				t_client_error;
 
 /*
@@ -102,6 +103,12 @@ typedef struct	s_cmd
 	char		*name;
 	void		(*function)(t_env *, t_data *, t_message *);
 }				t_cmd;
+
+typedef struct	s_user_cmd
+{
+	char		*name;
+	void		(*function)(t_env *, char *);
+}				t_user_cmd;
 
 /*
 ******************
@@ -179,11 +186,15 @@ void			recv_lchannels(t_env *env, t_data *data, t_message *msg);
 void			recv_lme(t_env *env, t_data *data, t_message *msg);
 void			recv_mode(t_env *env, t_data *data, t_message *msg);
 
+void			recv_error(t_env *env, t_data *data, t_message *msg);
+
 /*
 **	command functions
 */
 
 void			get_user_command(t_env *env, char *ptr, size_t size);
+void			cmd_nick(t_env *env, char *s);
+
 char			*get_prefix(t_prefix *prefix, char *s);
 char			*get_command(char *command, char *s);
 char			*get_param(char *param, char *s);

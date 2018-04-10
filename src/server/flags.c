@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/02 11:36:42 by pribault          #+#    #+#             */
-/*   Updated: 2018/04/07 15:28:04 by pribault         ###   ########.fr       */
+/*   Updated: 2018/04/10 11:53:23 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,10 +35,14 @@ void	get_default(char *s, t_env *env)
 	static int	state = 0;
 
 	if (!state)
-		env->port = s;
+	{
+		if (env->port)
+			free(env->port);
+		env->port = ft_strdup(s);
+		state++;
+	}
 	else
 		ft_error(env->err, ERROR_SETTING_DEFAULT, s);
-	state++;
 }
 
 void	get_protocol(t_env *env, char **args, int n)

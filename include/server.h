@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/01 18:54:30 by pribault          #+#    #+#             */
-/*   Updated: 2018/04/10 08:59:28 by pribault         ###   ########.fr       */
+/*   Updated: 2018/04/10 17:06:00 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,10 @@
 ***************
 */
 
+/*
+**	colors
+*/
+
 # define COLOR_BOLD			"\e[1m"
 # define COLOR_HALF			"\e[2m"
 # define COLOR_ITALIC		"\e[3m"
@@ -49,9 +53,30 @@
 # define COLOR_VERBOSE	ft_get_term_color(COLOR_G0, COLOR_BK0, EFFECT_NOBACK)
 # define COLOR_NAME		ft_get_term_color(COLOR_B0, COLOR_BK0, EFFECT_NOBACK)
 
+/*
+**	options
+*/
+
 # define OPT_VERBOSE		BYTE(0)
 
-# define NAME_MAX_LEN		10
+/*
+**	irc defines
+*/
+
+# define NICK_MAX_LEN		10
+
+/*
+**	config
+*/
+
+# define CONFIG_FILE		"server.cfg"
+# define CONFIG_SEPARATORS	WHITESPACES
+
+# define SERVNAME		"SERVNAME"
+# define PORT			"PORT"
+
+# define DEFAULT_SERVNAME	"Unicooooorn IRC"
+# define DEFAULT_PORT		"6667"
 
 /*
 *************
@@ -68,7 +93,10 @@ typedef enum	e_server_error
 	ERROR_ALLOCATION_RETURN,
 	ERROR_UNHANDLE_PACKET,
 	ERROR_UNKNOWN_PACKET,
-	ERROR_SETUP_FDS
+	ERROR_SETUP_FDS,
+	ERROR_LOADING_CONFIG,
+	ERROR_PORT_PARAMS,
+	ERROR_SERVNAME_PARAMS
 }				t_server_error;
 
 /*
@@ -82,8 +110,9 @@ typedef struct	s_data
 	void		*client;
 	void		*ptr;
 	uint64_t	size;
-	char		nick[NAME_MAX_LEN];
-	t_vector	channels;
+	char		nickname[NICK_MAX_LEN];
+	char		*username;
+	char		*hostname;
 	uint8_t		permissions;
 }				t_data;
 
@@ -104,6 +133,8 @@ typedef struct	s_env
 	t_protocol	protocol;
 	t_domain	domain;
 	t_vector	channels;
+	t_vector	clients;
+	char		*name;
 }				t_env;
 
 typedef struct	s_cmd
@@ -112,11 +143,26 @@ typedef struct	s_cmd
 	void		(*function)(t_env *, t_data *, t_message *);
 }				t_cmd;
 
+typedef struct	s_config_cb
+{
+	char		*name;
+	char		*value;
+	void		(*function)(t_env *, char **, uint32_t);
+}				t_config_cb;
+
 /*
 ******************
 **	prototypes  **
 ******************
 */
+
+/*
+**	config
+*/
+
+int				load_config(t_env *env);
+void			servname_callback(t_env *env, char **array, uint32_t n);
+void			port_callback(t_env *env, char **array, uint32_t n);
 
 /*
 **	flags
@@ -164,8 +210,6 @@ char			*get_command(char *command, char *s);
 **	output
 */
 
-void			enqueue_response(t_server *server, void *client,
-				char *response);
 void			enqueue_write(t_server *server, void *client, void *ptr,
 				size_t size);
 void			enqueue_str_by_fd(t_env *env, int fd, char *s);
@@ -175,5 +219,20 @@ void			enqueue_str_by_fd(t_env *env, int fd, char *s);
 */
 
 void			recv_unknown(t_env *env, t_data *data, t_message *msg);
+void			recv_nick(t_env *env, t_data *data, t_message *msg);
+void			recv_user(t_env *env, t_data *data, t_message *msg);
+
+/*
+**	send functions
+*/
+
+void			send_error(t_env *env, t_data *data, char *error, char *comment);
+void			send_welcome(t_env *env, t_data *data);
+
+/*
+**	verif functions
+*/
+
+t_bool			is_nickname_valid(char *nick);
 
 #endif

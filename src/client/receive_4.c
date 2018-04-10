@@ -1,31 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   output.c                                           :+:      :+:    :+:   */
+/*   receive_4.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/04/02 17:10:30 by pribault          #+#    #+#             */
-/*   Updated: 2018/04/10 10:54:52 by pribault         ###   ########.fr       */
+/*   Created: 2018/04/10 13:35:26 by pribault          #+#    #+#             */
+/*   Updated: 2018/04/10 13:38:06 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "server.h"
+#include "client.h"
 
-void	enqueue_write(t_server *server, void *client, void *ptr,
-		size_t size)
+void	recv_error(t_env *env, t_data *data, t_message *msg)
 {
-	t_msg	msg;
-
-	msg.ptr = ptr;
-	msg.size = size;
-	server_enqueue_write(server, client, &msg);
-}
-
-void	enqueue_str_by_fd(t_env *env, int fd, char *s)
-{
-	t_msg	msg;
-
-	msg = (t_msg){s, ft_strlen(s)};
-	server_enqueue_write_by_fd(env->server, fd, &msg);
+	(void)data;
+	enqueue_str_by_fd(env, env->out, ft_joinf("[%s%s%s (%s%s%s)] %s%s%s\n",
+			COLOR_NAME, &msg->prefix.name[0], COLOR_CLEAR, COLOR_ERROR,
+			"Error", COLOR_CLEAR, COLOR_HALF, msg->end, COLOR_CLEAR));
 }

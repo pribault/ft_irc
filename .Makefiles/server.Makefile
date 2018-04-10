@@ -5,7 +5,9 @@ SRC =	server.c flags.c\
 		message_callbacks.c\
 		output.c packet.c\
 		prefix.c param.c\
-		command.c receive.c
+		command.c config.c\
+		receive.c send.c\
+		verif.c
 DIR = server
 SRC_DIR = src
 OBJ_DIR = .obj

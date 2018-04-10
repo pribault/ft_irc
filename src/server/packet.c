@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/07 11:18:20 by pribault          #+#    #+#             */
-/*   Updated: 2018/04/10 08:55:14 by pribault         ###   ########.fr       */
+/*   Updated: 2018/04/10 12:45:32 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 
 t_cmd	g_recv[] =
 {
+	{NICK, &recv_nick},
+	{USER, &recv_user},
 	{NULL, NULL}
 };
 

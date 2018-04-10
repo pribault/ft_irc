@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/02 18:45:10 by pribault          #+#    #+#             */
-/*   Updated: 2018/04/08 11:51:10 by pribault         ###   ########.fr       */
+/*   Updated: 2018/04/10 17:41:53 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,8 @@ void	client_add(t_server *server, void *client)
 		if (env->client)
 			server_remove_client(server, env->client);
 		env->client = client;
+		send_nick(env->server, env->client, env->username);
+		send_user(env->server, env->client, env->username, env->real_name);
 	}
 }
 

@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/01 18:38:44 by pribault          #+#    #+#             */
-/*   Updated: 2018/04/08 14:21:59 by pribault         ###   ########.fr       */
+/*   Updated: 2018/04/10 16:04:17 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,9 @@ static t_error	g_errors[] =
 	{ERROR_UNHANDLE_PACKET, "unhandle packet type %s", 0},
 	{ERROR_UNKNOWN_PACKET, "unknown packet received:\n%s", 0},
 	{ERROR_SETUP_FDS, "cannot setup fds", ERROR_EXIT},
+	{ERROR_LOADING_CONFIG, "cannot load config", ERROR_EXIT},
+	{ERROR_PORT_PARAMS, "'%u' PORT take two parameters", 0},
+	{ERROR_SERVNAME_PARAMS, "'%u' SERVNAME take two parameters", 0},
 	{0, NULL, 0}
 };
 
@@ -53,6 +56,9 @@ int		init_env(t_env *env, int argc, char **argv)
 	env->port = NULL;
 	env->protocol = TCP;
 	env->domain = IPV4;
+	ft_vector_init(&env->clients, sizeof(t_client*), ALLOC_MALLOC);
+	if (!load_config(env))
+		ft_error(2, ERROR_LOADING_CONFIG, NULL);
 	ft_get_flags(argc, argv, ft_get_flag_array((void*)&g_short_flags,
 		(void*)&g_long_flags, (void*)&get_default), env);
 	if ((env->in = open("/dev/stdin", O_RDONLY)) == -1 ||

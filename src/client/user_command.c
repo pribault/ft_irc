@@ -6,42 +6,73 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/08 11:09:20 by pribault          #+#    #+#             */
-/*   Updated: 2018/04/08 18:39:58 by pribault         ###   ########.fr       */
+/*   Updated: 2018/04/10 17:39:08 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "client.h"
 
-void	treat_command(t_env *env, char *s)
+static t_user_cmd	g_cmds[] =
+{
+	{"/nick", &cmd_nick},
+	{NULL, NULL}
+};
+
+void				cmd_nick(t_env *env, char *s)
+{
+	send_nick(env->server, env->client, s);
+}
+
+static void			treat_command_2(t_env *env, char *s)
+{
+	t_bool		found;
+	uint32_t	i;
+	uint32_t	j;
+
+	i = (uint32_t)-1;
+	while (s[++i] && s[i] != ' ')
+		;
+	if (s[i] == ' ')
+		s[i++] = '\0';
+	j = (uint32_t)-1;
+	found = FT_FALSE;
+	while (g_cmds[++j].name && found == FT_FALSE)
+		if (!ft_strcmp(s, g_cmds[j].name))
+		{
+			g_cmds[j].function(env, &s[i]);
+			found = FT_TRUE;
+		}
+	if (found == FT_FALSE)
+		ft_error(2, ERROR_UNKNOWN_COMMAND, s);
+}
+
+void				treat_command(t_env *env, char *s)
 {
 	static uint8_t	state = 0;
 
 	if (!state)
 	{
 		state++;
-		env->username = ft_strdup(s);
+		if (!(env->username = ft_strdup(s)))
+			ft_error(2, ERROR_ALLOCATION, NULL);
 		enqueue_str_by_fd(env, env->out, ft_strdup("Enter your real name:\n"));
 	}
 	else if (state == 1)
 	{
 		state++;
-		env->real_name = ft_strdup(s);
+		if (!(env->real_name = ft_strdup(s)))
+			ft_error(2, ERROR_ALLOCATION, NULL);
 		if (env->address && env->port)
-		{
 			if (!(server_connect(env->server,
 				(t_method){env->protocol, env->domain}, env->address,
 				env->port)))
 				return (ft_error(2, ERROR_CANNOT_CONNECT, env->address));
-			send_nick(env->server, env->client, env->username);
-			send_user(env->server, env->client, env->username, env->real_name);
-		}
 	}
 	else
-	{
-	}
+		treat_command_2(env, s);
 }
 
-void	get_user_command(t_env *env, char *ptr, size_t size)
+void				get_user_command(t_env *env, char *ptr, size_t size)
 {
 	char	*s;
 

@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/07 14:47:29 by pribault          #+#    #+#             */
-/*   Updated: 2018/04/08 20:20:01 by pribault         ###   ########.fr       */
+/*   Updated: 2018/04/10 17:42:15 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ void	message_sended(t_server *server, void *client, t_msg *msg)
 	t_env	*env;
 
 	env = server_get_data(server);
-	if (server_get_client_fd(client) != env->out)
+	if (server_get_client_fd(client) != env->out && (env->opt & OPT_VERBOSE))
 		enqueue_str_by_fd(env, env->out, ft_joinf("[%s] message sended\n",
 			inet_ntoa(*(struct in_addr *)server_get_client_address(client))));
 	if (server_get_client_fd(client) != env->err)

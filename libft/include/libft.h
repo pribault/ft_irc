@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/03 16:13:23 by pribault          #+#    #+#             */
-/*   Updated: 2018/04/09 08:50:13 by pribault         ###   ########.fr       */
+/*   Updated: 2018/04/10 12:07:09 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -315,6 +315,7 @@ void				ft_vector_init(t_vector *vector, t_alloc_type alloc,
 void				ft_vector_del(t_vector *vector);
 void				ft_vector_add(t_vector *vector, void *ptr);
 void				ft_vector_del_one(t_vector *vector, size_t i);
+size_t				ft_vector_find(t_vector *vector, void *ptr);
 void				*ft_vector_get(t_vector *vector, size_t n);
 void				ft_vector_printhex(t_vector *vector);
 void				ft_vector_resize(t_vector *vector, size_t new_size);
