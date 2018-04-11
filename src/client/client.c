@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/01 18:38:42 by pribault          #+#    #+#             */
-/*   Updated: 2018/04/11 13:32:13 by pribault         ###   ########.fr       */
+/*   Updated: 2018/04/11 17:39:58 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ static t_error	g_errors[] =
 	{ERROR_UNHANDLE_PACKET, "unhandle packet type %s", 0},
 	{ERROR_UNKNOWN_PACKET, "unknown packet received:\n%s", 0},
 	{ERROR_UNKNOWN_COMMAND, "unknown command '%s'", 0},
+	{ERROR_CORRUPTED_MEMORY, "memory is corrupted", ERROR_EXIT},
 	{0, NULL, 0}
 };
 
@@ -48,6 +49,7 @@ void	server_excpt(t_server *server)
 
 void	buffer_full(t_server *server)
 {
+	ft_printf("%sfull%s\n", COLOR_ERROR, COLOR_CLEAR);
 	server_poll_events(server, ALLOW_WRITE);
 }
 
@@ -102,7 +104,11 @@ int		main(int argc, char **argv)
 	start_server(&env);
 	enqueue_str_by_fd(&env, env.out, ft_strdup("Enter your username:\n"));
 	while (1)
+	{
+		if (check_malloc() != MALLOC_OK)
+			ft_error(2, ERROR_CORRUPTED_MEMORY, NULL);
 		server_poll_events(env.server, ACCEPT_CONNECTIONS | ALLOW_READ |
 			ALLOW_WRITE);
+	}
 	return (0);
 }

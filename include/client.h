@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/01 18:59:09 by pribault          #+#    #+#             */
-/*   Updated: 2018/04/11 14:40:09 by pribault         ###   ########.fr       */
+/*   Updated: 2018/04/11 16:40:26 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,8 @@ typedef enum	e_client_error
 	ERROR_SETUP_FDS,
 	ERROR_UNHANDLE_PACKET,
 	ERROR_UNKNOWN_PACKET,
-	ERROR_UNKNOWN_COMMAND
+	ERROR_UNKNOWN_COMMAND,
+	ERROR_CORRUPTED_MEMORY
 }				t_client_error;
 
 /*
