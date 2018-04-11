@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/18 22:51:48 by pribault          #+#    #+#             */
-/*   Updated: 2018/04/10 21:36:22 by pribault         ###   ########.fr       */
+/*   Updated: 2018/04/11 11:20:08 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,10 @@
 
 # define READ_BUFFER_SIZE		512
 # define CIRCULAR_BUFFER_SIZE	1024
+
+# define ACCEPT_CONNECTIONS	BYTE(0)
+# define ALLOW_READ			BYTE(1)
+# define ALLOW_WRITE		BYTE(2)
 
 /*
 **	default server values
@@ -80,6 +84,7 @@ typedef enum				e_callback
 	MSG_TRASH_CB,
 	CLIENT_EXCEPTION_CB,
 	SERVER_EXCEPTION_CB,
+	BUFFER_FULL_CB,
 	CALLBACK_MAX
 }							t_callback;
 
@@ -135,13 +140,14 @@ typedef struct				s_server
 	uint16_t				port;
 	uint8_t					opt;
 	void					*data;
-	void					(*client_add)(struct s_server*, t_client*);
-	void					(*client_del)(struct s_server*, t_client*);
-	void					(*msg_recv)(struct s_server*, t_client*, t_msg*);
-	void					(*msg_send)(struct s_server*, t_client*, t_msg*);
-	void					(*msg_trash)(struct s_server*, t_client*, t_msg*);
-	void					(*client_excpt)(struct s_server*, t_client*);
-	void					(*server_excpt)(struct s_server*);
+	void					(*client_add)(struct s_server *, t_client *);
+	void					(*client_del)(struct s_server *, t_client *);
+	void					(*msg_recv)(struct s_server *, t_client *, t_msg *);
+	void					(*msg_send)(struct s_server *, t_client *, t_msg *);
+	void					(*msg_trash)(struct s_server *, t_client *, t_msg *);
+	void					(*client_excpt)(struct s_server *, t_client *);
+	void					(*server_excpt)(struct s_server *);
+	void					(*buffer_full)(struct s_server *);
 }							t_server;
 
 /*
@@ -163,7 +169,7 @@ void						server_attach_data(t_server *server, void *data);
 void						*server_get_data(t_server *server);
 void						server_set_callback(t_server *server,
 							t_callback cb, void *ptr);
-void						server_poll_events(t_server *server);
+void						server_poll_events(t_server *server, uint8_t flags);
 void						server_remove_client(t_server *server,
 							t_client *client);
 int							server_get_client_fd(t_client *client);

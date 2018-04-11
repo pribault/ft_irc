@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/07 11:18:20 by pribault          #+#    #+#             */
-/*   Updated: 2018/04/11 00:19:17 by pribault         ###   ########.fr       */
+/*   Updated: 2018/04/11 13:19:34 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,11 @@ t_bool	get_message(t_message *msg, char *s)
 		(s = get_param((char*)&msg->params[msg->n_params], s)) &&
 		msg->params[msg->n_params][0])
 		msg->n_params++;
-	msg->end = s;
-	return ((s) ? FT_TRUE : FT_FALSE);
+	msg->params[msg->n_params][0] = '\0';
+	if (!s || ft_strlen(s) >= COMMENT_LEN)
+		return (FT_FALSE);
+	ft_memcpy(&msg->end, s, ft_strlen(s) + 1);
+	return (FT_TRUE);
 }
 
 void	search_function(t_env *env, t_data *data, t_message *msg)
@@ -73,6 +76,8 @@ void	debug_message(t_env *env, t_data *data, t_message *msg)
 	while (++i < msg->n_params)
 		enqueue_str_by_fd(env, env->out, ft_joinf("[%sDEBUG%s] \t%s\n",
 			COLOR_VERBOSE, COLOR_CLEAR, &msg->params[i]));
+	enqueue_str_by_fd(env, env->out, ft_joinf("[%sDEBUG%s] \t%s\n",
+		COLOR_VERBOSE, COLOR_CLEAR, &msg->end));
 }
 
 void	treat_packet(t_server *server, void *client, void *ptr, size_t size)

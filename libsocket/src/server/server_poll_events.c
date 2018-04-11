@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/19 10:31:22 by pribault          #+#    #+#             */
-/*   Updated: 2018/03/29 16:43:08 by pribault         ###   ########.fr       */
+/*   Updated: 2018/04/11 11:22:28 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,19 +50,23 @@ static void	server_add_write_request_to_set(fd_set *set, t_circ_buffer *queue,
 	}
 }
 
-static void	set_sets(t_server *server, fd_set *set, int *fd_max)
+static void	set_sets(t_server *server, fd_set *set, int *fd_max, uint8_t flags)
 {
 	FD_ZERO(&set[0]);
 	FD_ZERO(&set[1]);
 	FD_ZERO(&set[2]);
-	FD_SET(server->sockfd, &set[0]);
-	FD_SET(server->sockfd, &set[2]);
+	if (flags | ACCEPT_CONNECTIONS)
+		FD_SET(server->sockfd, &set[0]);
+	if (flags | ALLOW_WRITE)
+		FD_SET(server->sockfd, &set[2]);
 	*fd_max = server->sockfd;
-	server_add_clients_to_set(&set[0], &set[2], &server->clients, fd_max);
-	server_add_write_request_to_set(&set[1], &server->write_queue, fd_max);
+	if (flags | ALLOW_READ)
+		server_add_clients_to_set(&set[0], &set[2], &server->clients, fd_max);
+	if (flags | ALLOW_WRITE)
+		server_add_write_request_to_set(&set[1], &server->write_queue, fd_max);
 }
 
-void		server_poll_events(t_server *server)
+void		server_poll_events(t_server *server, uint8_t flags)
 {
 	struct timeval	time;
 	fd_set			set[3];
@@ -70,7 +74,7 @@ void		server_poll_events(t_server *server)
 	int				ret;
 
 	fd_max = -42;
-	set_sets(server, (fd_set*)&set, &fd_max);
+	set_sets(server, (fd_set*)&set, &fd_max, flags);
 	time = server->timeout;
 	if ((ret = select(fd_max + 1, &set[0], &set[1], &set[2],
 		&time)) <= 0)
@@ -84,6 +88,6 @@ void		server_poll_events(t_server *server)
 	}
 	if (FD_ISSET(server->sockfd, &set[2]) && server->server_excpt)
 		server->server_excpt(server);
-	server_manage_incoming_messages(server, &set[0], &set[2], &ret);
 	server_manage_write_requests(server, &set[1], &ret);
+	server_manage_incoming_messages(server, &set[0], &set[2], &ret);
 }

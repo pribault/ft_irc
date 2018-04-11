@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/07 10:59:02 by pribault          #+#    #+#             */
-/*   Updated: 2018/04/07 11:06:00 by pribault         ###   ########.fr       */
+/*   Updated: 2018/04/11 13:37:09 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	*ft_memschr(const void *big, const void *little, size_t n1, size_t n2)
 	if (!n2)
 		return ((void*)big);
 	i = (size_t)-1;
-	while (++i < n1)
+	while (++i < n1 - n2)
 	{
 		j = (size_t)-1;
 		valid = FT_TRUE;

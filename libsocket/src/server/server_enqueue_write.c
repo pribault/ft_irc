@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/20 09:45:27 by pribault          #+#    #+#             */
-/*   Updated: 2018/04/07 17:12:16 by pribault         ###   ########.fr       */
+/*   Updated: 2018/04/11 11:37:49 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,4 +20,8 @@ void	server_enqueue_write(t_server *server, t_client *client,
 	towrite.client = *client;
 	towrite.data = *msg;
 	ft_circ_buffer_enqueue(&server->write_queue, &towrite);
+	if (ft_circ_buffer_get_size(&server->write_queue) >=
+		CIRCULAR_BUFFER_SIZE - 1 &&
+		server->buffer_full)
+		server->buffer_full(server);
 }

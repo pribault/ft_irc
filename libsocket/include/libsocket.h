@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/07 11:15:22 by pribault          #+#    #+#             */
-/*   Updated: 2018/04/10 21:42:58 by pribault         ###   ########.fr       */
+/*   Updated: 2018/04/11 11:23:36 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,16 @@
 # include <sys/socket.h>
 # include <inttypes.h>
 # include <unistd.h>
+
+/*
+***************
+**	defines  **
+***************
+*/
+
+# define ACCEPT_CONNECTIONS	BYTE(0)
+# define ALLOW_READ			BYTE(1)
+# define ALLOW_WRITE		BYTE(2)
 
 /*
 *************
@@ -64,6 +74,7 @@ typedef enum				e_server_callback
 	SERVER_MSG_TRASH_CB,
 	SERVER_CLIENT_EXCEPTION_CB,
 	SERVER_SERVER_EXCEPTION_CB,
+	SERVER_BUFFER_FULL_CB,
 	SERVER_CALLBACK_MAX
 }							t_server_callback;
 
@@ -133,7 +144,7 @@ void						server_attach_data(t_server *server, void *data);
 void						*server_get_data(t_server *server);
 void						server_set_callback(t_server *server, t_server_callback cb,
 							void *ptr);
-void						server_poll_events(t_server *server);
+void						server_poll_events(t_server *server, uint8_t flags);
 void						server_remove_client(t_server *server, t_client *client);
 int							server_get_client_fd(t_client *client);
 void						server_enqueue_write(t_server *server, t_client *client,

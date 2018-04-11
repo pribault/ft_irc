@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/07 14:48:20 by pribault          #+#    #+#             */
-/*   Updated: 2018/04/10 23:43:09 by pribault         ###   ########.fr       */
+/*   Updated: 2018/04/11 14:50:20 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,12 +45,15 @@ t_bool	get_message(t_message *msg, char *s)
 	if (!(s = get_command((char*)&msg->command, s)))
 		return (FT_FALSE);
 	msg->n_params = 0;
-	while (msg->n_params < PARAMS_MAX &&
+	while (msg->n_params < PARAMS_MAX - 1 &&
 		(s = get_param((char*)&msg->params[msg->n_params], s)) &&
 		msg->params[msg->n_params][0])
 		msg->n_params++;
-	msg->end = s;
-	return ((s) ? FT_TRUE : FT_FALSE);
+	msg->params[msg->n_params][0] = '\0';
+	if (!s || ft_strlen(s) >= COMMENT_LEN - 2)
+		return (FT_FALSE);
+	ft_memcpy(&msg->end, s, ft_strlen(s) + 1);
+	return (FT_TRUE);
 }
 
 void	search_function(t_env *env, t_data *data, t_message *msg)
@@ -73,7 +76,7 @@ void	search_function(t_env *env, t_data *data, t_message *msg)
 
 void	debug_message(t_env *env, t_data *data, t_message *msg)
 {
-	uint8_t	i;
+	uint32_t	i;
 
 	(void)data;
 	enqueue_str_by_fd(env, env->out,
@@ -82,9 +85,9 @@ void	debug_message(t_env *env, t_data *data, t_message *msg)
 			&msg->prefix.host));
 	enqueue_str_by_fd(env, env->out, ft_joinf("[%sDEBUG%s] command=%s\n",
 		COLOR_VERBOSE, COLOR_CLEAR, &msg->command));
-	enqueue_str_by_fd(env, env->out, ft_joinf("[%sDEBUG%s] args:\n",
-		COLOR_VERBOSE, COLOR_CLEAR));
-	i = (uint8_t)-1;
+	enqueue_str_by_fd(env, env->out, ft_joinf("[%sDEBUG%s] args(%u):\n",
+		COLOR_VERBOSE, COLOR_CLEAR, msg->n_params));
+	i = (uint32_t)-1;
 	while (++i < msg->n_params)
 		enqueue_str_by_fd(env, env->out, ft_joinf("[%sDEBUG%s] \t%s\n",
 			COLOR_VERBOSE, COLOR_CLEAR, &msg->params[i]));
@@ -111,7 +114,7 @@ void	treat_packet(t_server *server, void *client, void *ptr, size_t size)
 			debug_message(env, data, msg);
 		search_function(env, data, msg);
 	}
-	else if (env->opt & OPT_VERBOSE)
+	else
 		enqueue_str_by_fd(env, env->out, ft_joinf("[%sERROR%s] %s\n",
 			COLOR_ERROR, COLOR_CLEAR, s));
 	free(s);

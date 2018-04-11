@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/02 13:51:38 by pribault          #+#    #+#             */
-/*   Updated: 2018/04/11 00:56:43 by pribault         ###   ########.fr       */
+/*   Updated: 2018/04/11 13:42:03 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	concatenate_messages(t_server *server, void *client, t_msg *msg,
 
 	env = server_get_data(server);
 	data = server_client_get_data(client);
-	if (!(data->ptr = reallocf(data->ptr, data->size + ptr - msg->ptr)))
+	if (!(data->ptr = realloc(data->ptr, data->size + ptr - msg->ptr)))
 		ft_error(env->err, ERROR_ALLOCATION, NULL);
 	ft_memcpy(data->ptr + data->size, msg->ptr, ptr - msg->ptr);
 	treat_packet(server, client, data->ptr, data->size + msg->size);
@@ -32,7 +32,7 @@ void	concatenate_messages(t_server *server, void *client, t_msg *msg,
 
 void	save_message(t_env *env, t_data *data, t_msg *msg)
 {
-	if (!(data->ptr = reallocf(data->ptr, data->size + msg->size)))
+	if (!(data->ptr = realloc(data->ptr, data->size + msg->size)))
 		ft_error(env->err, ERROR_ALLOCATION, NULL);
 	ft_memcpy(data->ptr + data->size, msg->ptr, msg->size);
 	data->size += msg->size;

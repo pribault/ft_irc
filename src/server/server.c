@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/01 18:38:44 by pribault          #+#    #+#             */
-/*   Updated: 2018/04/11 00:55:08 by pribault         ###   ########.fr       */
+/*   Updated: 2018/04/11 11:32:34 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,16 @@ void	server_excpt(t_server *server)
 	ft_printf("server exception\n");
 }
 
+void	buffer_full(t_server *server)
+{
+	static uint32_t	n = 0;
+
+	n++;
+	ft_printf("n=%u\n", n);
+	server_poll_events(server, ALLOW_WRITE);
+	n--;
+}
+
 int		init_env(t_env *env, int argc, char **argv)
 {
 	ft_bzero(env, sizeof(t_env));
@@ -86,6 +96,7 @@ void	start_server(t_env *env)
 	server_set_callback(env->server, SERVER_MSG_RECV_CB, &message_received);
 	server_set_callback(env->server, SERVER_MSG_SEND_CB, &message_sended);
 	server_set_callback(env->server, SERVER_MSG_TRASH_CB, &message_trashed);
+	server_set_callback(env->server, SERVER_BUFFER_FULL_CB, &buffer_full);
 	server_attach_data(env->server, env);
 	if (!server_start(env->server, (t_method){TCP, IPV4}, env->port))
 		ft_error(2, ERROR_CANNOT_START, env->port);
@@ -103,6 +114,7 @@ int		main(int argc, char **argv)
 	}
 	start_server(&env);
 	while (1)
-		server_poll_events(env.server);
+		server_poll_events(env.server, ACCEPT_CONNECTIONS | ALLOW_READ |
+			ALLOW_WRITE);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/01 18:59:09 by pribault          #+#    #+#             */
-/*   Updated: 2018/04/10 23:54:16 by pribault         ###   ########.fr       */
+/*   Updated: 2018/04/11 14:40:09 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,18 +38,18 @@
 # define COLOR_ITALIC		"\e[3m"
 # define COLOR_UNDERLINED	"\e[4m"
 # define COLOR_CLEAR		"\e[0m"
-# define COLOR_BK0		COLOR(0, 0, 0)
-# define COLOR_R0		COLOR(153, 0, 0)
-# define COLOR_G0		COLOR(0, 102, 0)
-# define COLOR_B0		COLOR(0, 102, 204)
-# define COLOR_Y0		COLOR(255, 153, 0)
-# define COLOR_C0		COLOR(0, 204, 255)
-# define COLOR_M0		COLOR(153, 51, 153)
-# define COLOR_ERROR	ft_get_term_color(COLOR_R0, COLOR_BK0, EFFECT_NOBACK)
-# define COLOR_SYSTEM	ft_get_term_color(COLOR_Y0, COLOR_BK0, EFFECT_NOBACK)
-# define COLOR_INFO		ft_get_term_color(COLOR_C0, COLOR_BK0, EFFECT_NOBACK)
-# define COLOR_VERBOSE	ft_get_term_color(COLOR_G0, COLOR_BK0, EFFECT_NOBACK)
-# define COLOR_NAME		ft_get_term_color(COLOR_B0, COLOR_BK0, EFFECT_NOBACK)
+# define COLOR_BK0		"\e[38;5;16m"
+# define COLOR_R0		"\e[38;5;124m"
+# define COLOR_G0		"\e[38;5;28m"
+# define COLOR_B0		"\e[38;5;32m"
+# define COLOR_Y0		"\e[38;5;214m"
+# define COLOR_C0		"\e[38;5;45m"
+# define COLOR_M0		"\e[38;5;133m"
+# define COLOR_ERROR	COLOR_R0
+# define COLOR_SYSTEM	COLOR_Y0
+# define COLOR_INFO		COLOR_C0
+# define COLOR_VERBOSE	COLOR_G0
+# define COLOR_NAME		COLOR_B0
 
 /*
 *************

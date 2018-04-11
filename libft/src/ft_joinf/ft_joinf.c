@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/15 14:06:03 by pribault          #+#    #+#             */
-/*   Updated: 2018/04/02 18:59:37 by pribault         ###   ########.fr       */
+/*   Updated: 2018/04/11 14:17:57 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,7 @@ void		fill_string(va_list va, const char *format, char *new)
 		else
 			new[j++] = format[i++];
 	}
+	new[j] = '\0';
 }
 
 char		*ft_joinf(const char *format, ...)
@@ -93,7 +94,6 @@ char		*ft_joinf(const char *format, ...)
 		}
 	}
 	new = (char*)malloc(sizeof(char) * (len + i - n + 1));
-	ft_bzero(new, len + i - n + 1);
 	va_start(va, format);
 	fill_string(va, format, new);
 	va_end(va);
