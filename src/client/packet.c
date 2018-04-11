@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/07 14:48:20 by pribault          #+#    #+#             */
-/*   Updated: 2018/04/11 17:30:40 by pribault         ###   ########.fr       */
+/*   Updated: 2018/04/11 23:27:32 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,8 @@ t_cmd	g_recv[] =
 	{RPL_LUSERME, &recv_lme},
 	{RPL_LIST, &recv_list},
 	{RPL_LISTEND, &recv_listend},
+	{RPL_LOCALUSERS, &recv_localusers},
+	{RPL_GLOBALUSERS, &recv_globalusers},
 	{ERR_NONICKNAMEGIVEN, &recv_error},
 	{ERR_ERRONEUSNICKNAME, &recv_error},
 	{NULL, NULL}

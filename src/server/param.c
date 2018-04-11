@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/08 19:02:20 by pribault          #+#    #+#             */
-/*   Updated: 2018/04/11 14:48:07 by pribault         ###   ########.fr       */
+/*   Updated: 2018/04/11 21:43:34 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,5 +38,5 @@ char	*get_param(char *param, char *s)
 		}
 		return (&s[i]);
 	}
-	return ((s[0]) ? s : NULL);
+	return ((!s[0]) ? s : NULL);
 }

@@ -6,29 +6,11 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/07 14:47:29 by pribault          #+#    #+#             */
-/*   Updated: 2018/04/11 18:15:31 by pribault         ###   ########.fr       */
+/*   Updated: 2018/04/11 22:51:37 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "client.h"
-
-void	concatenate_messages(t_server *server, void *client, t_msg *msg,
-		void *ptr)
-{
-	t_env	*env;
-	t_data	*data;
-
-	env = server_get_data(server);
-	data = server_client_get_data(client);
-	if (!(data->ptr = realloc(data->ptr, data->size + ptr - msg->ptr)))
-		ft_error(env->err, ERROR_ALLOCATION, NULL);
-	ft_memcpy(data->ptr + data->size, msg->ptr, ptr - msg->ptr);
-	treat_packet(server, client, data->ptr, data->size + (ptr - msg->ptr));
-	msg->size -= ((ptr - msg->ptr) + CRLF_SIZE);
-	msg->ptr = ptr + CRLF_SIZE;
-	ft_memdel(&data->ptr);
-	data->size = 0;
-}
 
 void	save_message(t_env *env, t_data *data, t_msg *msg)
 {
@@ -37,6 +19,31 @@ void	save_message(t_env *env, t_data *data, t_msg *msg)
 	ft_memcpy(data->ptr + data->size, msg->ptr, msg->size);
 	data->size += msg->size;
 	msg->size = 0;
+}
+
+void	concatenate_messages(t_server *server, void *client, t_msg *msg)
+{
+	void	*save;
+	void	*ptr;
+	t_env	*env;
+	t_data	*data;
+
+	env = server_get_data(server);
+	data = server_client_get_data(client);
+	save_message(env, data, msg);
+	while (data->ptr &&
+		(ptr = ft_memschr(data->ptr, CRLF, data->size, CRLF_SIZE)))
+	{
+		treat_packet(server, client, data->ptr, ptr - data->ptr);
+		ft_memmove(data->ptr, ptr + CRLF_SIZE,
+			data->size - (ptr - data->ptr) - CRLF_SIZE);
+		save = data->ptr;
+		if (!(data->ptr = realloc(data->ptr,
+			data->size - (ptr - save) - CRLF_SIZE)) &&
+			(data->size - (ptr - save) - CRLF_SIZE))
+			ft_error(2, ERROR_ALLOCATION, NULL);
+		data->size = data->size - (ptr - save) - CRLF_SIZE;
+	}
 }
 
 void	message_received(t_server *server, void *client, t_msg *msg)
@@ -51,16 +58,13 @@ void	message_received(t_server *server, void *client, t_msg *msg)
 		server_get_client_fd(client) == 0)
 		return (get_user_command(env, msg->ptr, msg->size));
 	while (msg->size)
-		if ((ptr = ft_memschr(msg->ptr, CRLF, msg->size, CRLF_SIZE)))
+		if (data->ptr)
+			concatenate_messages(server, client, msg);
+		else if ((ptr = ft_memschr(msg->ptr, CRLF, msg->size, CRLF_SIZE)))
 		{
-			if (data->ptr)
-				concatenate_messages(server, client, msg, ptr);
-			else
-			{
-				treat_packet(server, client, msg->ptr, ptr - msg->ptr);
-				msg->size -= ((ptr - msg->ptr) + CRLF_SIZE);
-				msg->ptr = ptr + CRLF_SIZE;
-			}
+			treat_packet(server, client, msg->ptr, ptr - msg->ptr);
+			msg->size -= ((ptr - msg->ptr) + CRLF_SIZE);
+			msg->ptr = ptr + CRLF_SIZE;
 		}
 		else
 			save_message(env, data, msg);

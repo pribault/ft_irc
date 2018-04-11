@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/01 18:59:09 by pribault          #+#    #+#             */
-/*   Updated: 2018/04/11 16:40:26 by pribault         ###   ########.fr       */
+/*   Updated: 2018/04/11 23:38:44 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,10 +44,11 @@
 # define COLOR_B0		"\e[38;5;32m"
 # define COLOR_Y0		"\e[38;5;214m"
 # define COLOR_C0		"\e[38;5;45m"
-# define COLOR_M0		"\e[38;5;133m"
+# define COLOR_M0		"\e[38;5;203m"
 # define COLOR_ERROR	COLOR_R0
-# define COLOR_SYSTEM	COLOR_Y0
-# define COLOR_INFO		COLOR_C0
+# define COLOR_SYSTEM	COLOR_M0
+# define COLOR_INFO		COLOR_Y0
+# define COLOR_MESSAGE	COLOR_C0
 # define COLOR_VERBOSE	COLOR_G0
 # define COLOR_NAME		COLOR_B0
 
@@ -191,6 +192,8 @@ void			recv_mode(t_env *env, t_data *data, t_message *msg);
 void			recv_nick(t_env *env, t_data *data, t_message *msg);
 void			recv_list(t_env *env, t_data *data, t_message *msg);
 void			recv_listend(t_env *env, t_data *data, t_message *msg);
+void			recv_localusers(t_env *env, t_data *data, t_message *msg);
+void			recv_globalusers(t_env *env, t_data *data, t_message *msg);
 
 void			recv_error(t_env *env, t_data *data, t_message *msg);
 

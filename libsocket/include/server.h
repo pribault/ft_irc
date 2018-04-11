@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/18 22:51:48 by pribault          #+#    #+#             */
-/*   Updated: 2018/04/11 17:28:12 by pribault         ###   ########.fr       */
+/*   Updated: 2018/04/11 21:46:35 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@
 */
 
 # define READ_BUFFER_SIZE		512
-# define CIRCULAR_BUFFER_SIZE	16
+# define CIRCULAR_BUFFER_SIZE	1024
 
 # define ACCEPT_CONNECTIONS	BYTE(0)
 # define ALLOW_READ			BYTE(1)

@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/10 13:35:26 by pribault          #+#    #+#             */
-/*   Updated: 2018/04/11 12:50:20 by pribault         ###   ########.fr       */
+/*   Updated: 2018/04/11 23:26:45 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,4 +44,12 @@ void	recv_listend(t_env *env, t_data *data, t_message *msg)
 	enqueue_str_by_fd(env, env->out, ft_joinf("[%s%s%s (%s%s%s)] %s%s%s\n",
 			COLOR_NAME, &msg->prefix.name[0], COLOR_CLEAR, COLOR_SYSTEM,
 			"ListEnd", COLOR_CLEAR, COLOR_HALF, msg->end, COLOR_CLEAR));
+}
+
+void	recv_localusers(t_env *env, t_data *data, t_message *msg)
+{
+	(void)data;
+	enqueue_str_by_fd(env, env->out, ft_joinf("[%s%s%s (%s%s%s)] %s%s%s\n",
+			COLOR_NAME, &msg->prefix.name[0], COLOR_CLEAR, COLOR_SYSTEM,
+			"LocalUsers", COLOR_CLEAR, COLOR_HALF, msg->end, COLOR_CLEAR));
 }

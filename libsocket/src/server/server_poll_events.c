@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/19 10:31:22 by pribault          #+#    #+#             */
-/*   Updated: 2018/04/11 11:22:28 by pribault         ###   ########.fr       */
+/*   Updated: 2018/04/11 22:51:09 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,14 +55,15 @@ static void	set_sets(t_server *server, fd_set *set, int *fd_max, uint8_t flags)
 	FD_ZERO(&set[0]);
 	FD_ZERO(&set[1]);
 	FD_ZERO(&set[2]);
-	if (flags | ACCEPT_CONNECTIONS)
+	if (flags & ACCEPT_CONNECTIONS)
+	{
 		FD_SET(server->sockfd, &set[0]);
-	if (flags | ALLOW_WRITE)
 		FD_SET(server->sockfd, &set[2]);
+	}
 	*fd_max = server->sockfd;
-	if (flags | ALLOW_READ)
+	if (flags & ALLOW_READ)
 		server_add_clients_to_set(&set[0], &set[2], &server->clients, fd_max);
-	if (flags | ALLOW_WRITE)
+	if (flags & ALLOW_WRITE)
 		server_add_write_request_to_set(&set[1], &server->write_queue, fd_max);
 }
 
@@ -88,6 +89,8 @@ void		server_poll_events(t_server *server, uint8_t flags)
 	}
 	if (FD_ISSET(server->sockfd, &set[2]) && server->server_excpt)
 		server->server_excpt(server);
-	server_manage_write_requests(server, &set[1], &ret);
-	server_manage_incoming_messages(server, &set[0], &set[2], &ret);
+	if (flags & ALLOW_WRITE)
+		server_manage_write_requests(server, &set[1], &ret);
+	if (flags & ALLOW_READ)
+		server_manage_incoming_messages(server, &set[0], &set[2], &ret);
 }

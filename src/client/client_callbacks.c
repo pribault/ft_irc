@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/02 18:45:10 by pribault          #+#    #+#             */
-/*   Updated: 2018/04/11 13:33:15 by pribault         ###   ########.fr       */
+/*   Updated: 2018/04/11 22:54:36 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,8 @@ void	client_del(t_server *server, void *client)
 		server_get_client_fd(client) != 0)
 		enqueue_str_by_fd(env, env->out, ft_joinf("[%s] disconnected\n",
 		inet_ntoa(*(struct in_addr *)server_get_client_address(client))));
+	else
+		enqueue_str_by_fd(env, env->out, ft_joinf("input disconnected\n"));
 	data = server_client_get_data(client);
 	if (data->ptr)
 		free(data->ptr);

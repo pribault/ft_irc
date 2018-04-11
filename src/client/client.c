@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/01 18:38:42 by pribault          #+#    #+#             */
-/*   Updated: 2018/04/11 17:39:58 by pribault         ###   ########.fr       */
+/*   Updated: 2018/04/11 22:11:59 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,6 @@ void	server_excpt(t_server *server)
 
 void	buffer_full(t_server *server)
 {
-	ft_printf("%sfull%s\n", COLOR_ERROR, COLOR_CLEAR);
 	server_poll_events(server, ALLOW_WRITE);
 }
 

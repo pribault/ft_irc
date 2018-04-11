@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/08 19:02:20 by pribault          #+#    #+#             */
-/*   Updated: 2018/04/11 12:52:47 by pribault         ###   ########.fr       */
+/*   Updated: 2018/04/11 23:11:39 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ char	*get_param(char *param, char *s)
 		i = 0;
 		if (s[i] == ':')
 		{
-			while (ft_isof(s[++i], PARAM_WHITE))
+			while (!ft_isof(s[++i], PARAM_WHITE))
 				;
 		}
 		else if (!ft_isof(s[i], PARAM_WHITE) && s[i] != ':')
@@ -38,5 +38,5 @@ char	*get_param(char *param, char *s)
 		}
 		return (&s[i]);
 	}
-	return ((s[0]) ? s : NULL);
+	return ((!s[0]) ? s : NULL);
 }

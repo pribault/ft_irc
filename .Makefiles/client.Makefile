@@ -8,7 +8,8 @@ SRC =	client.c flags.c\
 		prefix.c command.c\
 		param.c receive.c\
 		receive_2.c receive_3.c\
-		receive_4.c user_commands.c
+		receive_4.c receive_5.c\
+		user_commands.c
 DIR = client
 SRC_DIR = src
 OBJ_DIR = .obj

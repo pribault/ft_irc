@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/19 17:18:05 by pribault          #+#    #+#             */
-/*   Updated: 2018/04/11 17:42:25 by pribault         ###   ########.fr       */
+/*   Updated: 2018/04/11 21:58:00 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ void		server_manage_write_requests(t_server *server, fd_set *set,
 		(towrite = ft_circ_buffer_dequeue(buffer)))
 		if (FD_ISSET(towrite->client.fd, set))
 		{
+			FD_CLR(towrite->client.fd, set);
 			if (!server_try_write(buffer, towrite))
 				return ;
 			if (server->msg_send)

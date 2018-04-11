@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/07 10:39:27 by pribault          #+#    #+#             */
-/*   Updated: 2018/04/11 13:12:40 by pribault         ###   ########.fr       */
+/*   Updated: 2018/04/11 23:21:14 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -157,6 +157,9 @@
 # define RPL_TRACELOG			"261"
 # define RPL_TRACEEND			"262"
 # define RPL_TRYAGAIN			"263"
+
+# define RPL_LOCALUSERS			"265"
+# define RPL_GLOBALUSERS		"266"
 
 # define RPL_AWAY				"301"
 # define RPL_USERHOST			"302"
@@ -318,7 +321,7 @@
 # define PREFIX_MAX		64
 # define COMMAND_MAX	64
 
-# define PARAMS_MAX		15
+# define PARAMS_MAX		128
 # define PARAMS_LEN		128
 # define COMMENT_LEN	512
 
