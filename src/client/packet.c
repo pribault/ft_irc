@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/07 14:48:20 by pribault          #+#    #+#             */
-/*   Updated: 2018/04/11 23:27:32 by pribault         ###   ########.fr       */
+/*   Updated: 2018/04/12 08:27:15 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ t_cmd	g_recv[] =
 	{RPL_ENDOFMOTD, &recv_motdend},
 	{RPL_LUSERCHANNELS, &recv_lchannels},
 	{RPL_LUSERME, &recv_lme},
+	{RPL_LISTSTART, &recv_liststart},
 	{RPL_LIST, &recv_list},
 	{RPL_LISTEND, &recv_listend},
 	{RPL_LOCALUSERS, &recv_localusers},

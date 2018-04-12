@@ -2,7 +2,8 @@ NAME = libft.a
 CC = clang
 SRC =	ft_joinf.c\
 		number_join.c string_join.c\
-		unsigned_join.c pointer_join.c
+		unsigned_join.c pointer_join.c\
+		unicode.c
 DIR = ft_joinf
 SRC_DIR = src
 OBJ_DIR = .obj

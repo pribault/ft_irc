@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/01 18:59:09 by pribault          #+#    #+#             */
-/*   Updated: 2018/04/11 23:38:44 by pribault         ###   ########.fr       */
+/*   Updated: 2018/04/12 08:26:35 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -190,6 +190,7 @@ void			recv_lchannels(t_env *env, t_data *data, t_message *msg);
 void			recv_lme(t_env *env, t_data *data, t_message *msg);
 void			recv_mode(t_env *env, t_data *data, t_message *msg);
 void			recv_nick(t_env *env, t_data *data, t_message *msg);
+void			recv_liststart(t_env *env, t_data *data, t_message *msg);
 void			recv_list(t_env *env, t_data *data, t_message *msg);
 void			recv_listend(t_env *env, t_data *data, t_message *msg);
 void			recv_localusers(t_env *env, t_data *data, t_message *msg);
