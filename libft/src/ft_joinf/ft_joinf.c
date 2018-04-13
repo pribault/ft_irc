@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/15 14:06:03 by pribault          #+#    #+#             */
-/*   Updated: 2018/04/11 21:53:59 by pribault         ###   ########.fr       */
+/*   Updated: 2018/04/13 19:39:37 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,8 +72,6 @@ void		fill_string(va_list va, const char *format, char *new)
 	}
 	new[j] = '\0';
 }
-
-#include "malloc.h"
 
 char		*ft_joinf(const char *format, ...)
 {

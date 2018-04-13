@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/10 08:56:44 by pribault          #+#    #+#             */
-/*   Updated: 2018/04/11 00:46:16 by pribault         ###   ########.fr       */
+/*   Updated: 2018/04/13 19:20:52 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ void	recv_user(t_env *env, t_data *data, t_message *msg)
 	t_bool			error;
 
 	error = FT_FALSE;
-	if ((msg->n_params < 3 || !msg->end) && (error = FT_TRUE) == FT_TRUE)
+	if (msg->n_params < 3 && (error = FT_TRUE) == FT_TRUE)
 		send_error(env, data, ERR_NEEDMOREPARAMS,
 			"not enough parameters given");
 	if (data->username && (error = FT_TRUE) == FT_TRUE)

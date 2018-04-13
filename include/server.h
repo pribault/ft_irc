@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/01 18:54:30 by pribault          #+#    #+#             */
-/*   Updated: 2018/04/11 14:39:55 by pribault         ###   ########.fr       */
+/*   Updated: 2018/04/13 19:39:22 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -233,7 +233,8 @@ void			recv_join(t_env *env, t_data *data, t_message *msg);
 **	send functions
 */
 
-void			send_error(t_env *env, t_data *data, char *error, char *comment);
+void			send_error(t_env *env, t_data *data, char *error,
+				char *comment);
 void			send_welcome(t_env *env, t_data *data);
 void			send_nick(t_env *env, t_data *data, char *nick);
 void			send_list(t_env *env, t_data *data, t_channel *channel);

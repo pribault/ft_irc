@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/01 13:04:16 by pribault          #+#    #+#             */
-/*   Updated: 2018/04/11 14:28:37 by pribault         ###   ########.fr       */
+/*   Updated: 2018/04/13 19:39:50 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,8 @@ static void	ft_overwrite(char *s, uint8_t n)
 	s[2] = '0' + (n % 10);
 }
 
-char		*ft_get_term_color(t_color front, t_color back, t_color_effect effect)
+char		*ft_get_term_color(t_color front, t_color back,
+			t_color_effect effect)
 {
 	static char	s1[] = "\e[38;5;000m";
 	static char	s2[] = "\e[000m\e[38;5;000m\e[48;5;000m";

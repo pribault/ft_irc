@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/18 22:51:48 by pribault          #+#    #+#             */
-/*   Updated: 2018/04/11 21:46:35 by pribault         ###   ########.fr       */
+/*   Updated: 2018/04/13 19:42:50 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,9 +142,12 @@ typedef struct				s_server
 	void					*data;
 	void					(*client_add)(struct s_server *, t_client *);
 	void					(*client_del)(struct s_server *, t_client *);
-	void					(*msg_recv)(struct s_server *, t_client *, t_msg *);
-	void					(*msg_send)(struct s_server *, t_client *, t_msg *);
-	void					(*msg_trash)(struct s_server *, t_client *, t_msg *);
+	void					(*msg_recv)(struct s_server *, t_client *,
+							t_msg *);
+	void					(*msg_send)(struct s_server *, t_client *,
+							t_msg *);
+	void					(*msg_trash)(struct s_server *, t_client *,
+							t_msg *);
 	void					(*client_excpt)(struct s_server *, t_client *);
 	void					(*server_excpt)(struct s_server *);
 	void					(*buffer_full)(struct s_server *);
