@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/01 18:59:09 by pribault          #+#    #+#             */
-/*   Updated: 2018/04/12 08:26:35 by pribault         ###   ########.fr       */
+/*   Updated: 2018/04/22 17:59:28 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,8 @@ typedef enum	e_client_error
 	ERROR_UNHANDLE_PACKET,
 	ERROR_UNKNOWN_PACKET,
 	ERROR_UNKNOWN_COMMAND,
-	ERROR_CORRUPTED_MEMORY
+	ERROR_CORRUPTED_MEMORY,
+	ERROR_DISCONNECTED
 }				t_client_error;
 
 /*
@@ -169,6 +170,7 @@ void			send_user(t_server *server, void *client, char *username,
 void			send_pong(t_server *server, void *client);
 void			send_list(t_server *server, void *client);
 void			send_join(t_server *server, void *client, char *list);
+void			send_quit(t_server *server, void *client, char *comment);
 
 /*
 **	receive functions
@@ -195,6 +197,7 @@ void			recv_list(t_env *env, t_data *data, t_message *msg);
 void			recv_listend(t_env *env, t_data *data, t_message *msg);
 void			recv_localusers(t_env *env, t_data *data, t_message *msg);
 void			recv_globalusers(t_env *env, t_data *data, t_message *msg);
+void			recv_join(t_env *env, t_data *data, t_message *msg);
 
 void			recv_error(t_env *env, t_data *data, t_message *msg);
 
@@ -206,6 +209,7 @@ void			get_user_command(t_env *env, char *ptr, size_t size);
 void			cmd_nick(t_env *env, char *s);
 void			cmd_list(t_env *env, char *s);
 void			cmd_join(t_env *env, char *s);
+void			cmd_quit(t_env *env, char *s);
 
 char			*get_prefix(t_prefix *prefix, char *s);
 char			*get_command(char *command, char *s);

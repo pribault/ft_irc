@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/10 08:56:44 by pribault          #+#    #+#             */
-/*   Updated: 2018/04/11 00:46:16 by pribault         ###   ########.fr       */
+/*   Updated: 2018/04/22 17:18:28 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	recv_unknown(t_env *env, t_data *data, t_message *msg)
 	if (env->opt & OPT_VERBOSE)
 		enqueue_str_by_fd(env, env->out, ft_joinf(
 			"[%s%s!%s@%s%s (%s??? %s%s)] %s%s%s\n", COLOR_NAME,
-			&data->nickname, data->hostname, data->username, COLOR_CLEAR,
+			&data->nickname, data->username, data->hostname, COLOR_CLEAR,
 			COLOR_ERROR, &msg->command, COLOR_CLEAR, COLOR_HALF, msg->end,
 			COLOR_CLEAR));
 }
@@ -44,7 +44,7 @@ void	recv_nick(t_env *env, t_data *data, t_message *msg)
 	if (env->opt & OPT_VERBOSE)
 		enqueue_str_by_fd(env, env->out, ft_joinf(
 			"[%s%s!%s@%s%s (%s%s%s)] %s%s%s\n", COLOR_NAME, &data->nickname,
-			data->hostname, data->username, COLOR_CLEAR, COLOR_SYSTEM,
+			data->username, data->hostname, COLOR_CLEAR, COLOR_SYSTEM,
 			&msg->command, COLOR_CLEAR, COLOR_HALF, msg->end, COLOR_CLEAR));
 	if (data->username)
 		send_nick(env, data, (char*)&msg->params[0]);
@@ -70,7 +70,7 @@ void	recv_user(t_env *env, t_data *data, t_message *msg)
 	if (env->opt & OPT_VERBOSE)
 		enqueue_str_by_fd(env, env->out, ft_joinf(
 			"[%s%s!%s@%s%s (%s%s%s)] %s%s%s\n", COLOR_NAME, &data->nickname,
-			data->hostname, data->username, COLOR_CLEAR, COLOR_SYSTEM,
+			data->username, data->hostname, COLOR_CLEAR, COLOR_SYSTEM,
 			&msg->command, COLOR_CLEAR, COLOR_HALF, msg->end, COLOR_CLEAR));
 	data->username = ft_strdup((char*)&msg->params[0]);
 	data->hostname = ft_strdup((char*)&msg->params[2]);
@@ -91,7 +91,7 @@ void	recv_list(t_env *env, t_data *data, t_message *msg)
 	if (env->opt & OPT_VERBOSE)
 		enqueue_str_by_fd(env, env->out, ft_joinf(
 		"[%s%s!%s@%s%s (%s%s%s)] %s%s%s\n", COLOR_NAME, &data->nickname,
-		data->hostname, data->username, COLOR_CLEAR, COLOR_SYSTEM,
+		data->username, data->hostname, COLOR_CLEAR, COLOR_SYSTEM,
 		&msg->command, COLOR_CLEAR, COLOR_HALF, msg->end, COLOR_CLEAR));
 	i = (size_t)-1;
 	while (++i < env->channels.n)
@@ -119,6 +119,6 @@ void	recv_join(t_env *env, t_data *data, t_message *msg)
 	if (env->opt & OPT_VERBOSE)
 		enqueue_str_by_fd(env, env->out, ft_joinf(
 		"[%s%s!%s@%s%s (%s%s%s)] %s%s%s\n", COLOR_NAME, &data->nickname,
-		data->hostname, data->username, COLOR_CLEAR, COLOR_SYSTEM,
+		data->username, data->hostname, COLOR_CLEAR, COLOR_SYSTEM,
 		&msg->command, COLOR_CLEAR, COLOR_HALF, msg->end, COLOR_CLEAR));
 }

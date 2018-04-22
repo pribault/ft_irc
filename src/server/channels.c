@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/11 00:04:45 by pribault          #+#    #+#             */
-/*   Updated: 2018/04/11 00:56:05 by pribault         ###   ########.fr       */
+/*   Updated: 2018/04/22 18:51:10 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,4 +38,29 @@ void		create_channel(t_vector *vector, char *name, t_data *data)
 	ft_vector_init(&channel.clients, ALLOC_MALLOC, sizeof(t_data *));
 	add_client_to_channel(&channel, data);
 	ft_vector_add(vector, &channel);
+}
+
+t_bool		is_client_in_channel(t_channel *channel, t_data *client)
+{
+	t_data		*data;
+	uint64_t	i;
+
+	i = (uint64_t)-1;
+	while (++i < channel->clients.n &&
+		(data = ft_vector_get(&channel->clients, i)))
+		if (client == data)
+			return (FT_TRUE);
+	return (FT_FALSE);
+}
+
+void		remove_client_from_channel(t_channel *channel, t_data *client)
+{
+	t_data		*data;
+	uint64_t	i;
+
+	i = (uint64_t)-1;
+	while (++i < channel->clients.n &&
+		(data = ft_vector_get(&channel->clients, i)))
+		if (client == data)
+			return (ft_vector_del_one(&channel->clients, i));
 }

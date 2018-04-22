@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/02 12:28:02 by pribault          #+#    #+#             */
-/*   Updated: 2018/04/10 21:58:58 by pribault         ###   ########.fr       */
+/*   Updated: 2018/04/21 22:38:49 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,6 @@ void	client_del(t_server *server, void *client)
 	}
 	if (data->username)
 		free(data->username);
-	if (data->hostname)
-		free(data->hostname);
 	free(data);
 }
 

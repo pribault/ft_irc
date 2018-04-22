@@ -4,7 +4,8 @@ SRC =	client.c flags.c\
 		client_callbacks.c\
 		message_callbacks.c\
 		packet.c output.c\
-		send.c user_command.c\
+		send.c send_2.c\
+		user_command.c\
 		prefix.c command.c\
 		param.c receive.c\
 		receive_2.c receive_3.c\

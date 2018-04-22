@@ -3,3 +3,6 @@ libsocket/.git
 libsocket/libft
 server.cfg
 example
+.obj
+.git
+.vscode

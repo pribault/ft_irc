@@ -6,25 +6,43 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/10 23:50:53 by pribault          #+#    #+#             */
-/*   Updated: 2018/04/10 23:54:29 by pribault         ###   ########.fr       */
+/*   Updated: 2018/04/22 18:00:22 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "client.h"
 
-void				cmd_nick(t_env *env, char *s)
+void	cmd_nick(t_env *env, char *s)
 {
+	if (!env->client)
+		return (ft_error(2, ERROR_DISCONNECTED, NULL));
 	send_nick(env->server, env->client, s);
 }
 
-void				cmd_list(t_env *env, char *s)
+void	cmd_list(t_env *env, char *s)
 {
+	if (!env->client)
+		return (ft_error(2, ERROR_DISCONNECTED, NULL));
 	(void)s;
 	send_list(env->server, env->client);
 }
 
-void				cmd_join(t_env *env, char *s)
+void	cmd_join(t_env *env, char *s)
 {
+	if (!env->client)
+		return (ft_error(2, ERROR_DISCONNECTED, NULL));
 	(void)s;
 	send_join(env->server, env->client, s);
+}
+
+void	cmd_quit(t_env *env, char *s)
+{
+	size_t	len;
+
+	if (!env->client)
+		return (ft_error(2, ERROR_DISCONNECTED, NULL));
+	len = ft_strlen(s);
+	if (len && s[len - 1] == '\n')
+		s[len - 1] = '\0';
+	send_quit(env->server, env->client, s);
 }

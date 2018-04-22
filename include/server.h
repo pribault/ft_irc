@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/01 18:54:30 by pribault          #+#    #+#             */
-/*   Updated: 2018/04/11 14:39:55 by pribault         ###   ########.fr       */
+/*   Updated: 2018/04/22 18:51:16 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -228,6 +228,7 @@ void			recv_nick(t_env *env, t_data *data, t_message *msg);
 void			recv_user(t_env *env, t_data *data, t_message *msg);
 void			recv_list(t_env *env, t_data *data, t_message *msg);
 void			recv_join(t_env *env, t_data *data, t_message *msg);
+void			recv_quit(t_env *env, t_data *data, t_message *msg);
 
 /*
 **	send functions
@@ -252,5 +253,7 @@ t_bool			is_nickname_valid(char *nick);
 t_channel		*find_channel(t_vector *vector, char *name);
 void			add_client_to_channel(t_channel *channel, t_data *data);
 void			create_channel(t_vector *vector, char *name, t_data *data);
+t_bool			is_client_in_channel(t_channel *channel, t_data *client);
+void			remove_client_from_channel(t_channel *channel, t_data *client);
 
 #endif

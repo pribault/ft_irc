@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/01 18:38:42 by pribault          #+#    #+#             */
-/*   Updated: 2018/04/11 22:11:59 by pribault         ###   ########.fr       */
+/*   Updated: 2018/04/22 17:59:51 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ static t_error	g_errors[] =
 	{ERROR_UNKNOWN_PACKET, "unknown packet received:\n%s", 0},
 	{ERROR_UNKNOWN_COMMAND, "unknown command '%s'", 0},
 	{ERROR_CORRUPTED_MEMORY, "memory is corrupted", ERROR_EXIT},
+	{ERROR_DISCONNECTED, "you are not connected", 0},
 	{0, NULL, 0}
 };
 

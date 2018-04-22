@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/07 14:48:20 by pribault          #+#    #+#             */
-/*   Updated: 2018/04/12 08:27:15 by pribault         ###   ########.fr       */
+/*   Updated: 2018/04/13 08:47:27 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ t_cmd	g_recv[] =
 	{NOTICE, &recv_notice},
 	{MODE, &recv_mode},
 	{NICK, &recv_nick},
+	{JOIN, &recv_join},
 	{RPL_WELCOME, &recv_welcome},
 	{RPL_YOURHOST, &recv_yourhost},
 	{RPL_CREATED, &recv_created},
@@ -111,6 +112,9 @@ void	treat_packet(t_server *server, void *client, void *ptr, size_t size)
 		return (ft_error(env->err, ERROR_ALLOCATION, NULL));
 	ft_memcpy(s, ptr, size);
 	s[size] = '\0';
+	if (env->opt & OPT_VERBOSE)
+		enqueue_str_by_fd(env, env->out, ft_joinf("[%sDEBUG%s] \"%s\"\n",
+			COLOR_VERBOSE, COLOR_CLEAR, s));
 	if (get_message(msg, s) == FT_TRUE)
 	{
 		if (env->opt & OPT_VERBOSE)

@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/08 11:09:20 by pribault          #+#    #+#             */
-/*   Updated: 2018/04/10 23:51:23 by pribault         ###   ########.fr       */
+/*   Updated: 2018/04/22 17:10:11 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ static t_user_cmd	g_cmds[] =
 	{"/nick", &cmd_nick},
 	{"/list", &cmd_list},
 	{"/join", &cmd_join},
+	{"/quit", &cmd_quit},
 	{NULL, NULL}
 };
 
