@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/08 11:09:20 by pribault          #+#    #+#             */
-/*   Updated: 2018/04/22 17:10:11 by pribault         ###   ########.fr       */
+/*   Updated: 2018/04/28 13:57:02 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ void				treat_command(t_env *env, char *s)
 		if (!(env->real_name = ft_strdup(s)))
 			ft_error(2, ERROR_ALLOCATION, NULL);
 		if (env->address && env->port)
-			if (!(server_connect(env->server,
+			if (!(socket_connect(env->socket,
 				(t_method){env->protocol, env->domain}, env->address,
 				env->port)))
 				return (ft_error(2, ERROR_CANNOT_CONNECT, env->address));

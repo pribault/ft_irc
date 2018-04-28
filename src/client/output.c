@@ -6,20 +6,20 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/07 14:53:38 by pribault          #+#    #+#             */
-/*   Updated: 2018/04/22 17:58:14 by pribault         ###   ########.fr       */
+/*   Updated: 2018/04/28 13:56:33 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "client.h"
 
-void	enqueue_write(t_server *server, void *client, void *ptr,
+void	enqueue_write(t_socket *socket, void *client, void *ptr,
 		size_t size)
 {
 	t_msg	msg;
 
 	msg.ptr = ptr;
 	msg.size = size;
-	server_enqueue_write(server, client, &msg);
+	socket_enqueue_write(socket, client, &msg);
 }
 
 void	enqueue_str_by_fd(t_env *env, int fd, char *s)
@@ -27,5 +27,5 @@ void	enqueue_str_by_fd(t_env *env, int fd, char *s)
 	t_msg	msg;
 
 	msg = (t_msg){s, ft_strlen(s)};
-	server_enqueue_write_by_fd(env->server, fd, &msg);
+	socket_enqueue_write_by_fd(env->socket, fd, &msg);
 }

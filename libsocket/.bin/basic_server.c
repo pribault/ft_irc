@@ -6,97 +6,96 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/19 21:23:23 by pribault          #+#    #+#             */
-/*   Updated: 2018/03/29 18:25:54 by pribault         ###   ########.fr       */
+/*   Updated: 2018/04/28 13:17:08 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+/*
+**	Copyright © 2018 <pribault@student.42.fr>
+**
+**	Permission is hereby granted, free of charge, to any person obtaining a
+**	copy of this software and associated documentation files (the “Software”),
+**	to deal in the Software without restriction, including without limitation
+**	the rights to use, copy, modify, merge, publish, distribute, sublicense,
+**	and/or sell copies of the Software, and to permit persons to whom the
+**	Software is furnished to do so, subject to the following conditions:
+**
+**	The above copyright notice and this permission notice shall be included in
+**	all copies or substantial portions of the Software.
+**
+**	THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+**	IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+**	FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+**	THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+**	LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+**	ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+**	OTHER DEALINGS IN THE SOFTWARE.
+*/
 
 #include "libsocket.h"
 #include "libft.h"
 
-void	treat_command(t_server *server, void *cmd, size_t size)
-{
-	char	**array;
-	size_t	len;
+static t_client	*last = NULL;
 
-	((char*)cmd)[size] = '\0';
-	if ((array = ft_multisplit(cmd, "\a\b\t\n\v\f\r ")))
+void	client_add(t_socket *socket, t_client *client)
+{
+	(void)socket;
+	ft_printf("client [%s] added\n", client_get_address(client)->str);
+}
+
+void	client_del(t_socket *socket, t_client *client)
+{
+	(void)socket;
+	ft_printf("client [%s] deleted\n", client_get_address(client)->str);
+	if (last == client)
+		last = NULL;
+}
+
+void	msg_recv(t_socket *socket, t_client *client, t_msg *msg)
+{
+	if (client_get_fd(client) == 0)
 	{
-		len = ft_arraylen(array);
-		if (len == 1 && !ft_strcmp(array[0], "exit"))
-		{
-			ft_printf("goodbye !\n");
-			exit(0);
-		}
-		else if (len == 3 && !ft_strcmp(array[0], "connect"))
-			server_connect(server, (t_method){TCP, IPV4}, array[1], array[2]);
-		ft_free_array((void**)array, len + 1);
+		if (last)
+			socket_enqueue_write(socket, last, msg);
 	}
-	free(cmd);
+	else
+	{
+		ft_printf("message of size %d received from [%s]\n",
+			msg->size, client_get_address(client)->str);
+		socket_enqueue_write_by_fd(socket, 1, msg);
+		last = client;
+	}
 }
 
-void	client_add(t_server *server, t_client *client)
+void	msg_send(t_socket *socket, t_client *client, t_msg *msg)
 {
-	t_msg	msg;
-
-	msg.ptr = ft_joinf("client [%s] added\n", server_get_client_address(client));
-	msg.size = ft_strlen(msg.ptr);
-	server_enqueue_write_by_fd(server, 1, &msg);
-}
-
-void	client_del(t_server *server, t_client *client)
-{
-	t_msg	msg;
-
-	msg.ptr = ft_joinf("client [%s] deleted\n", server_get_client_address(client));
-	msg.size = ft_strlen(msg.ptr);
-	server_enqueue_write_by_fd(server, 1, &msg);
-}
-
-void	msg_recv(t_server *server, t_client *client, t_msg *msg)
-{
-	t_msg	new_msg;
-
-	new_msg.ptr = ft_joinf("message of size %d received from [%s]\n",
-	msg->size, server_get_client_address(client));
-	new_msg.size = ft_strlen(new_msg.ptr);
-	server_enqueue_write_by_fd(server, 1, &new_msg);
-	if (server_get_client_fd(client) == 0)
-		treat_command(server, ft_memdup(msg->ptr, msg->size + 1), msg->size);
-}
-
-void	msg_send(t_server *server, t_client *client, t_msg *msg)
-{
-	t_msg	new_msg;
-
-	if (server_get_client_fd(client) <= 1)
+	(void)socket;
+	if (client_get_fd(client) <= 1)
 		return ;
-	new_msg.ptr = ft_joinf("message of size %d sended to [%s]\n", msg->size,
-		server_get_client_address(client));
-	new_msg.size = ft_strlen(new_msg.ptr);
-	server_enqueue_write_by_fd(server, 1, &new_msg);
+	ft_printf("message of size %d sended to [%s]\n", msg->size,
+		client_get_address(client)->str);
 }
 
 int	main(int argc, char **argv)
 {
-	t_server	*server;
+	t_socket	*socket;
 
 	if (argc != 2)
 		return (1);
-	server = server_new();
-	server_set_queue_max(server, 1);
-	if (!server_start(server, (t_method){TCP, IPV4}, argv[1]))
+	socket = socket_new();
+	if (!socket_bind(socket, (t_method){TCP, IPV4}, argv[1]))
 	{
 		ft_printf("cannot bind to %s\n", argv[1]);
 		return (1);
 	}
-	server_set_callback(server, SERVER_CLIENT_ADD_CB, &client_add);
-	server_set_callback(server, SERVER_CLIENT_DEL_CB, &client_del);
-	server_set_callback(server, SERVER_MSG_RECV_CB, &msg_recv);
-	server_set_callback(server, SERVER_MSG_SEND_CB, &msg_send);
-	server_add_client_by_fd(server, 0);
+	socket_set_callback(socket, SOCKET_CLIENT_ADD_CB, &client_add);
+	socket_set_callback(socket, SOCKET_CLIENT_DEL_CB, &client_del);
+	socket_set_callback(socket, SOCKET_MSG_RECV_CB, &msg_recv);
+	socket_set_callback(socket, SOCKET_MSG_SEND_CB, &msg_send);
+	socket_add_client_by_fd(socket, 0);
 	while (1)
 	{
-		server_poll_events(server);
+		socket_poll_events(socket, ACCEPT_CONNECTIONS | ALLOW_READ | ALLOW_WRITE);
 	}
 	return (0);
 }

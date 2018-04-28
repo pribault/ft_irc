@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/10 08:56:44 by pribault          #+#    #+#             */
-/*   Updated: 2018/04/22 17:18:28 by pribault         ###   ########.fr       */
+/*   Updated: 2018/04/28 18:55:55 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,9 +43,9 @@ void	recv_nick(t_env *env, t_data *data, t_message *msg)
 		return ;
 	if (env->opt & OPT_VERBOSE)
 		enqueue_str_by_fd(env, env->out, ft_joinf(
-			"[%s%s!%s@%s%s (%s%s%s)] %s%s%s\n", COLOR_NAME, &data->nickname,
+			"[%s%s!%s@%s%s (%sNick%s)] %s%s%s\n", COLOR_NAME, &data->nickname,
 			data->username, data->hostname, COLOR_CLEAR, COLOR_SYSTEM,
-			&msg->command, COLOR_CLEAR, COLOR_HALF, msg->end, COLOR_CLEAR));
+			COLOR_CLEAR, COLOR_HALF, msg->end, COLOR_CLEAR));
 	if (data->username)
 		send_nick(env, data, (char*)&msg->params[0]);
 	ft_memcpy(&data->nickname, &msg->params[0],
@@ -59,7 +59,7 @@ void	recv_user(t_env *env, t_data *data, t_message *msg)
 	t_bool			error;
 
 	error = FT_FALSE;
-	if ((msg->n_params < 3 || !msg->end) && (error = FT_TRUE) == FT_TRUE)
+	if ((msg->n_params < 3 || !msg->end[0]) && (error = FT_TRUE) == FT_TRUE)
 		send_error(env, data, ERR_NEEDMOREPARAMS,
 			"not enough parameters given");
 	if (data->username && (error = FT_TRUE) == FT_TRUE)
@@ -69,12 +69,12 @@ void	recv_user(t_env *env, t_data *data, t_message *msg)
 		return ;
 	if (env->opt & OPT_VERBOSE)
 		enqueue_str_by_fd(env, env->out, ft_joinf(
-			"[%s%s!%s@%s%s (%s%s%s)] %s%s%s\n", COLOR_NAME, &data->nickname,
+			"[%s%s!%s@%s%s (%sUser%s)] %s%s%s\n", COLOR_NAME, &data->nickname,
 			data->username, data->hostname, COLOR_CLEAR, COLOR_SYSTEM,
-			&msg->command, COLOR_CLEAR, COLOR_HALF, msg->end, COLOR_CLEAR));
+			COLOR_CLEAR, COLOR_HALF, msg->end, COLOR_CLEAR));
 	data->username = ft_strdup((char*)&msg->params[0]);
 	data->hostname = ft_strdup((char*)&msg->params[2]);
-	addr = server_get_client_address(data->client);
+	addr = client_get_address(data->client);
 	if ((host = gethostbyaddr(&addr->addr, addr->len, env->domain)))
 		data->hostname = ft_strdup(host->h_name);
 	if (ft_strlen((char*)&data->nickname))
@@ -90,10 +90,11 @@ void	recv_list(t_env *env, t_data *data, t_message *msg)
 		"you are not registered");
 	if (env->opt & OPT_VERBOSE)
 		enqueue_str_by_fd(env, env->out, ft_joinf(
-		"[%s%s!%s@%s%s (%s%s%s)] %s%s%s\n", COLOR_NAME, &data->nickname,
+		"[%s%s!%s@%s%s (%sList%s)] %s%s%s\n", COLOR_NAME, &data->nickname,
 		data->username, data->hostname, COLOR_CLEAR, COLOR_SYSTEM,
-		&msg->command, COLOR_CLEAR, COLOR_HALF, msg->end, COLOR_CLEAR));
+		COLOR_CLEAR, COLOR_HALF, msg->end, COLOR_CLEAR));
 	i = (size_t)-1;
+	send_liststart(env, data);
 	while (++i < env->channels.n)
 		send_list(env, data, ft_vector_get(&env->channels, i));
 	send_listend(env, data);
@@ -118,7 +119,7 @@ void	recv_join(t_env *env, t_data *data, t_message *msg)
 	ft_free_array((void**)array, ft_arraylen(array) + 1);
 	if (env->opt & OPT_VERBOSE)
 		enqueue_str_by_fd(env, env->out, ft_joinf(
-		"[%s%s!%s@%s%s (%s%s%s)] %s%s%s\n", COLOR_NAME, &data->nickname,
+		"[%s%s!%s@%s%s (%sJoin%s)] %s%s%s\n", COLOR_NAME, &data->nickname,
 		data->username, data->hostname, COLOR_CLEAR, COLOR_SYSTEM,
-		&msg->command, COLOR_CLEAR, COLOR_HALF, msg->end, COLOR_CLEAR));
+		COLOR_CLEAR, COLOR_HALF, msg->end, COLOR_CLEAR));
 }

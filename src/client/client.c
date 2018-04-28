@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/01 18:38:42 by pribault          #+#    #+#             */
-/*   Updated: 2018/04/22 17:59:51 by pribault         ###   ########.fr       */
+/*   Updated: 2018/04/28 13:49:45 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,15 +42,15 @@ static t_error	g_errors[] =
 	{0, NULL, 0}
 };
 
-void	server_excpt(t_server *server)
+void	socket_excpt(t_socket *socket)
 {
-	(void)server;
-	ft_printf("server exception\n");
+	(void)socket;
+	ft_printf("socket exception\n");
 }
 
-void	buffer_full(t_server *server)
+void	buffer_full(t_socket *socket)
 {
-	server_poll_events(server, ALLOW_WRITE);
+	socket_poll_events(socket, ALLOW_WRITE);
 }
 
 int		init_env(t_env *env, int argc, char **argv)
@@ -74,22 +74,22 @@ int		init_env(t_env *env, int argc, char **argv)
 	return (1);
 }
 
-void	start_server(t_env *env)
+void	start_socket(t_env *env)
 {
-	if (!(env->server = server_new()))
+	if (!(env->socket = socket_new()))
 		ft_error(2, ERROR_ALLOCATION, NULL);
-	server_set_callback(env->server, SERVER_CLIENT_ADD_CB, &client_add);
-	server_set_callback(env->server, SERVER_CLIENT_DEL_CB, &client_del);
-	server_set_callback(env->server, SERVER_CLIENT_EXCEPTION_CB,
+	socket_set_callback(env->socket, SOCKET_CLIENT_ADD_CB, &client_add);
+	socket_set_callback(env->socket, SOCKET_CLIENT_DEL_CB, &client_del);
+	socket_set_callback(env->socket, SOCKET_CLIENT_EXCEPTION_CB,
 		&client_excpt);
-	server_set_callback(env->server, SERVER_SERVER_EXCEPTION_CB,
-		&server_excpt);
-	server_set_callback(env->server, SERVER_MSG_RECV_CB, &message_received);
-	server_set_callback(env->server, SERVER_MSG_SEND_CB, &message_sended);
-	server_set_callback(env->server, SERVER_MSG_TRASH_CB, &message_trashed);
-	server_set_callback(env->server, SERVER_BUFFER_FULL_CB, &buffer_full);
-	server_attach_data(env->server, env);
-	server_add_client_by_fd(env->server, env->in);
+	socket_set_callback(env->socket, SOCKET_EXCEPTION_CB,
+		&socket_excpt);
+	socket_set_callback(env->socket, SOCKET_MSG_RECV_CB, &message_received);
+	socket_set_callback(env->socket, SOCKET_MSG_SEND_CB, &message_sended);
+	socket_set_callback(env->socket, SOCKET_MSG_TRASH_CB, &message_trashed);
+	socket_set_callback(env->socket, SOCKET_BUFFER_FULL_CB, &buffer_full);
+	socket_attach_data(env->socket, env);
+	socket_add_client_by_fd(env->socket, env->in);
 }
 
 int		main(int argc, char **argv)
@@ -101,13 +101,13 @@ int		main(int argc, char **argv)
 		print_usage();
 		return (1);
 	}
-	start_server(&env);
+	start_socket(&env);
 	enqueue_str_by_fd(&env, env.out, ft_strdup("Enter your username:\n"));
 	while (1)
 	{
 		if (check_malloc() != MALLOC_OK)
 			ft_error(2, ERROR_CORRUPTED_MEMORY, NULL);
-		server_poll_events(env.server, ACCEPT_CONNECTIONS | ALLOW_READ |
+		socket_poll_events(env.socket, ACCEPT_CONNECTIONS | ALLOW_READ |
 			ALLOW_WRITE);
 	}
 	return (0);

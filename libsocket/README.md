@@ -1,5 +1,5 @@
 # libsocket
 
-low level communication library
+low level C/C++ communication library
 
-this lib use select to read and write on fds
+This library has been built in the scope of scholar projects and is coded under 42 school's norme.

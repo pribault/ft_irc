@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/01 18:54:30 by pribault          #+#    #+#             */
-/*   Updated: 2018/04/22 18:51:16 by pribault         ###   ########.fr       */
+/*   Updated: 2018/04/28 20:14:35 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@
 # include "rfc.h"
 
 # include <arpa/inet.h>
+# include <sys/stat.h>
 # include <netdb.h>
 
 /*
@@ -75,9 +76,11 @@
 
 # define SERVNAME		"SERVNAME"
 # define PORT			"PORT"
+# define MOTD			"MOTD"
 
 # define DEFAULT_SERVNAME	"MyIRC"
 # define DEFAULT_PORT		"6667"
+# define DEFAULT_MOTD		"motd.txt"
 
 /*
 *************
@@ -98,7 +101,9 @@ typedef enum	e_server_error
 	ERROR_LOADING_CONFIG,
 	ERROR_PORT_PARAMS,
 	ERROR_SERVNAME_PARAMS,
-	ERROR_CANNOT_START
+	ERROR_MOTD_PARAMS,
+	ERROR_CANNOT_START,
+	ERROR_CORRUPTED_MEMORY
 }				t_server_error;
 
 /*
@@ -129,8 +134,9 @@ typedef struct	s_channel
 
 typedef struct	s_env
 {
-	t_server	*server;
+	t_socket	*socket;
 	char		*port;
+	char		*motd;
 	uint32_t	opt;
 	int			in;
 	int			out;
@@ -168,6 +174,7 @@ typedef struct	s_config_cb
 int				load_config(t_env *env);
 void			servname_callback(t_env *env, char **array, uint32_t n);
 void			port_callback(t_env *env, char **array, uint32_t n);
+void			motd_callback(t_env *env, char **array, uint32_t n);
 
 /*
 **	flags
@@ -180,32 +187,32 @@ void			get_domain(t_env *env, char **args, int n);
 void			set_verbose(t_env *env);
 
 /*
-**	server callbacks
+**	socket callbacks
 */
 
-void			server_excpt(t_server *server);
+void			socket_excpt(t_socket *socket);
 
 /*
 **	client callbacks
 */
 
-void			client_add(t_server *server, void *client);
-void			client_del(t_server *server, void *client);
-void			client_excpt(t_server *server, void *client);
+void			client_add(t_socket *socket, void *client);
+void			client_del(t_socket *socket, void *client);
+void			client_excpt(t_socket *socket, void *client);
 
 /*
 **	message callbacks
 */
 
-void			message_received(t_server *server, void *client, t_msg *msg);
-void			message_sended(t_server *server, void *client, t_msg *msg);
-void			message_trashed(t_server *server, void *client, t_msg *msg);
+void			message_received(t_socket *socket, void *client, t_msg *msg);
+void			message_sended(t_socket *socket, void *client, t_msg *msg);
+void			message_trashed(t_socket *socket, void *client, t_msg *msg);
 
 /*
 **	packet management
 */
 
-void			treat_packet(t_server *server, void *client, void *ptr,
+void			treat_packet(t_socket *socket, void *client, void *ptr,
 				size_t size);
 char			*get_prefix(t_prefix *prefix, char *s);
 char			*get_param(char *param, char *s);
@@ -215,7 +222,7 @@ char			*get_command(char *command, char *s);
 **	output
 */
 
-void			enqueue_write(t_server *server, void *client, void *ptr,
+void			enqueue_write(t_socket *socket, void *client, void *ptr,
 				size_t size);
 void			enqueue_str_by_fd(t_env *env, int fd, char *s);
 
@@ -229,6 +236,8 @@ void			recv_user(t_env *env, t_data *data, t_message *msg);
 void			recv_list(t_env *env, t_data *data, t_message *msg);
 void			recv_join(t_env *env, t_data *data, t_message *msg);
 void			recv_quit(t_env *env, t_data *data, t_message *msg);
+void			recv_who(t_env *env, t_data *data, t_message *msg);
+void			recv_ping(t_env *env, t_data *data, t_message *msg);
 
 /*
 **	send functions
@@ -237,8 +246,10 @@ void			recv_quit(t_env *env, t_data *data, t_message *msg);
 void			send_error(t_env *env, t_data *data, char *error, char *comment);
 void			send_welcome(t_env *env, t_data *data);
 void			send_nick(t_env *env, t_data *data, char *nick);
+void			send_liststart(t_env *env, t_data *data);
 void			send_list(t_env *env, t_data *data, t_channel *channel);
 void			send_listend(t_env *env, t_data *data);
+void			send_pong(t_env *env, t_data *data);
 
 /*
 **	verif functions

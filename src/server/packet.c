@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/07 11:18:20 by pribault          #+#    #+#             */
-/*   Updated: 2018/04/11 13:19:34 by pribault         ###   ########.fr       */
+/*   Updated: 2018/04/28 19:28:34 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,9 @@ t_cmd	g_recv[] =
 	{USER, &recv_user},
 	{LIST, &recv_list},
 	{JOIN, &recv_join},
+	{QUIT, &recv_quit},
+	{WHO, &recv_who},
+	{PING, &recv_ping},
 	{NULL, NULL}
 };
 
@@ -80,26 +83,27 @@ void	debug_message(t_env *env, t_data *data, t_message *msg)
 		COLOR_VERBOSE, COLOR_CLEAR, &msg->end));
 }
 
-void	treat_packet(t_server *server, void *client, void *ptr, size_t size)
+void	treat_packet(t_socket *socket, void *client, void *ptr, size_t size)
 {
-	static t_message	*msg = NULL;
+	static t_message	msg;
 	t_env				*env;
 	t_data				*data;
 	char				*s;
 
-	if (!msg && !(msg = malloc(sizeof(t_message))))
-		return (ft_error(2, ERROR_ALLOCATION, NULL));
-	env = server_get_data(server);
-	data = server_client_get_data(client);
+	env = socket_get_data(socket);
+	data = client_get_data(client);
 	if (!(s = malloc(size + 1)))
 		return (ft_error(env->err, ERROR_ALLOCATION, NULL));
 	ft_memcpy(s, ptr, size);
 	s[size] = '\0';
-	if (get_message(msg, s) == FT_TRUE)
+	if (env->opt & OPT_VERBOSE)
+		enqueue_str_by_fd(env, env->out, ft_joinf("[%sDEBUG%s] \"%s\"\n",
+			COLOR_VERBOSE, COLOR_CLEAR, s));
+	if (get_message(&msg, s) == FT_TRUE)
 	{
 		if (env->opt & OPT_VERBOSE)
-			debug_message(env, data, msg);
-		search_function(env, data, msg);
+			debug_message(env, data, &msg);
+		search_function(env, data, &msg);
 	}
 	else if (env->opt & OPT_VERBOSE)
 		enqueue_str_by_fd(env, env->out, ft_joinf("[%sERROR%s] %s\n",

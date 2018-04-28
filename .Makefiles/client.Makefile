@@ -31,9 +31,10 @@ LIBFT_INC =	libft.h\
 			malloc.h\
 			structs.h\
 			prototypes.h
-LIBSOCKET_INC =	client.h\
-				server.h\
-				libsocket.h
+LIBSOCKET_INC =	libsocket.h\
+				libsocket_defines.h\
+				libsocket_enums.h\
+				libsocket_structures.h
 DEPENDENCIES =	$(LIBFT_INC:%.h=$(LIBFT_INC_DIR)/%.h)\
 				$(LIBSOCKET_INC:%.h=$(LIBSOCKET_INC_DIR)/%.h)
 

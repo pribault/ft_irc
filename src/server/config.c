@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/10 11:08:38 by pribault          #+#    #+#             */
-/*   Updated: 2018/04/10 16:04:54 by pribault         ###   ########.fr       */
+/*   Updated: 2018/04/28 20:13:42 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ static t_config_cb	g_callbacks[] =
 {
 	{SERVNAME, DEFAULT_SERVNAME, &servname_callback},
 	{PORT, DEFAULT_PORT, &port_callback},
+	{MOTD, DEFAULT_MOTD, &motd_callback},
 	{NULL, NULL, NULL}
 };
 
@@ -35,6 +36,23 @@ void	port_callback(t_env *env, char **array, uint32_t n)
 	if (n != 2)
 		return (ft_error(2, ERROR_PORT_PARAMS, (void*)(uint64_t)n));
 	env->port = ft_strdup(array[1]);
+}
+
+void	motd_callback(t_env *env, char **array, uint32_t n)
+{
+	struct stat	buf;
+	void		*ptr;
+	int			fd;
+
+	if (n != 2)
+		return (ft_error(2, ERROR_MOTD_PARAMS, (void*)(uint64_t)n));
+	if ((fd = open(array[1], O_RDONLY)) == -1)
+		return (ft_error(2, ERROR_FILE, array[1]));
+	if (fstat(fd, &buf) != -1)
+	{
+		// if (!(ptr = mmap(NULL, buf.st_size, PROT_READ, )))
+	}
+	close(fd);
 }
 
 int		create_config(t_env *env)

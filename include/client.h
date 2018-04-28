@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/01 18:59:09 by pribault          #+#    #+#             */
-/*   Updated: 2018/04/22 17:59:28 by pribault         ###   ########.fr       */
+/*   Updated: 2018/04/28 19:31:49 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,11 +83,12 @@ typedef struct	s_data
 	void		*client;
 	void		*ptr;
 	size_t		size;
+	char		*host;
 }				t_data;
 
 typedef struct	s_env
 {
-	t_server	*server;
+	t_socket	*socket;
 	void		*client;
 	char		*address;
 	char		*port;
@@ -133,30 +134,30 @@ void			set_verbose(t_env *env);
 **	client callbacks
 */
 
-void			client_add(t_server *server, void *client);
-void			client_del(t_server *server, void *client);
-void			client_excpt(t_server *server, void *client);
+void			client_add(t_socket *socket, void *client);
+void			client_del(t_socket *socket, void *client);
+void			client_excpt(t_socket *socket, void *client);
 
 /*
 **	message callbacks
 */
 
-void			message_received(t_server *server, void *client, t_msg *msg);
-void			message_sended(t_server *server, void *client, t_msg *msg);
-void			message_trashed(t_server *server, void *client, t_msg *msg);
+void			message_received(t_socket *socket, void *client, t_msg *msg);
+void			message_sended(t_socket *socket, void *client, t_msg *msg);
+void			message_trashed(t_socket *socket, void *client, t_msg *msg);
 
 /*
 **	packet functions
 */
 
-void			treat_packet(t_server *server, void *client, void *ptr,
+void			treat_packet(t_socket *socket, void *client, void *ptr,
 				size_t size);
 
 /*
 **	output functions
 */
 
-void			enqueue_write(t_server *server, void *client, void *ptr,
+void			enqueue_write(t_socket *socket, void *client, void *ptr,
 				size_t size);
 void			enqueue_str_by_fd(t_env *env, int fd, char *s);
 
@@ -164,13 +165,13 @@ void			enqueue_str_by_fd(t_env *env, int fd, char *s);
 **	send functions
 */
 
-void			send_nick(t_server *server, void *client, char *nick);
-void			send_user(t_server *server, void *client, char *username,
+void			send_nick(t_socket *socket, void *client, char *nick);
+void			send_user(t_socket *socket, void *client, char *username,
 				char *realname);
-void			send_pong(t_server *server, void *client);
-void			send_list(t_server *server, void *client);
-void			send_join(t_server *server, void *client, char *list);
-void			send_quit(t_server *server, void *client, char *comment);
+void			send_pong(t_socket *socket, void *client);
+void			send_list(t_socket *socket, void *client);
+void			send_join(t_socket *socket, void *client, char *list);
+void			send_quit(t_socket *socket, void *client, char *comment);
 
 /*
 **	receive functions
@@ -198,6 +199,7 @@ void			recv_listend(t_env *env, t_data *data, t_message *msg);
 void			recv_localusers(t_env *env, t_data *data, t_message *msg);
 void			recv_globalusers(t_env *env, t_data *data, t_message *msg);
 void			recv_join(t_env *env, t_data *data, t_message *msg);
+void			recv_ping(t_env *env, t_data *data, t_message *msg);
 
 void			recv_error(t_env *env, t_data *data, t_message *msg);
 
