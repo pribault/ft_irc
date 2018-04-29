@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/10 10:46:50 by pribault          #+#    #+#             */
-/*   Updated: 2018/04/28 18:52:33 by pribault         ###   ########.fr       */
+/*   Updated: 2018/04/29 13:43:36 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,8 @@ void	send_liststart(t_env *env, t_data *data)
 {
 	char	*s;
 
-	if (!(s = ft_joinf(":%s %s :there is currently %u channels%s", &data->nickname,
-		RPL_LISTSTART, env->channels.n, CRLF)))
+	if (!(s = ft_joinf(":%s %s :there is currently %u channels%s",
+		&data->nickname, RPL_LISTSTART, env->channels.n, CRLF)))
 		ft_error(2, ERROR_ALLOCATION, NULL);
 	enqueue_write(env->socket, data->client, s, ft_strlen(s));
 }

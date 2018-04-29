@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/01 18:54:30 by pribault          #+#    #+#             */
-/*   Updated: 2018/04/28 20:14:35 by pribault         ###   ########.fr       */
+/*   Updated: 2018/04/29 13:46:23 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,7 +136,7 @@ typedef struct	s_env
 {
 	t_socket	*socket;
 	char		*port;
-	char		*motd;
+	char		**motd;
 	uint32_t	opt;
 	int			in;
 	int			out;
@@ -243,13 +243,18 @@ void			recv_ping(t_env *env, t_data *data, t_message *msg);
 **	send functions
 */
 
-void			send_error(t_env *env, t_data *data, char *error, char *comment);
+void			send_error(t_env *env, t_data *data, char *error,
+				char *comment);
+void			send_first_welcome(t_env *env, t_data *data);
 void			send_welcome(t_env *env, t_data *data);
 void			send_nick(t_env *env, t_data *data, char *nick);
 void			send_liststart(t_env *env, t_data *data);
 void			send_list(t_env *env, t_data *data, t_channel *channel);
 void			send_listend(t_env *env, t_data *data);
 void			send_pong(t_env *env, t_data *data);
+void			send_motdstart(t_env *env, t_data *data);
+void			send_motd(t_env *env, t_data *data);
+void			send_motdend(t_env *env, t_data *data);
 
 /*
 **	verif functions

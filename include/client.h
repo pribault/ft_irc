@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/01 18:59:09 by pribault          #+#    #+#             */
-/*   Updated: 2018/04/28 19:31:49 by pribault         ###   ########.fr       */
+/*   Updated: 2018/04/29 11:58:08 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -172,6 +172,8 @@ void			send_pong(t_socket *socket, void *client);
 void			send_list(t_socket *socket, void *client);
 void			send_join(t_socket *socket, void *client, char *list);
 void			send_quit(t_socket *socket, void *client, char *comment);
+void			send_who(t_socket *socket, void *client, char *str,
+				char *comment);
 
 /*
 **	receive functions
@@ -212,6 +214,7 @@ void			cmd_nick(t_env *env, char *s);
 void			cmd_list(t_env *env, char *s);
 void			cmd_join(t_env *env, char *s);
 void			cmd_quit(t_env *env, char *s);
+void			cmd_who(t_env *env, char *s);
 
 char			*get_prefix(t_prefix *prefix, char *s);
 char			*get_command(char *command, char *s);

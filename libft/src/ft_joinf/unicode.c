@@ -6,40 +6,11 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/12 00:02:10 by pribault          #+#    #+#             */
-/*   Updated: 2018/04/12 00:12:41 by pribault         ###   ########.fr       */
+/*   Updated: 2018/04/29 12:18:53 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_joinf.h"
-
-/*
-int		print_wchar(wchar_t c)
-{
-	if (c <= 0x7F)
-	{
-		ft_putchar_fd(c, 1);
-		return (1);
-	}
-	if (c <= 0x7FF)
-	{
-		ft_putchar_fd((c >> 6) + 0xC0, 1);
-		ft_putchar_fd((c & 0x3F) + 0x80, 1);
-		return (2);
-	}
-	if (c <= 0xFFFF)
-	{
-		ft_putchar_fd((c >> 12) + 0xE0, 1);
-		ft_putchar_fd(((c >> 6) & 0x3F) + 0x80, 1);
-		ft_putchar_fd((c & 0x3F) + 0x80, 1);
-		return (3);
-	}
-	ft_putchar_fd((c >> 18) + 0xF0, 1);
-	ft_putchar_fd(((c >> 12) & 0x3F) + 0x80, 1);
-	ft_putchar_fd(((c >> 6) & 0x3F) + 0x80, 1);
-	ft_putchar_fd((c & 0x3F) + 0x80, 1);
-	return (4);
-}
-*/
 
 size_t	get_unicode_len(va_list va)
 {

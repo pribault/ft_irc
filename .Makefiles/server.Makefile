@@ -8,6 +8,7 @@ SRC =	server.c	flags.c\
 		command.c	config.c\
 		receive.c	receive_2.c\
 		send.c		send_2.c\
+		send_3.c\
 		verif.c		channels.c
 DIR = server
 SRC_DIR = src

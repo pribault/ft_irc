@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/10 08:56:44 by pribault          #+#    #+#             */
-/*   Updated: 2018/04/28 18:55:55 by pribault         ###   ########.fr       */
+/*   Updated: 2018/04/29 13:46:40 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ void	recv_user(t_env *env, t_data *data, t_message *msg)
 	if ((host = gethostbyaddr(&addr->addr, addr->len, env->domain)))
 		data->hostname = ft_strdup(host->h_name);
 	if (ft_strlen((char*)&data->nickname))
-		send_welcome(env, data);
+		send_first_welcome(env, data);
 }
 
 void	recv_list(t_env *env, t_data *data, t_message *msg)

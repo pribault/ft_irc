@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/08 18:36:05 by pribault          #+#    #+#             */
-/*   Updated: 2018/04/11 14:48:25 by pribault         ###   ########.fr       */
+/*   Updated: 2018/04/29 12:19:36 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,14 +44,13 @@ t_bool		is_pseudo_valid(char *s)
 	return (FT_TRUE);
 }
 
-t_bool	is_username_valid(char *s)
+t_bool		is_username_valid(char *s)
 {
 	if (!ft_isof(*s, PARAM_WHITE))
 		while (*(++s))
 			if (ft_isof(*s, PARAM_WHITE))
 				return (FT_FALSE);
-		return (FT_TRUE);
-	return (FT_FALSE);
+	return (FT_TRUE);
 }
 
 static char	*prefix_getter(char *prefix, char *s)
