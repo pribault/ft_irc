@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/16 14:13:41 by pribault          #+#    #+#             */
-/*   Updated: 2018/04/28 17:53:57 by pribault         ###   ########.fr       */
+/*   Updated: 2018/05/23 14:07:31 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ static int	socket_bind_and_listen(t_socket *msocket)
 		< 0 || setsockopt(msocket->sockfd, SOL_SOCKET, SO_REUSEADDR, &n,
 		sizeof(int)) < 0 ||
 		bind(msocket->sockfd, (void*)addr, (msocket->domain == IPV4) ?
-		sizeof(struct sockaddr_in) : sizeof(struct sockaddr_in6)) < 0)
+		sizeof(struct sockaddr) : sizeof(struct sockaddr_in6)) < 0)
 		return (0);
 	if (msocket->protocol == TCP &&
 		listen(msocket->sockfd, msocket->queue_max) < 0)
@@ -84,7 +84,8 @@ static int	socket_bind_and_listen(t_socket *msocket)
 
 int			socket_bind(t_socket *socket, t_method method, char *port)
 {
-	if ((socket->opt & SERVER_RUNNING))
+	if ((socket->opt & SERVER_RUNNING) ||
+		!ft_atou(port))
 		return (0);
 	socket->opt |= SERVER_RUNNING;
 	socket->port = ft_atou(port);

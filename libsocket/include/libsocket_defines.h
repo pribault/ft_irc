@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/16 13:38:02 by pribault          #+#    #+#             */
-/*   Updated: 2018/04/28 14:18:20 by pribault         ###   ########.fr       */
+/*   Updated: 2018/05/23 17:02:57 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@
 
 #  define ACCEPT_CONNECTIONS		BYTE(0)
 #  define ALLOW_READ				BYTE(1)
-#  define ALLOW_WRITE			BYTE(2)
+#  define ALLOW_WRITE				BYTE(2)
 
 /*
 **	number of messages that can be enqueued to write in a socket
@@ -87,16 +87,16 @@
 
 #  ifdef LIBSOCKET_INTERNAL
 
-#   define CIRCULAR_BUFFER_SIZE	128
+#   define CIRCULAR_BUFFER_SIZE		128
 
 /*
 **	default values
 */
 
-#   define DEFAULT_READ_BUFFER_SIZE	512
+#   define DEFAULT_READ_BUFFER_SIZE		1024
 #   define DEFAULT_QUEUE_MAX			2
 #   define DEFAULT_TIMEOUT_S			1
-#   define DEFAULT_TIMEOUT_US		0
+#   define DEFAULT_TIMEOUT_US			0
 
 /*
 **	option masks

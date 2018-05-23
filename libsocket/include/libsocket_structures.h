@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/16 13:34:52 by pribault          #+#    #+#             */
-/*   Updated: 2018/04/28 17:59:42 by pribault         ###   ########.fr       */
+/*   Updated: 2018/04/28 13:17:37 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ typedef struct				s_addr
 {
 	struct sockaddr_storage	addr;
 	socklen_t				len;
+	char					*str;
 }							t_addr;
 
 typedef struct				s_method
