@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/07 15:36:29 by pribault          #+#    #+#             */
-/*   Updated: 2018/04/28 13:56:43 by pribault         ###   ########.fr       */
+/*   Updated: 2018/05/24 11:13:09 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,9 +33,11 @@ void	send_user(t_socket *socket, void *client,
 
 void	send_pong(t_socket *socket, void *client)
 {
+	t_env	*env;
 	char	*s;
 
-	if (!(s = ft_joinf("%s%s", PONG, CRLF)))
+	env = socket_get_data(socket);
+	if (!(s = ft_joinf("%s %s%s", PONG, env->username, CRLF)))
 		ft_error(2, ERROR_ALLOCATION, NULL);
 	enqueue_write(socket, client, s, ft_strlen(s));
 }

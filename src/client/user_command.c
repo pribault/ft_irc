@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/08 11:09:20 by pribault          #+#    #+#             */
-/*   Updated: 2018/04/29 11:45:30 by pribault         ###   ########.fr       */
+/*   Updated: 2018/05/24 16:39:06 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ static t_user_cmd	g_cmds[] =
 	{"/join", &cmd_join},
 	{"/quit", &cmd_quit},
 	{"/who", &cmd_who},
+	{"/connect", &cmd_connect},
 	{NULL, NULL}
 };
 
@@ -54,7 +55,7 @@ void				treat_command(t_env *env, char *s)
 		state++;
 		if (!(env->username = ft_strdup(s)))
 			ft_error(2, ERROR_ALLOCATION, NULL);
-		enqueue_str_by_fd(env, env->out, ft_strdup("Enter your real name:\n"));
+		enqueue_str_by_fd(env, 1, ft_strdup("Enter your real name:\n"));
 	}
 	else if (state == 1)
 	{

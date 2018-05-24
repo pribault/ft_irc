@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/01 18:38:44 by pribault          #+#    #+#             */
-/*   Updated: 2018/04/28 19:48:33 by pribault         ###   ########.fr       */
+/*   Updated: 2018/05/24 16:43:31 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,20 +75,13 @@ int		init_env(t_env *env, int argc, char **argv)
 		ft_error(2, ERROR_LOADING_CONFIG, NULL);
 	ft_get_flags(argc, argv, ft_get_flag_array((void*)&g_short_flags,
 		(void*)&g_long_flags, (void*)&get_default), env);
-	if ((env->in = open("/dev/stdin", O_RDONLY)) == -1 ||
-		(env->out = open("/dev/stdout", O_WRONLY)) == -1 ||
-		(env->err = open("/dev/stderr", O_WRONLY)) == -1)
-	{
-		ft_error(2, ERROR_SETUP_FDS, NULL);
-		return (0);
-	}
 	return (1);
 }
 
 void	start_socket(t_env *env)
 {
 	if (!(env->socket = socket_new()))
-		return (ft_error(env->err, ERROR_ALLOCATION, NULL));
+		return (ft_error(2, ERROR_ALLOCATION, NULL));
 	socket_set_callback(env->socket, SOCKET_CLIENT_ADD_CB, &client_add);
 	socket_set_callback(env->socket, SOCKET_CLIENT_DEL_CB, &client_del);
 	socket_set_callback(env->socket, SOCKET_CLIENT_EXCEPTION_CB,
@@ -102,7 +95,7 @@ void	start_socket(t_env *env)
 	socket_attach_data(env->socket, env);
 	if (!socket_bind(env->socket, (t_method){TCP, IPV4}, env->port))
 		ft_error(2, ERROR_CANNOT_START, env->port);
-	socket_add_client_by_fd(env->socket, env->in);
+	socket_add_client_by_fd(env->socket, 0);
 }
 
 int		main(int argc, char **argv)

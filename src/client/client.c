@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/01 18:38:42 by pribault          #+#    #+#             */
-/*   Updated: 2018/04/28 13:49:45 by pribault         ###   ########.fr       */
+/*   Updated: 2018/05/24 16:35:21 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,8 @@ static t_error	g_errors[] =
 	{ERROR_UNKNOWN_COMMAND, "unknown command '%s'", 0},
 	{ERROR_CORRUPTED_MEMORY, "memory is corrupted", ERROR_EXIT},
 	{ERROR_DISCONNECTED, "you are not connected", 0},
+	{ERROR_ALREADY_CONNECTED, "already connected to a server: %s", 0},
+	{ERROR_INVALID_PARAMETERS, "invalid parameters: %s", 0},
 	{0, NULL, 0}
 };
 
@@ -62,15 +64,9 @@ int		init_env(t_env *env, int argc, char **argv)
 	env->domain = IPV4;
 	env->client = NULL;
 	env->opt = 0;
+	env->connected = FT_FALSE;
 	ft_get_flags(argc, argv, ft_get_flag_array((void*)&g_short_flags,
 		(void*)&g_long_flags, (void*)&get_default), env);
-	if ((env->in = open("/dev/stdin", O_RDONLY)) == -1 ||
-		(env->out = open("/dev/stdout", O_WRONLY)) == -1 ||
-		(env->err = open("/dev/stderr", O_WRONLY)) == -1)
-	{
-		ft_error(2, ERROR_SETUP_FDS, NULL);
-		return (0);
-	}
 	return (1);
 }
 
@@ -89,7 +85,7 @@ void	start_socket(t_env *env)
 	socket_set_callback(env->socket, SOCKET_MSG_TRASH_CB, &message_trashed);
 	socket_set_callback(env->socket, SOCKET_BUFFER_FULL_CB, &buffer_full);
 	socket_attach_data(env->socket, env);
-	socket_add_client_by_fd(env->socket, env->in);
+	socket_add_client_by_fd(env->socket, 0);
 }
 
 int		main(int argc, char **argv)
@@ -102,7 +98,7 @@ int		main(int argc, char **argv)
 		return (1);
 	}
 	start_socket(&env);
-	enqueue_str_by_fd(&env, env.out, ft_strdup("Enter your username:\n"));
+	enqueue_str_by_fd(&env, 1, ft_strdup("Enter your username:\n"));
 	while (1)
 	{
 		if (check_malloc() != MALLOC_OK)

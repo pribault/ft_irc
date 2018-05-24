@@ -13,8 +13,8 @@ SRC =	server.c	flags.c\
 DIR = server
 SRC_DIR = src
 OBJ_DIR = .obj
-OBJ = $(SRC:%.c=$(OBJ_DIR)/$(DIR)/%.o)
-FLAGS = -Wall -Wextra
+OBJ = $(sort $(SRC:%.c=$(OBJ_DIR)/$(DIR)/%.o))
+FLAGS = -Wall -Wextra -Werror
 INCLUDES =	server.h rfc.h
 INCLUDE = $(INCLUDES:%.h=include/%.h)
 N = 0

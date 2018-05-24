@@ -10,12 +10,12 @@ SRC =	client.c flags.c\
 		param.c receive.c\
 		receive_2.c receive_3.c\
 		receive_4.c receive_5.c\
-		user_commands.c
+		user_commands.c user_commands_2.c
 DIR = client
 SRC_DIR = src
 OBJ_DIR = .obj
-OBJ = $(SRC:%.c=$(OBJ_DIR)/$(DIR)/%.o)
-FLAGS = -Wall -Wextra
+OBJ = $(sort $(SRC:%.c=$(OBJ_DIR)/$(DIR)/%.o))
+FLAGS = -Wall -Wextra -Werror
 INCLUDES =	client.h rfc.h
 INCLUDE = $(INCLUDES:%.h=include/%.h)
 N = 0

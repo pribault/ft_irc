@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/07 14:48:20 by pribault          #+#    #+#             */
-/*   Updated: 2018/04/28 19:31:59 by pribault         ###   ########.fr       */
+/*   Updated: 2018/05/24 16:38:22 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ t_cmd	g_recv[] =
 	{RPL_LISTEND, &recv_listend},
 	{RPL_LOCALUSERS, &recv_localusers},
 	{RPL_GLOBALUSERS, &recv_globalusers},
+	{RPL_LUSERUNKNOWN, &recv_userunknown},
 	{ERR_NONICKNAMEGIVEN, &recv_error},
 	{ERR_ERRONEUSNICKNAME, &recv_error},
 	{NULL, NULL}
@@ -84,17 +85,17 @@ void	debug_message(t_env *env, t_data *data, t_message *msg)
 	uint32_t	i;
 
 	(void)data;
-	enqueue_str_by_fd(env, env->out,
+	enqueue_str_by_fd(env, 1,
 		ft_joinf("[%sDEBUG%s] name=%s user=%s host=%s\n",
 			COLOR_VERBOSE, COLOR_CLEAR, &msg->prefix.name, &msg->prefix.user,
 			&msg->prefix.host));
-	enqueue_str_by_fd(env, env->out, ft_joinf("[%sDEBUG%s] command=%s\n",
+	enqueue_str_by_fd(env, 1, ft_joinf("[%sDEBUG%s] command=%s\n",
 		COLOR_VERBOSE, COLOR_CLEAR, &msg->command));
-	enqueue_str_by_fd(env, env->out, ft_joinf("[%sDEBUG%s] args(%u):\n",
+	enqueue_str_by_fd(env, 1, ft_joinf("[%sDEBUG%s] args(%u):\n",
 		COLOR_VERBOSE, COLOR_CLEAR, msg->n_params));
 	i = (uint32_t)-1;
 	while (++i < msg->n_params)
-		enqueue_str_by_fd(env, env->out, ft_joinf("[%sDEBUG%s] \t%s\n",
+		enqueue_str_by_fd(env, 1, ft_joinf("[%sDEBUG%s] \t%s\n",
 			COLOR_VERBOSE, COLOR_CLEAR, &msg->params[i]));
 }
 
@@ -108,11 +109,11 @@ void	treat_packet(t_socket *socket, void *client, void *ptr, size_t size)
 	env = socket_get_data(socket);
 	data = client_get_data(client);
 	if (!(s = malloc(size + 1)))
-		return (ft_error(env->err, ERROR_ALLOCATION, NULL));
+		return (ft_error(2, ERROR_ALLOCATION, NULL));
 	ft_memcpy(s, ptr, size);
 	s[size] = '\0';
 	if (env->opt & OPT_VERBOSE)
-		enqueue_str_by_fd(env, env->out, ft_joinf("[%sDEBUG%s] \"%s\"\n",
+		enqueue_str_by_fd(env, 1, ft_joinf("[%sDEBUG%s] \"%s\"\n",
 			COLOR_VERBOSE, COLOR_CLEAR, s));
 	if (get_message(&msg, s) == FT_TRUE)
 	{
@@ -121,7 +122,7 @@ void	treat_packet(t_socket *socket, void *client, void *ptr, size_t size)
 		search_function(env, data, &msg);
 	}
 	else
-		enqueue_str_by_fd(env, env->out, ft_joinf("[%sERROR%s] %s\n",
+		enqueue_str_by_fd(env, 1, ft_joinf("[%sERROR%s] %s\n",
 			COLOR_ERROR, COLOR_CLEAR, s));
 	free(s);
 }

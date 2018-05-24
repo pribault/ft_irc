@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/01 18:59:09 by pribault          #+#    #+#             */
-/*   Updated: 2018/04/29 11:58:08 by pribault         ###   ########.fr       */
+/*   Updated: 2018/05/24 16:34:29 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,9 @@ typedef enum	e_client_error
 	ERROR_UNKNOWN_PACKET,
 	ERROR_UNKNOWN_COMMAND,
 	ERROR_CORRUPTED_MEMORY,
-	ERROR_DISCONNECTED
+	ERROR_DISCONNECTED,
+	ERROR_ALREADY_CONNECTED,
+	ERROR_INVALID_PARAMETERS
 }				t_client_error;
 
 /*
@@ -95,11 +97,9 @@ typedef struct	s_env
 	char		*username;
 	char		*real_name;
 	uint32_t	opt;
-	int			in;
-	int			out;
-	int			err;
 	t_protocol	protocol;
 	t_domain	domain;
+	t_bool		connected;
 }				t_env;
 
 typedef struct	s_cmd
@@ -202,6 +202,7 @@ void			recv_localusers(t_env *env, t_data *data, t_message *msg);
 void			recv_globalusers(t_env *env, t_data *data, t_message *msg);
 void			recv_join(t_env *env, t_data *data, t_message *msg);
 void			recv_ping(t_env *env, t_data *data, t_message *msg);
+void			recv_userunknown(t_env *env, t_data *data, t_message *msg);
 
 void			recv_error(t_env *env, t_data *data, t_message *msg);
 
@@ -215,6 +216,7 @@ void			cmd_list(t_env *env, char *s);
 void			cmd_join(t_env *env, char *s);
 void			cmd_quit(t_env *env, char *s);
 void			cmd_who(t_env *env, char *s);
+void			cmd_connect(t_env *env, char *s);
 
 char			*get_prefix(t_prefix *prefix, char *s);
 char			*get_command(char *command, char *s);
