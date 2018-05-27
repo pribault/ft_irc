@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/10 10:46:50 by pribault          #+#    #+#             */
-/*   Updated: 2018/04/29 13:43:36 by pribault         ###   ########.fr       */
+/*   Updated: 2018/05/27 11:36:43 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,9 @@ void	send_welcome(t_env *env, t_data *data)
 {
 	char	*s;
 
-	if (!(s = ft_joinf(":%s %s :Welcome to %s %s!%s@%s%s", env->name,
-		RPL_WELCOME, env->name, &data->nickname, data->username,
-		data->hostname, CRLF)))
+	if (!(s = ft_joinf(":%s %s %s :Welcome to %s %s!%s@%s%s", env->name,
+		RPL_WELCOME, data->nickname, env->name, &data->nickname,
+		data->username, data->hostname, CRLF)))
 		ft_error(2, ERROR_ALLOCATION, NULL);
 	enqueue_write(env->socket, data->client, s, ft_strlen(s));
 }
