@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/02 18:45:10 by pribault          #+#    #+#             */
-/*   Updated: 2018/05/24 16:36:04 by pribault         ###   ########.fr       */
+/*   Updated: 2018/06/29 15:25:56 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,7 @@ void	client_add(t_socket *socket, void *client)
 	client_attach_data(client, ptr);
 	if (client_get_fd(client) != 0)
 	{
-		if (env->opt & OPT_VERBOSE)
-			enqueue_str_by_fd(env, 1, ft_joinf("[%s] connected\n",
+		enqueue_str_by_fd(env, 1, ft_joinf("[%s] connected\n",
 			inet_ntoa(*(struct in_addr *)client_get_address(client))));
 		if (env->client)
 			socket_remove_client(socket, env->client);
@@ -50,8 +49,7 @@ void	client_del(t_socket *socket, void *client)
 	if (client_get_fd(client) != 0)
 	{
 		env->client = NULL;
-		if (env->opt & OPT_VERBOSE)
-			enqueue_str_by_fd(env, 1, ft_joinf("[%s] disconnected\n",
+		enqueue_str_by_fd(env, 1, ft_joinf("[%s] disconnected\n",
 			inet_ntoa(*(struct in_addr *)client_get_address(client))));
 	}
 	else if (env->opt & OPT_VERBOSE)

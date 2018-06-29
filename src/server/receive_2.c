@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/22 18:39:44 by pribault          #+#    #+#             */
-/*   Updated: 2018/05/24 16:43:13 by pribault         ###   ########.fr       */
+/*   Updated: 2018/06/29 18:01:52 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,14 +19,6 @@ void	recv_quit(t_env *env, t_data *data, t_message *msg)
 	uint64_t	j;
 
 	i = (uint64_t)-1;
-	while ((channel = ft_vector_get(&env->channels, ++i)))
-		if (is_client_in_channel(channel, data) == FT_TRUE)
-		{
-			remove_client_from_channel(channel, data);
-			j = (uint64_t)-1;
-			while (ft_vector_get(&channel->clients, ++j))
-				;
-		}
 	if (env->opt & OPT_VERBOSE)
 		enqueue_str_by_fd(env, 1, ft_joinf(
 		"[%s%s!%s@%s%s (%sQuit%s)] %s%s%s\n", COLOR_NAME, &data->nickname,

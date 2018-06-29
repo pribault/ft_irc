@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/24 11:26:40 by pribault          #+#    #+#             */
-/*   Updated: 2018/05/24 17:03:28 by pribault         ###   ########.fr       */
+/*   Updated: 2018/06/29 15:28:53 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void	cmd_help(t_env *env, char *s)
 	enqueue_str_by_fd(env, 1, ft_strdup("list of commands:\n"));
 	enqueue_str_by_fd(env, 1, ft_strdup("  /help\n"));
 	enqueue_str_by_fd(env, 1, ft_strdup("  /connect <address> <port>\n"));
-	enqueue_str_by_fd(env, 1, ft_strdup("  /quit <channels>\n"));
+	enqueue_str_by_fd(env, 1, ft_strdup("  /quit <reason>\n"));
 	enqueue_str_by_fd(env, 1, ft_strdup("  /list\n"));
 	enqueue_str_by_fd(env, 1, ft_strdup("  /join <channels>\n"));
 	enqueue_str_by_fd(env, 1, ft_strdup("  /who <channels>\n"));

@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/01 18:54:30 by pribault          #+#    #+#             */
-/*   Updated: 2018/05/24 16:39:36 by pribault         ###   ########.fr       */
+/*   Updated: 2018/06/29 18:01:33 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -252,6 +252,7 @@ void			send_pong(t_env *env, t_data *data);
 void			send_motdstart(t_env *env, t_data *data);
 void			send_motd(t_env *env, t_data *data);
 void			send_motdend(t_env *env, t_data *data);
+void			send_quit(t_env *env, t_data *data, t_data *to, char *reason);
 
 /*
 **	verif functions
