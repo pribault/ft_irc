@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/11 00:04:45 by pribault          #+#    #+#             */
-/*   Updated: 2018/06/30 11:51:56 by pribault         ###   ########.fr       */
+/*   Updated: 2018/06/30 13:12:00 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,8 @@ void		add_client_to_channel(t_env *env, t_channel *channel, t_data *data)
 	while (++i < channel->clients.n &&
 		(client = ft_vector_get(&channel->clients, i)))
 		send_join(env, data, *client, channel);
+	send_topic(env, data, channel);
+	send_name_reply(env, data, channel);
 }
 
 void		create_channel(t_env *env, t_vector *vector, char *name,

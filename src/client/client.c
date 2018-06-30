@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/01 18:38:42 by pribault          #+#    #+#             */
-/*   Updated: 2018/05/24 16:35:21 by pribault         ###   ########.fr       */
+/*   Updated: 2018/06/30 12:55:37 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ int		main(int argc, char **argv)
 {
 	t_env	env;
 
-	if (!init_env(&env, argc, argv) || !env.address || !env.port)
+	if (!init_env(&env, argc, argv))
 	{
 		print_usage();
 		return (1);

@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/01 18:54:30 by pribault          #+#    #+#             */
-/*   Updated: 2018/06/30 12:39:32 by pribault         ###   ########.fr       */
+/*   Updated: 2018/06/30 13:11:04 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -261,6 +261,8 @@ void			send_who_reply(t_env *env, t_data *data, t_data *client,
 void			send_err_no_such_server(t_env *env, t_data *data,
 				char *servname);
 void			send_end_of_who(t_env *env, t_data *data, char *name);
+void			send_topic(t_env *env, t_data *data, t_channel *channel);
+void			send_name_reply(t_env *env, t_data *data, t_channel *channel);
 
 /*
 **	verif functions
