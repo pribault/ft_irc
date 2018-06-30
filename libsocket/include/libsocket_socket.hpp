@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/19 13:58:47 by pribault          #+#    #+#             */
-/*   Updated: 2018/04/28 13:17:34 by pribault         ###   ########.fr       */
+/*   Updated: 2018/06/30 13:38:35 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,6 @@
 # ifdef __cplusplus
 
 #  include "libsocket_callbacks.hpp"
-#  include <boost/circular_buffer.hpp>
 
 namespace libsocket
 {
@@ -51,7 +50,6 @@ namespace libsocket
 		private:
 
 			std::vector<Client>				clients;
-			boost::circular_buffer<Message>	write_queue;
 			Callbacks						callbacks;
 	};
 }

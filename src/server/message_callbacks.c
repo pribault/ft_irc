@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/02 13:51:38 by pribault          #+#    #+#             */
-/*   Updated: 2018/05/24 16:41:41 by pribault         ###   ########.fr       */
+/*   Updated: 2018/06/30 13:39:26 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,10 +84,8 @@ void	message_sended(t_socket *socket, void *client, t_msg *msg)
 
 void	message_trashed(t_socket *socket, void *client, t_msg *msg)
 {
-	t_env	*env;
-
 	(void)msg;
-	env = socket_get_data(socket);
+	(void)socket;
 	if (client_get_fd(client) != 2)
 		free(msg->ptr);
 	ft_printf("[%sERROR%s] trashed\n", COLOR_ERROR, COLOR_CLEAR);

@@ -6,7 +6,7 @@
 #    By: pribault <pribault@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/04/16 14:01:15 by pribault          #+#    #+#              #
-#    Updated: 2018/04/20 13:46:12 by pribault         ###   ########.fr        #
+#    Updated: 2018/06/30 13:37:27 by pribault         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -51,7 +51,7 @@ INCLUDE =	$(sort \
 N =	0
 MAX =	$(words $(OBJ))
 COMPILED =	false
-LIBFT =			libft
+LIBFT =			../libft
 LIBFT_INC_DIR =	$(LIBFT)/include
 LIBFT_INCLUDES =	libft.h\
 					ft_printf.h\
