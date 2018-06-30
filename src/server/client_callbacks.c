@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/02 12:28:02 by pribault          #+#    #+#             */
-/*   Updated: 2018/06/30 17:42:00 by pribault         ###   ########.fr       */
+/*   Updated: 2018/06/30 18:34:08 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,8 @@ void	notify_disconnection(t_env *env, t_data *data, char *reason)
 				if (data != *client)
 					send_quit(env, data, *client, reason);
 			remove_client_from_channel(channel, data);
+			if (!channel->clients.n)
+				ft_vector_del_one(&env->channels, i--);
 		}
 }
 
