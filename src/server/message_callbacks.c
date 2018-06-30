@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/02 13:51:38 by pribault          #+#    #+#             */
-/*   Updated: 2018/06/30 17:42:47 by pribault         ###   ########.fr       */
+/*   Updated: 2018/06/30 19:31:00 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ void	message_received(t_socket *socket, void *client, t_msg *msg)
 
 	env = socket_get_data(socket);
 	data = client_get_data(client);
+	data->last = env->now;
 	if (client_get_fd(client) == 0)
 		return ;
 	while (msg->size)
@@ -72,15 +73,20 @@ void	message_received(t_socket *socket, void *client, t_msg *msg)
 
 void	message_sended(t_socket *socket, void *client, t_msg *msg)
 {
+	t_data	*data;
 	t_env	*env;
 
 	env = socket_get_data(socket);
 	if (client_get_fd(client) != 2)
 		free(msg->ptr);
 	if (client_get_fd(client) != 1 && (env->opt & OPT_VERBOSE))
+	{
+		data = client_get_data(client);
+		data->last = env->now;
 		enqueue_str_by_fd(env, 1, ft_joinf("[%s] message sended\n",
 			inet_ntoa(*(struct in_addr *)&((struct sockaddr_in *)
 				client_get_address(client))->sin_addr)));
+	}
 }
 
 void	message_trashed(t_socket *socket, void *client, t_msg *msg)

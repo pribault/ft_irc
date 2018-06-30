@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/01 18:38:44 by pribault          #+#    #+#             */
-/*   Updated: 2018/06/30 15:16:09 by pribault         ###   ########.fr       */
+/*   Updated: 2018/06/30 19:31:52 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,6 +112,8 @@ int		main(int argc, char **argv)
 	{
 		if (check_malloc() != MALLOC_OK)
 			ft_error(2, ERROR_CORRUPTED_MEMORY, NULL);
+		gettimeofday(&env.now, NULL);
+		check_clients_activity(&env);
 		socket_poll_events(env.socket, ACCEPT_CONNECTIONS | ALLOW_READ |
 			ALLOW_WRITE);
 	}

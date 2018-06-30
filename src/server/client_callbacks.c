@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/02 12:28:02 by pribault          #+#    #+#             */
-/*   Updated: 2018/06/30 18:34:08 by pribault         ###   ########.fr       */
+/*   Updated: 2018/06/30 19:10:28 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ void	client_add(t_socket *socket, void *client)
 	ft_bzero(&data, sizeof(t_data));
 	data.client = client;
 	data.hostname = client_get_address(client)->str;
+	data.last = env->now;
 	client_attach_data(client, ft_memdup(&data, sizeof(t_data)));
 	if (client_get_fd(client) != 0)
 	{

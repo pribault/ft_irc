@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/10 17:00:47 by pribault          #+#    #+#             */
-/*   Updated: 2018/05/27 11:31:37 by pribault         ###   ########.fr       */
+/*   Updated: 2018/06/30 19:24:57 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,4 +29,23 @@ t_bool	is_nickname_valid(char *nick)
 	if (nick[i])
 		return (FT_FALSE);
 	return (FT_TRUE);
+}
+
+void	check_clients_activity(t_env *env)
+{
+	t_data	*data;
+	size_t	diff;
+	size_t	i;
+
+	i = (size_t)-1;
+	while (++i < env->clients.n &&
+		(data = client_get_data(*(void **)ft_vector_get(&env->clients, i))))
+	{
+		diff = (env->now.tv_sec - data->last.tv_sec) +
+			(env->now.tv_usec - data->last.tv_usec) / 1000000;
+		if (diff >= TIMEOUT_PONG)
+			socket_remove_client(env->socket, data->client);
+		else if (diff >= TIMEOUT_PING)
+			send_ping(env, data);
+	}
 }

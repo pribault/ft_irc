@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/01 18:54:30 by pribault          #+#    #+#             */
-/*   Updated: 2018/06/30 18:27:08 by pribault         ###   ########.fr       */
+/*   Updated: 2018/06/30 19:22:27 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@
 # include "libsocket.h"
 # include "rfc.h"
 
+# include <sys/time.h>
 # include <arpa/inet.h>
 # include <sys/stat.h>
 # include <netdb.h>
@@ -83,12 +84,19 @@
 # define DEFAULT_MOTD		"motd.txt"
 
 /*
+**	others
+*/
+
+# define TIMEOUT_PING	10
+# define TIMEOUT_PONG	20
+
+/*
 *************
 **	enums  **
 *************
 */
 
-typedef enum	e_server_error
+typedef enum		e_server_error
 {
 	ERROR_SETTING_DEFAULT = ERROR_FT_MAX,
 	ERROR_UNKNOWN_PROTOCOL,
@@ -104,7 +112,7 @@ typedef enum	e_server_error
 	ERROR_MOTD_PARAMS,
 	ERROR_CANNOT_START,
 	ERROR_CORRUPTED_MEMORY
-}				t_server_error;
+}					t_server_error;
 
 /*
 ******************
@@ -112,52 +120,54 @@ typedef enum	e_server_error
 ******************
 */
 
-typedef struct	s_data
+typedef struct		s_data
 {
-	void		*client;
-	void		*ptr;
-	uint64_t	size;
-	char		nickname[NICK_MAX_LEN];
-	char		*username;
-	char		*hostname;
-	char		*realname;
-	uint8_t		permissions;
-}				t_data;
+	void			*client;
+	void			*ptr;
+	uint64_t		size;
+	char			nickname[NICK_MAX_LEN];
+	char			*username;
+	char			*hostname;
+	char			*realname;
+	uint8_t			permissions;
+	struct timeval	last;
+}					t_data;
 
-typedef struct	s_channel
+typedef struct		s_channel
 {
-	char		*name;
-	char		*topic;
-	char		*perms;
-	uint8_t		permissions;
-	t_vector	clients;
-}				t_channel;
+	char			*name;
+	char			*topic;
+	char			*perms;
+	uint8_t			permissions;
+	t_vector		clients;
+}					t_channel;
 
-typedef struct	s_env
+typedef struct		s_env
 {
-	t_socket	*socket;
-	char		*port;
-	char		**motd;
-	uint32_t	opt;
-	t_protocol	protocol;
-	t_domain	domain;
-	t_vector	channels;
-	t_vector	clients;
-	char		*name;
-}				t_env;
+	t_socket		*socket;
+	char			*port;
+	char			**motd;
+	uint32_t		opt;
+	t_protocol		protocol;
+	t_domain		domain;
+	t_vector		channels;
+	t_vector		clients;
+	char			*name;
+	struct timeval	now;
+}					t_env;
 
-typedef struct	s_cmd
+typedef struct		s_cmd
 {
-	char		*name;
-	void		(*function)(t_env *, t_data *, t_message *);
-}				t_cmd;
+	char			*name;
+	void			(*function)(t_env *, t_data *, t_message *);
+}					t_cmd;
 
-typedef struct	s_config_cb
+typedef struct		s_config_cb
 {
-	char		*name;
-	char		*value;
-	void		(*function)(t_env *, char **, uint32_t);
-}				t_config_cb;
+	char			*name;
+	char			*value;
+	void			(*function)(t_env *, char **, uint32_t);
+}					t_config_cb;
 
 /*
 ******************
@@ -169,129 +179,131 @@ typedef struct	s_config_cb
 **	config
 */
 
-int				load_config(t_env *env);
-void			servname_callback(t_env *env, char **array, uint32_t n);
-void			port_callback(t_env *env, char **array, uint32_t n);
-void			motd_callback(t_env *env, char **array, uint32_t n);
+int					load_config(t_env *env);
+void				servname_callback(t_env *env, char **array, uint32_t n);
+void				port_callback(t_env *env, char **array, uint32_t n);
+void				motd_callback(t_env *env, char **array, uint32_t n);
 
 /*
 **	flags
 */
 
-void			print_usage(void);
-void			get_default(char *s, t_env *env);
-void			get_protocol(t_env *env, char **args, int n);
-void			get_domain(t_env *env, char **args, int n);
-void			set_verbose(t_env *env);
+void				print_usage(void);
+void				get_default(char *s, t_env *env);
+void				get_protocol(t_env *env, char **args, int n);
+void				get_domain(t_env *env, char **args, int n);
+void				set_verbose(t_env *env);
 
 /*
 **	socket callbacks
 */
 
-void			socket_excpt(t_socket *socket);
+void				socket_excpt(t_socket *socket);
 
 /*
 **	client callbacks
 */
 
-void			client_add(t_socket *socket, void *client);
-void			client_del(t_socket *socket, void *client);
-void			client_excpt(t_socket *socket, void *client);
+void				client_add(t_socket *socket, void *client);
+void				client_del(t_socket *socket, void *client);
+void				client_excpt(t_socket *socket, void *client);
 
 /*
 **	message callbacks
 */
 
-void			message_received(t_socket *socket, void *client, t_msg *msg);
-void			message_sended(t_socket *socket, void *client, t_msg *msg);
-void			message_trashed(t_socket *socket, void *client, t_msg *msg);
+void				message_received(t_socket *socket, void *client, t_msg *msg);
+void				message_sended(t_socket *socket, void *client, t_msg *msg);
+void				message_trashed(t_socket *socket, void *client, t_msg *msg);
 
 /*
 **	packet management
 */
 
-void			treat_packet(t_socket *socket, void *client, void *ptr,
-				size_t size);
-char			*get_prefix(t_prefix *prefix, char *s);
-char			*get_param(char *param, char *s);
-char			*get_command(char *command, char *s);
+void				treat_packet(t_socket *socket, void *client, void *ptr,
+					size_t size);
+char				*get_prefix(t_prefix *prefix, char *s);
+char				*get_param(char *param, char *s);
+char				*get_command(char *command, char *s);
 
 /*
 **	output
 */
 
-void			enqueue_write(t_socket *socket, void *client, void *ptr,
-				size_t size);
-void			enqueue_str_by_fd(t_env *env, int fd, char *s);
+void				enqueue_write(t_socket *socket, void *client, void *ptr,
+					size_t size);
+void				enqueue_str_by_fd(t_env *env, int fd, char *s);
 
 /*
 **	receive functions
 */
 
-void			recv_unknown(t_env *env, t_data *data, t_message *msg);
-void			recv_nick(t_env *env, t_data *data, t_message *msg);
-void			recv_user(t_env *env, t_data *data, t_message *msg);
-void			recv_list(t_env *env, t_data *data, t_message *msg);
-void			recv_join(t_env *env, t_data *data, t_message *msg);
-void			recv_quit(t_env *env, t_data *data, t_message *msg);
-void			recv_who(t_env *env, t_data *data, t_message *msg);
-void			recv_ping(t_env *env, t_data *data, t_message *msg);
-void			recv_privmsg(t_env *env, t_data *data, t_message *msg);
+void				recv_unknown(t_env *env, t_data *data, t_message *msg);
+void				recv_nick(t_env *env, t_data *data, t_message *msg);
+void				recv_user(t_env *env, t_data *data, t_message *msg);
+void				recv_list(t_env *env, t_data *data, t_message *msg);
+void				recv_join(t_env *env, t_data *data, t_message *msg);
+void				recv_quit(t_env *env, t_data *data, t_message *msg);
+void				recv_who(t_env *env, t_data *data, t_message *msg);
+void				recv_ping(t_env *env, t_data *data, t_message *msg);
+void				recv_privmsg(t_env *env, t_data *data, t_message *msg);
 
 /*
 **	send functions
 */
 
-void			send_error(t_env *env, t_data *data, char *error,
-				char *comment);
-void			send_first_welcome(t_env *env, t_data *data);
-void			send_welcome(t_env *env, t_data *data);
-void			send_nick(t_env *env, t_data *data, char *nick);
-void			send_liststart(t_env *env, t_data *data);
-void			send_list(t_env *env, t_data *data, t_channel *channel);
-void			send_listend(t_env *env, t_data *data);
-void			send_pong(t_env *env, t_data *data);
-void			send_motdstart(t_env *env, t_data *data);
-void			send_motd(t_env *env, t_data *data);
-void			send_motdend(t_env *env, t_data *data);
-void			send_quit(t_env *env, t_data *data, t_data *to, char *reason);
-void			send_join(t_env *env, t_data *data, t_data *to,
-				t_channel *channel);
-void			send_who_reply(t_env *env, t_data *data, t_data *client,
-				t_channel *channel);
-void			send_err_no_such_server(t_env *env, t_data *data,
-				char *servname);
-void			send_end_of_who(t_env *env, t_data *data, char *name);
-void			send_topic(t_env *env, t_data *data, t_channel *channel);
-void			send_name_reply(t_env *env, t_data *data, t_channel *channel);
-void			send_privmsg_user(t_env *env, t_data *data, t_data *to,
-				t_message *msg);
-void			send_privmsg_channel(t_env *env, t_data *data,
-				t_channel *channel, t_message *msg);
-void			send_no_such_nick(t_env *env, t_data *data, char *name);
+void				send_error(t_env *env, t_data *data, char *error,
+					char *comment);
+void				send_first_welcome(t_env *env, t_data *data);
+void				send_welcome(t_env *env, t_data *data);
+void				send_nick(t_env *env, t_data *data, char *nick);
+void				send_liststart(t_env *env, t_data *data);
+void				send_list(t_env *env, t_data *data, t_channel *channel);
+void				send_listend(t_env *env, t_data *data);
+void				send_pong(t_env *env, t_data *data);
+void				send_motdstart(t_env *env, t_data *data);
+void				send_motd(t_env *env, t_data *data);
+void				send_motdend(t_env *env, t_data *data);
+void				send_quit(t_env *env, t_data *data, t_data *to, char *reason);
+void				send_join(t_env *env, t_data *data, t_data *to,
+					t_channel *channel);
+void				send_who_reply(t_env *env, t_data *data, t_data *client,
+					t_channel *channel);
+void				send_err_no_such_server(t_env *env, t_data *data,
+					char *servname);
+void				send_end_of_who(t_env *env, t_data *data, char *name);
+void				send_topic(t_env *env, t_data *data, t_channel *channel);
+void				send_name_reply(t_env *env, t_data *data, t_channel *channel);
+void				send_privmsg_user(t_env *env, t_data *data, t_data *to,
+					t_message *msg);
+void				send_privmsg_channel(t_env *env, t_data *data,
+					t_channel *channel, t_message *msg);
+void				send_no_such_nick(t_env *env, t_data *data, char *name);
+void				send_ping(t_env *env, t_data *data);
 
 /*
 **	verif functions
 */
 
-t_bool			is_nickname_valid(char *nick);
+t_bool				is_nickname_valid(char *nick);
 
 /*
 **	channel functions
 */
 
-t_channel		*find_channel(t_vector *vector, char *name);
-void			add_client_to_channel(t_env *env, t_channel *channel,
-				t_data *data);
-void			create_channel(t_env *env, t_vector *vector, char *name,
-				t_data *data);
-t_bool			is_client_in_channel(t_channel *channel, t_data *client);
-void			remove_client_from_channel(t_channel *channel, t_data *client);
+t_channel			*find_channel(t_vector *vector, char *name);
+void				add_client_to_channel(t_env *env, t_channel *channel,
+					t_data *data);
+void				create_channel(t_env *env, t_vector *vector, char *name,
+					t_data *data);
+t_bool				is_client_in_channel(t_channel *channel, t_data *client);
+void				remove_client_from_channel(t_channel *channel, t_data *client);
 
 /*
 **	others
 */
 
-void			notify_disconnection(t_env *env, t_data *data, char *reason);
+void				notify_disconnection(t_env *env, t_data *data, char *reason);
+void				check_clients_activity(t_env *env);
 
 #endif
