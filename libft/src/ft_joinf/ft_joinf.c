@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/15 14:06:03 by pribault          #+#    #+#             */
-/*   Updated: 2018/04/13 19:39:37 by pribault         ###   ########.fr       */
+/*   Updated: 2018/06/30 18:27:26 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,8 @@ size_t		get_next_arg(va_list va, const char *format, size_t *i)
 		return (get_number_len(va, "01"));
 	else if (format[*i] == 's')
 		return (get_string_len(va));
+	else if (format[*i] == 'S')
+		return (get_unicode_len(va));
 	else if (format[*i] == 'c')
 		return (1);
 	return (0);
@@ -49,6 +51,8 @@ void		print_next_arg(va_list va, char *new, size_t *j, char c)
 		print_number(va, new, j, "01");
 	else if (c == 's')
 		print_string(va, new, j);
+	else if (c == 'S')
+		print_unicode(va, new, j);
 	else if (c == 'c')
 		print_char_join(va, new, j);
 }

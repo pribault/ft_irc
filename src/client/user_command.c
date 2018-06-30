@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/08 11:09:20 by pribault          #+#    #+#             */
-/*   Updated: 2018/04/10 23:51:23 by pribault         ###   ########.fr       */
+/*   Updated: 2018/06/30 16:03:57 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,11 @@ static t_user_cmd	g_cmds[] =
 	{"/nick", &cmd_nick},
 	{"/list", &cmd_list},
 	{"/join", &cmd_join},
+	{"/quit", &cmd_quit},
+	{"/who", &cmd_who},
+	{"/msg", &cmd_msg},
+	{"/connect", &cmd_connect},
+	{"/help", &cmd_help},
 	{NULL, NULL}
 };
 
@@ -52,7 +57,7 @@ void				treat_command(t_env *env, char *s)
 		state++;
 		if (!(env->username = ft_strdup(s)))
 			ft_error(2, ERROR_ALLOCATION, NULL);
-		enqueue_str_by_fd(env, env->out, ft_strdup("Enter your real name:\n"));
+		enqueue_str_by_fd(env, 1, ft_strdup("Enter your real name:\n"));
 	}
 	else if (state == 1)
 	{
@@ -60,7 +65,7 @@ void				treat_command(t_env *env, char *s)
 		if (!(env->real_name = ft_strdup(s)))
 			ft_error(2, ERROR_ALLOCATION, NULL);
 		if (env->address && env->port)
-			if (!(server_connect(env->server,
+			if (!(socket_connect(env->socket,
 				(t_method){env->protocol, env->domain}, env->address,
 				env->port)))
 				return (ft_error(2, ERROR_CANNOT_CONNECT, env->address));

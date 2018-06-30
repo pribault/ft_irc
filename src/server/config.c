@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/10 11:08:38 by pribault          #+#    #+#             */
-/*   Updated: 2018/04/10 16:04:54 by pribault         ###   ########.fr       */
+/*   Updated: 2018/04/29 12:20:08 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ static t_config_cb	g_callbacks[] =
 {
 	{SERVNAME, DEFAULT_SERVNAME, &servname_callback},
 	{PORT, DEFAULT_PORT, &port_callback},
+	{MOTD, DEFAULT_MOTD, &motd_callback},
 	{NULL, NULL, NULL}
 };
 
@@ -35,6 +36,35 @@ void	port_callback(t_env *env, char **array, uint32_t n)
 	if (n != 2)
 		return (ft_error(2, ERROR_PORT_PARAMS, (void*)(uint64_t)n));
 	env->port = ft_strdup(array[1]);
+}
+
+void	motd_callback(t_env *env, char **array, uint32_t n)
+{
+	struct stat	buf;
+	int64_t		size;
+	char		*s;
+	int			fd;
+	int			ret;
+
+	if (n != 2)
+		return (ft_error(2, ERROR_MOTD_PARAMS, (void*)(uint64_t)n));
+	if ((fd = open(array[1], O_RDONLY)) == -1)
+		return (ft_error(2, ERROR_FILE, array[1]));
+	s = NULL;
+	if (fstat(fd, &buf) != -1)
+	{
+		if ((s = malloc(buf.st_size + 1)))
+		{
+			size = 0;
+			while ((ret = read(fd, s, buf.st_size)) != -1 &&
+				size != buf.st_size)
+				size += ret;
+			s[size] = '\0';
+		}
+	}
+	close(fd);
+	env->motd = (s) ? ft_multisplit(s, "\n") : NULL;
+	free(s);
 }
 
 int		create_config(t_env *env)

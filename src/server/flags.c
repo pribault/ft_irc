@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/02 11:36:42 by pribault          #+#    #+#             */
-/*   Updated: 2018/04/10 11:53:23 by pribault         ###   ########.fr       */
+/*   Updated: 2018/05/24 16:40:47 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ void	get_default(char *s, t_env *env)
 		state++;
 	}
 	else
-		ft_error(env->err, ERROR_SETTING_DEFAULT, s);
+		ft_error(2, ERROR_SETTING_DEFAULT, s);
 }
 
 void	get_protocol(t_env *env, char **args, int n)
@@ -53,7 +53,7 @@ void	get_protocol(t_env *env, char **args, int n)
 	else if (!ft_strcmp(args[0], "udp") || !ft_strcmp(args[0], "UDP"))
 		env->protocol = UDP;
 	else
-		ft_error(env->err, ERROR_UNKNOWN_PROTOCOL, args[0]);
+		ft_error(2, ERROR_UNKNOWN_PROTOCOL, args[0]);
 }
 
 void	get_domain(t_env *env, char **args, int n)
@@ -64,7 +64,7 @@ void	get_domain(t_env *env, char **args, int n)
 	else if (!ft_strcmp(args[0], "ipv6") || !ft_strcmp(args[0], "IPV6"))
 		env->domain = IPV6;
 	else
-		ft_error(env->err, ERROR_UNKNOWN_DOMAIN, args[0]);
+		ft_error(2, ERROR_UNKNOWN_DOMAIN, args[0]);
 }
 
 void	set_verbose(t_env *env)

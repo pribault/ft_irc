@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/07 14:48:20 by pribault          #+#    #+#             */
-/*   Updated: 2018/04/11 23:27:32 by pribault         ###   ########.fr       */
+/*   Updated: 2018/06/30 17:17:21 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,10 @@ t_cmd	g_recv[] =
 	{NOTICE, &recv_notice},
 	{MODE, &recv_mode},
 	{NICK, &recv_nick},
+	{JOIN, &recv_join},
+	{PING, &recv_ping},
+	{QUIT, &recv_quit},
+	{PRIVMSG, &recv_msg},
 	{RPL_WELCOME, &recv_welcome},
 	{RPL_YOURHOST, &recv_yourhost},
 	{RPL_CREATED, &recv_created},
@@ -29,12 +33,20 @@ t_cmd	g_recv[] =
 	{RPL_ENDOFMOTD, &recv_motdend},
 	{RPL_LUSERCHANNELS, &recv_lchannels},
 	{RPL_LUSERME, &recv_lme},
+	{RPL_LISTSTART, &recv_liststart},
 	{RPL_LIST, &recv_list},
 	{RPL_LISTEND, &recv_listend},
 	{RPL_LOCALUSERS, &recv_localusers},
 	{RPL_GLOBALUSERS, &recv_globalusers},
+	{RPL_LUSERUNKNOWN, &recv_userunknown},
+	{RPL_WHOREPLY, &recv_who_reply},
+	{RPL_ENDOFWHO, &recv_end_of_who},
+	{RPL_TOPIC, &recv_topic},
+	{RPL_NAMREPLY, &recv_name_reply},
 	{ERR_NONICKNAMEGIVEN, &recv_error},
 	{ERR_ERRONEUSNICKNAME, &recv_error},
+	{ERR_NOSUCHSERVER, &recv_err_no_such_server},
+	{ERR_NOTEXTTOSEND, &recv_no_text_to_send},
 	{NULL, NULL}
 };
 
@@ -81,43 +93,44 @@ void	debug_message(t_env *env, t_data *data, t_message *msg)
 	uint32_t	i;
 
 	(void)data;
-	enqueue_str_by_fd(env, env->out,
+	enqueue_str_by_fd(env, 1,
 		ft_joinf("[%sDEBUG%s] name=%s user=%s host=%s\n",
 			COLOR_VERBOSE, COLOR_CLEAR, &msg->prefix.name, &msg->prefix.user,
 			&msg->prefix.host));
-	enqueue_str_by_fd(env, env->out, ft_joinf("[%sDEBUG%s] command=%s\n",
+	enqueue_str_by_fd(env, 1, ft_joinf("[%sDEBUG%s] command=%s\n",
 		COLOR_VERBOSE, COLOR_CLEAR, &msg->command));
-	enqueue_str_by_fd(env, env->out, ft_joinf("[%sDEBUG%s] args(%u):\n",
+	enqueue_str_by_fd(env, 1, ft_joinf("[%sDEBUG%s] args(%u):\n",
 		COLOR_VERBOSE, COLOR_CLEAR, msg->n_params));
 	i = (uint32_t)-1;
 	while (++i < msg->n_params)
-		enqueue_str_by_fd(env, env->out, ft_joinf("[%sDEBUG%s] \t%s\n",
+		enqueue_str_by_fd(env, 1, ft_joinf("[%sDEBUG%s] \t%s\n",
 			COLOR_VERBOSE, COLOR_CLEAR, &msg->params[i]));
 }
 
-void	treat_packet(t_server *server, void *client, void *ptr, size_t size)
+void	treat_packet(t_socket *socket, void *client, void *ptr, size_t size)
 {
-	static t_message	*msg = NULL;
-	t_env				*env;
-	t_data				*data;
-	char				*s;
+	t_message	msg;
+	t_env		*env;
+	t_data		*data;
+	char		*s;
 
-	if (!msg && !(msg = malloc(sizeof(t_message))))
-		return (ft_error(2, ERROR_ALLOCATION, NULL));
-	env = server_get_data(server);
-	data = server_client_get_data(client);
+	env = socket_get_data(socket);
+	data = client_get_data(client);
 	if (!(s = malloc(size + 1)))
-		return (ft_error(env->err, ERROR_ALLOCATION, NULL));
+		return (ft_error(2, ERROR_ALLOCATION, NULL));
 	ft_memcpy(s, ptr, size);
 	s[size] = '\0';
-	if (get_message(msg, s) == FT_TRUE)
+	if (env->opt & OPT_VERBOSE)
+		enqueue_str_by_fd(env, 1, ft_joinf("[%sDEBUG%s] \"%s\"\n",
+			COLOR_VERBOSE, COLOR_CLEAR, s));
+	if (get_message(&msg, s) == FT_TRUE)
 	{
 		if (env->opt & OPT_VERBOSE)
-			debug_message(env, data, msg);
-		search_function(env, data, msg);
+			debug_message(env, data, &msg);
+		search_function(env, data, &msg);
 	}
 	else
-		enqueue_str_by_fd(env, env->out, ft_joinf("[%sERROR%s] %s\n",
+		enqueue_str_by_fd(env, 1, ft_joinf("[%sERROR%s] %s\n",
 			COLOR_ERROR, COLOR_CLEAR, s));
 	free(s);
 }

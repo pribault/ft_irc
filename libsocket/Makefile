@@ -1,50 +1,62 @@
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: pribault <pribault@student.42.fr>          +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2018/04/16 11:40:05 by pribault          #+#    #+#              #
+#    Updated: 2018/04/18 15:59:17 by pribault         ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
+
 NAME = libsocket.a
-LIBSO = $(NAME:%.a=%.so)
+NAMESO = $(NAME:%.a=%.so)
 MAKE_DIR = .Makefiles
 OBJ_DIR = .obj
-CLIENT = client
-SERVER = server
-TEST = test
 EXT = Makefile
+CMAKEFILE = $(MAKE_DIR)/c.$(EXT)
+CPPMAKEFILE = $(MAKE_DIR)/cpp.$(EXT)
+TESTMAKEFILE = $(MAKE_DIR)/test.$(EXT)
 
-.PHONY: clean fclean all re norme $(NAME) $(LIBSO) $(CLIENT) $(SERVER)
+.PHONY: clean fclean all re norme $(NAME) $(NAMESO) $(CMAKEFILE) $(CPPMAKEFILE)
 
 .SILENT:
 
-$(NAME): $(CLIENT) $(SERVER)
+$(NAME): $(CMAKEFILE) $(CPPMAKEFILE)
 
-$(LIBSO): $(NAME)
+$(NAMESO): $(NAME)
 	@$(eval OBJ=$(shell ar t $(NAME)))
 	@ar x $(NAME)
 	@$(CC) -o $@ -shared $(OBJ)
 	@rm $(OBJ)
 	@echo "\033[0m\033[38;5;166m[$@ ∎∎∎∎] \033[0m🐹  \033[38;5;214mdone\033[0m"
 
-$(CLIENT):
-	@make -f $(MAKE_DIR)/$(CLIENT).$(EXT)
+$(CMAKEFILE):
+	@make -f $(CMAKEFILE)
 
-$(SERVER):
-	@make -f $(MAKE_DIR)/$(SERVER).$(EXT)
+$(CPPMAKEFILE):
+	@make -f $(CPPMAKEFILE)
 
-$(TEST): $(NAME)
-	@make -f $(MAKE_DIR)/$(TEST).$(EXT)
+test: $(NAME)
+	@make -f $(TESTMAKEFILE)
 
 all: $(NAME)
 
 clean:
-	@make -f $(MAKE_DIR)/$(CLIENT).$(EXT) clean
-	@make -f $(MAKE_DIR)/$(SERVER).$(EXT) clean
+	@make -f $(CMAKEFILE) clean
+	@make -f $(CPPMAKEFILE) clean
 
 fclean:
-	@make -f $(MAKE_DIR)/$(CLIENT).$(EXT) fclean
-	@make -f $(MAKE_DIR)/$(SERVER).$(EXT) fclean
-	@make -f $(MAKE_DIR)/$(TEST).$(EXT) fclean
-	@rm -f $(LIBSO)
+	@make -f $(CMAKEFILE) fclean
+	@make -f $(CPPMAKEFILE) fclean
+	@make -f $(TESTMAKEFILE) fclean
+	@rm -f $(NAMESO)
 
 norme:
-	@make -f $(MAKE_DIR)/$(CLIENT).$(EXT) norme
-	@make -f $(MAKE_DIR)/$(SERVER).$(EXT) norme
+	@make -f $(CMAKEFILE) norme
+	@make -f $(CPPMAKEFILE) norme
 
 re:
-	@make -f $(MAKE_DIR)/$(CLIENT).$(EXT) re
-	@make -f $(MAKE_DIR)/$(SERVER).$(EXT) re
+	@make -f $(CMAKEFILE) re
+	@make -f $(CPPMAKEFILE) re

@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/07 15:00:09 by pribault          #+#    #+#             */
-/*   Updated: 2018/04/07 12:29:17 by pribault         ###   ########.fr       */
+/*   Updated: 2018/05/24 17:02:54 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ char		ft_isof(int c, char *str)
 		return (0);
 	while (str[i] && c != str[i])
 		i++;
-	if (c == str[i])
+	if (str[i] && c == str[i])
 		return (1);
 	return (0);
 }
