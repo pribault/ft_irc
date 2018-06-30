@@ -6,11 +6,11 @@
 #    By: pribault <pribault@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/06/30 11:01:47 by pribault          #+#    #+#              #
-#    Updated: 2018/06/30 16:58:47 by pribault         ###   ########.fr        #
+#    Updated: 2018/06/30 20:25:25 by pribault         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME =	server
+NAME =	serveur
 CC =	gcc
 FLAGS =	-Wall -Wextra -Werror
 
@@ -53,7 +53,7 @@ LIBSOCKET_INC =		libsocket.h\
 					libsocket_enums.h\
 					libsocket_structures.h
 
-DEPENDENCIES =	$(sort .Makefiles/$(NAME).Makefile\
+DEPENDENCIES =	$(sort .Makefiles/server.Makefile\
 				$(LIBFT_INC:%.h=$(LIBFT_INC_DIR)/%.h)\
 				$(LIBSOCKET_INC:%.h=$(LIBSOCKET_INC_DIR)/%.h))
 
