@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/18 11:20:23 by pribault          #+#    #+#             */
-/*   Updated: 2018/04/28 13:19:10 by pribault         ###   ########.fr       */
+/*   Updated: 2018/06/30 20:07:47 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,8 @@ void		socket_remove_client(t_socket *socket, t_client *client)
 	vector = &socket->clients;
 	if (socket->client_del)
 		socket->client_del(socket, client);
-	close(client->fd);
+	if (socket->sockfd != client->fd)
+		close(client->fd);
 	if ((void*)client >= vector->ptr &&
 		(void*)client < vector->ptr + vector->size)
 		ft_vector_del_one(vector, ((void*)client - vector->ptr) /

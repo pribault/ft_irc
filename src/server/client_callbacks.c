@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/02 12:28:02 by pribault          #+#    #+#             */
-/*   Updated: 2018/06/30 19:10:28 by pribault         ###   ########.fr       */
+/*   Updated: 2018/06/30 19:55:09 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ void	client_add(t_socket *socket, void *client)
 	data.client = client;
 	data.hostname = client_get_address(client)->str;
 	data.last = env->now;
+	data.waiting = FT_FALSE;
 	client_attach_data(client, ft_memdup(&data, sizeof(t_data)));
 	if (client_get_fd(client) != 0)
 	{
@@ -61,11 +62,11 @@ void	client_del(t_socket *socket, void *client)
 	t_data	*data;
 	t_env	*env;
 
-	data = client_get_data(client);
 	env = socket_get_data(socket);
-	notify_disconnection(env, data, "an undefined reason");
+	data = client_get_data(client);
 	if (client_get_fd(client) != 0)
 	{
+		notify_disconnection(env, data, "an undefined reason");
 		ft_vector_del_one(&env->clients,
 		ft_vector_find(&env->clients, &client));
 		if (env->opt & OPT_VERBOSE)

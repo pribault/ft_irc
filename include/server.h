@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/01 18:54:30 by pribault          #+#    #+#             */
-/*   Updated: 2018/06/30 19:22:27 by pribault         ###   ########.fr       */
+/*   Updated: 2018/06/30 20:08:56 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,6 +131,7 @@ typedef struct		s_data
 	char			*realname;
 	uint8_t			permissions;
 	struct timeval	last;
+	t_bool			waiting;
 }					t_data;
 
 typedef struct		s_channel

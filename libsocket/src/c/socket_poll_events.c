@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/18 10:54:53 by pribault          #+#    #+#             */
-/*   Updated: 2018/05/23 15:58:00 by pribault         ###   ########.fr       */
+/*   Updated: 2018/06/30 20:08:06 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,8 @@ static void	set_sets(t_socket *socket, fd_set *set, int *fd_max, uint8_t flags)
 		socket_add_write_request_to_set(&set[1], &socket->write_queue, fd_max);
 }
 
+#include <errno.h>
+
 void		socket_poll_events(t_socket *socket, uint8_t flags)
 {
 	struct timeval	time;
@@ -98,7 +100,7 @@ void		socket_poll_events(t_socket *socket, uint8_t flags)
 	int				fd_max;
 	int				ret;
 
-	fd_max = -42;
+	fd_max = 0;
 	set_sets(socket, (fd_set*)&set, &fd_max, flags);
 	time = socket->timeout;
 	if ((ret = select(fd_max + 1, &set[0], &set[1], &set[2],

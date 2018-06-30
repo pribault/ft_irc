@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/18 11:01:35 by pribault          #+#    #+#             */
-/*   Updated: 2018/05/23 16:47:44 by pribault         ###   ########.fr       */
+/*   Updated: 2018/06/30 20:05:34 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,8 @@ static void	socket_add_client_udp(t_socket *socket, t_client *client)
 {
 	client->write_type = WRITE_BY_ADDR;
 	ft_vector_add(&socket->clients, client);
-	socket->client_add(socket, ft_vector_get(&socket->clients,
+	if (socket->client_add)
+		socket->client_add(socket, ft_vector_get(&socket->clients,
 	socket->clients.n - 1));
 }
 
@@ -58,8 +59,7 @@ void		socket_get_incoming_message(t_socket *socket, int *n_evts)
 		0, (void*)&client.addr.addr, &client.addr.len)) == -1)
 		return ;
 	(*n_evts)--;
-	if (!(new = socket_find_client_by_address(socket, &client.addr.addr)) &&
-		socket->client_add)
+	if (!(new = socket_find_client_by_address(socket, &client.addr.addr)))
 		socket_add_client_udp(socket, &client);
 	if (socket->msg_recv)
 	{

@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/18 11:10:58 by pribault          #+#    #+#             */
-/*   Updated: 2018/05/23 16:58:14 by pribault         ###   ########.fr       */
+/*   Updated: 2018/06/30 19:56:58 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,7 @@ void		socket_manage_write_requests(t_socket *socket, fd_set *set,
 	size = ft_circ_buffer_get_size(buffer);
 	while (++i < size &&
 		(towrite = ft_circ_buffer_dequeue(buffer)))
+	{
 		if (FD_ISSET(towrite->client.fd, set))
 		{
 			FD_CLR(towrite->client.fd, set);
@@ -86,4 +87,5 @@ void		socket_manage_write_requests(t_socket *socket, fd_set *set,
 		}
 		else
 			ft_circ_buffer_enqueue(buffer, towrite);
+	}
 }

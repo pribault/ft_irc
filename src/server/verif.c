@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/10 17:00:47 by pribault          #+#    #+#             */
-/*   Updated: 2018/06/30 19:24:57 by pribault         ###   ########.fr       */
+/*   Updated: 2018/06/30 20:08:18 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,10 @@ void	check_clients_activity(t_env *env)
 			(env->now.tv_usec - data->last.tv_usec) / 1000000;
 		if (diff >= TIMEOUT_PONG)
 			socket_remove_client(env->socket, data->client);
-		else if (diff >= TIMEOUT_PING)
+		else if (!data->waiting && diff >= TIMEOUT_PING)
+		{
+			data->waiting = FT_TRUE;
 			send_ping(env, data);
+		}
 	}
 }

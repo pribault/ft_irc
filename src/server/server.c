@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/01 18:38:44 by pribault          #+#    #+#             */
-/*   Updated: 2018/06/30 19:31:52 by pribault         ###   ########.fr       */
+/*   Updated: 2018/06/30 19:40:06 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ void	start_socket(t_env *env)
 	socket_set_callback(env->socket, SOCKET_MSG_TRASH_CB, &message_trashed);
 	socket_set_callback(env->socket, SOCKET_BUFFER_FULL_CB, &buffer_full);
 	socket_attach_data(env->socket, env);
-	if (!socket_bind(env->socket, (t_method){TCP, IPV4}, env->port))
+	if (!socket_bind(env->socket, (t_method){env->protocol, IPV4}, env->port))
 		ft_error(2, ERROR_CANNOT_START, env->port);
 	socket_add_client_by_fd(env->socket, 0);
 }
