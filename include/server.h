@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/01 18:54:30 by pribault          #+#    #+#             */
-/*   Updated: 2018/06/29 18:01:33 by pribault         ###   ########.fr       */
+/*   Updated: 2018/06/30 12:39:32 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,6 +120,7 @@ typedef struct	s_data
 	char		nickname[NICK_MAX_LEN];
 	char		*username;
 	char		*hostname;
+	char		*realname;
 	uint8_t		permissions;
 }				t_data;
 
@@ -253,6 +254,13 @@ void			send_motdstart(t_env *env, t_data *data);
 void			send_motd(t_env *env, t_data *data);
 void			send_motdend(t_env *env, t_data *data);
 void			send_quit(t_env *env, t_data *data, t_data *to, char *reason);
+void			send_join(t_env *env, t_data *data, t_data *to,
+				t_channel *channel);
+void			send_who_reply(t_env *env, t_data *data, t_data *client,
+				t_channel *channel);
+void			send_err_no_such_server(t_env *env, t_data *data,
+				char *servname);
+void			send_end_of_who(t_env *env, t_data *data, char *name);
 
 /*
 **	verif functions
@@ -265,9 +273,17 @@ t_bool			is_nickname_valid(char *nick);
 */
 
 t_channel		*find_channel(t_vector *vector, char *name);
-void			add_client_to_channel(t_channel *channel, t_data *data);
-void			create_channel(t_vector *vector, char *name, t_data *data);
+void			add_client_to_channel(t_env *env, t_channel *channel,
+				t_data *data);
+void			create_channel(t_env *env, t_vector *vector, char *name,
+				t_data *data);
 t_bool			is_client_in_channel(t_channel *channel, t_data *client);
 void			remove_client_from_channel(t_channel *channel, t_data *client);
+
+/*
+**	others
+*/
+
+void			notify_disconnection(t_env *env, t_data *data, char *reason);
 
 #endif

@@ -6,11 +6,32 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/02 12:28:02 by pribault          #+#    #+#             */
-/*   Updated: 2018/05/24 16:44:42 by pribault         ###   ########.fr       */
+/*   Updated: 2018/06/30 12:13:41 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "server.h"
+
+void	notify_disconnection(t_env *env, t_data *data, char *reason)
+{
+	t_channel	*channel;
+	t_data		**client;
+	size_t		i;
+	size_t		j;
+
+	i = (size_t)-1;
+	while (++i < env->channels.n &&
+		(channel = ft_vector_get(&env->channels, i)))
+		if (is_client_in_channel(channel, data))
+		{
+			j = (size_t)-1;
+			while (++j < channel->clients.n &&
+				(client = ft_vector_get(&channel->clients, j)))
+				if (data != *client)
+					send_quit(env, data, *client, reason);
+			remove_client_from_channel(channel, data);
+		}
+}
 
 void	client_add(t_socket *socket, void *client)
 {
@@ -41,6 +62,7 @@ void	client_del(t_socket *socket, void *client)
 
 	data = client_get_data(client);
 	env = socket_get_data(socket);
+	notify_disconnection(env, data, "an undefined reason");
 	if (client_get_fd(client) != 0)
 	{
 		ft_vector_del_one(&env->clients,
@@ -53,6 +75,8 @@ void	client_del(t_socket *socket, void *client)
 		free(data->hostname);
 	if (data->username)
 		free(data->username);
+	if (data->realname)
+		free(data->realname);
 	free(data);
 }
 

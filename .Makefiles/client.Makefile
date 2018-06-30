@@ -1,42 +1,62 @@
-NAME = client
-CC = clang
-SRC =	client.c flags.c\
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    client.Makefile                                    :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: pribault <pribault@student.42.fr>          +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2018/06/30 10:56:18 by pribault          #+#    #+#              #
+#    Updated: 2018/06/30 11:33:20 by pribault         ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
+
+NAME =	client
+CC =	clang
+FLAGS =	-Wall -Wextra -Werror
+
+DIR =		client
+SRC_DIR =	src
+OBJ_DIR =	.obj
+
+SRC =	client.c		flags.c\
 		client_callbacks.c\
 		message_callbacks.c\
-		packet.c output.c\
-		send.c send_2.c\
+		packet.c		output.c\
+		send.c			send_2.c\
 		user_command.c\
-		prefix.c command.c\
-		param.c receive.c\
-		receive_2.c receive_3.c\
-		receive_4.c receive_5.c\
-		user_commands.c user_commands_2.c
-DIR = client
-SRC_DIR = src
-OBJ_DIR = .obj
-OBJ = $(sort $(SRC:%.c=$(OBJ_DIR)/$(DIR)/%.o))
-FLAGS = -Wall -Wextra -Werror
+		prefix.c		command.c\
+		param.c			receive.c\
+		receive_2.c		receive_3.c\
+		receive_4.c		receive_5.c\
+		receive_6.c\
+		user_commands.c	user_commands_2.c
+OBJ =		$(sort $(SRC:%.c=$(OBJ_DIR)/$(DIR)/%.o))
 INCLUDES =	client.h rfc.h
-INCLUDE = $(INCLUDES:%.h=include/%.h)
-N = 0
-MAX = $(words $(OBJ))
-COMPILED = false
-LIBFT = libft
-LIBSOCKET = libsocket
-LIBFT_INC_DIR = $(LIBFT)/include
-LIBSOCKET_INC_DIR = $(LIBSOCKET)/include
-LIBFT_INC =	libft.h\
-			ft_printf.h\
-			ft_joinf.h\
-			malloc.h\
-			structs.h\
-			prototypes.h
-LIBSOCKET_INC =	libsocket.h\
-				libsocket_defines.h\
-				libsocket_enums.h\
-				libsocket_structures.h
-DEPENDENCIES =	$(LIBFT_INC:%.h=$(LIBFT_INC_DIR)/%.h)\
-				$(LIBSOCKET_INC:%.h=$(LIBSOCKET_INC_DIR)/%.h)
+INCLUDE =	$(INCLUDES:%.h=include/%.h)
+
+N =			0
+MAX =		$(words $(OBJ))
+COMPILED =	false
+
+LIBFT =			libft
+LIBFT_INC_DIR =	$(LIBFT)/include
+LIBFT_INC =		libft.h\
+				ft_printf.h\
+				ft_joinf.h\
+				malloc.h\
+				structs.h\
+				prototypes.h
+
+LIBSOCKET =			libsocket
+LIBSOCKET_INC_DIR =	$(LIBSOCKET)/include
+LIBSOCKET_INC =		libsocket.h\
+					libsocket_defines.h\
+					libsocket_enums.h\
+					libsocket_structures.h
+
+DEPENDENCIES =	$(sort .Makefiles/$(NAME).Makefile\
+				$(LIBFT_INC:%.h=$(LIBFT_INC_DIR)/%.h)\
+				$(LIBSOCKET_INC:%.h=$(LIBSOCKET_INC_DIR)/%.h))
 
 .PHONY: clean fclean all re norme
 

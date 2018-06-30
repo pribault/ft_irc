@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/07 14:48:20 by pribault          #+#    #+#             */
-/*   Updated: 2018/05/24 16:38:22 by pribault         ###   ########.fr       */
+/*   Updated: 2018/06/30 12:40:41 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ t_cmd	g_recv[] =
 	{NICK, &recv_nick},
 	{JOIN, &recv_join},
 	{PING, &recv_ping},
+	{QUIT, &recv_quit},
 	{RPL_WELCOME, &recv_welcome},
 	{RPL_YOURHOST, &recv_yourhost},
 	{RPL_CREATED, &recv_created},
@@ -37,8 +38,11 @@ t_cmd	g_recv[] =
 	{RPL_LOCALUSERS, &recv_localusers},
 	{RPL_GLOBALUSERS, &recv_globalusers},
 	{RPL_LUSERUNKNOWN, &recv_userunknown},
+	{RPL_WHOREPLY, &recv_who_reply},
+	{RPL_ENDOFWHO, &recv_end_of_who},
 	{ERR_NONICKNAMEGIVEN, &recv_error},
 	{ERR_ERRONEUSNICKNAME, &recv_error},
+	{ERR_NOSUCHSERVER, &recv_err_no_such_server},
 	{NULL, NULL}
 };
 

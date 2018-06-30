@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/11 23:23:31 by pribault          #+#    #+#             */
-/*   Updated: 2018/05/24 16:38:56 by pribault         ###   ########.fr       */
+/*   Updated: 2018/06/30 11:38:50 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void	recv_join(t_env *env, t_data *data, t_message *msg)
 {
 	(void)data;
 	enqueue_str_by_fd(env, 1, ft_joinf("[%s%s%s (%s%s%s)] %s%s%s\n",
-			COLOR_NAME, &msg->prefix.name[0], COLOR_CLEAR, COLOR_SYSTEM,
+			COLOR_NAME, &msg->prefix.name[0], COLOR_CLEAR, COLOR_MESSAGE,
 			"Join", COLOR_CLEAR, COLOR_HALF, msg->end, COLOR_CLEAR));
 }
 

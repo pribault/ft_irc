@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/22 22:14:50 by pribault          #+#    #+#             */
-/*   Updated: 2018/04/29 11:17:47 by pribault         ###   ########.fr       */
+/*   Updated: 2018/06/30 12:48:38 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void	send_motdstart(t_env *env, t_data *data)
 	char	*s;
 
 	if (!(s = ft_joinf(":%s %s %s :- %s Message of the day - %s",
-		&data->nickname, RPL_MOTDSTART, &data->nickname, env->name, CRLF)))
+		env->name, RPL_MOTDSTART, &data->nickname, env->name, CRLF)))
 		ft_error(2, ERROR_ALLOCATION, NULL);
 	enqueue_write(env->socket, data->client, s, ft_strlen(s));
 }
@@ -68,7 +68,7 @@ void	send_motdend(t_env *env, t_data *data)
 {
 	char	*s;
 
-	if (!(s = ft_joinf(":%s %s %s :End of MOTD command%s", &data->nickname,
+	if (!(s = ft_joinf(":%s %s %s :End of MOTD command%s", env->name,
 		RPL_ENDOFMOTD, &data->nickname, CRLF)))
 		ft_error(2, ERROR_ALLOCATION, NULL);
 	enqueue_write(env->socket, data->client, s, ft_strlen(s));

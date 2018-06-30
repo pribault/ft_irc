@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/01 18:59:09 by pribault          #+#    #+#             */
-/*   Updated: 2018/05/24 16:53:36 by pribault         ###   ########.fr       */
+/*   Updated: 2018/06/30 12:42:00 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -203,6 +203,11 @@ void			recv_globalusers(t_env *env, t_data *data, t_message *msg);
 void			recv_join(t_env *env, t_data *data, t_message *msg);
 void			recv_ping(t_env *env, t_data *data, t_message *msg);
 void			recv_userunknown(t_env *env, t_data *data, t_message *msg);
+void			recv_quit(t_env *env, t_data *data, t_message *msg);
+void			recv_who_reply(t_env *env, t_data *data, t_message *msg);
+void			recv_end_of_who(t_env *env, t_data *data, t_message *msg);
+void			recv_err_no_such_server(t_env *env, t_data *data,
+				t_message *msg);
 
 void			recv_error(t_env *env, t_data *data, t_message *msg);
 

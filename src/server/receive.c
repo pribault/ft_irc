@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/10 08:56:44 by pribault          #+#    #+#             */
-/*   Updated: 2018/05/24 16:43:01 by pribault         ###   ########.fr       */
+/*   Updated: 2018/06/30 12:10:21 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,11 +74,11 @@ void	recv_user(t_env *env, t_data *data, t_message *msg)
 			COLOR_CLEAR, COLOR_HALF, msg->end, COLOR_CLEAR));
 	data->username = ft_strdup((char*)&msg->params[0]);
 	data->hostname = ft_strdup((char*)&msg->params[2]);
+	data->realname = ft_strdup((char*)&msg->end);
 	addr = client_get_address(data->client);
 	if ((host = gethostbyaddr(&addr->addr, addr->len, env->domain)))
 		data->hostname = ft_strdup(host->h_name);
-	if (ft_strlen((char*)&data->nickname))
-		send_first_welcome(env, data);
+	send_first_welcome(env, data);
 }
 
 void	recv_list(t_env *env, t_data *data, t_message *msg)
@@ -111,10 +111,11 @@ void	recv_join(t_env *env, t_data *data, t_message *msg)
 	i = (uint32_t)-1;
 	while (array[++i])
 	{
-		if ((channel = find_channel(&env->channels, array[i])))
-			add_client_to_channel(channel, data);
+		if ((channel = find_channel(&env->channels, array[i])) &&
+			!is_client_in_channel(channel, data))
+			add_client_to_channel(env, channel, data);
 		else
-			create_channel(&env->channels, array[i], data);
+			create_channel(env, &env->channels, array[i], data);
 	}
 	ft_free_array((void**)array, ft_arraylen(array) + 1);
 	if (env->opt & OPT_VERBOSE)
