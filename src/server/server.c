@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/01 18:38:44 by pribault          #+#    #+#             */
-/*   Updated: 2018/05/24 16:43:31 by pribault         ###   ########.fr       */
+/*   Updated: 2018/06/30 15:16:09 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ int		init_env(t_env *env, int argc, char **argv)
 	env->port = NULL;
 	env->protocol = TCP;
 	env->domain = IPV4;
-	ft_vector_init(&env->clients, ALLOC_MALLOC, sizeof(void *));
+	ft_vector_init(&env->clients, ALLOC_MALLOC, sizeof(void **));
 	ft_vector_init(&env->channels, ALLOC_MALLOC, sizeof(t_channel));
 	if (!load_config(env))
 		ft_error(2, ERROR_LOADING_CONFIG, NULL);

@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/02 12:28:02 by pribault          #+#    #+#             */
-/*   Updated: 2018/06/30 12:13:41 by pribault         ###   ########.fr       */
+/*   Updated: 2018/06/30 17:42:00 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,23 +35,21 @@ void	notify_disconnection(t_env *env, t_data *data, char *reason)
 
 void	client_add(t_socket *socket, void *client)
 {
-	struct hostent	*host;
 	t_data			data;
 	t_env			*env;
 
 	env = socket_get_data(socket);
 	ft_bzero(&data, sizeof(t_data));
 	data.client = client;
-	if ((host = gethostbyaddr(&client_get_address(client)->addr,
-		client_get_address(client)->len, env->domain)))
-		data.hostname = ft_strdup(host->h_name);
+	data.hostname = client_get_address(client)->str;
 	client_attach_data(client, ft_memdup(&data, sizeof(t_data)));
 	if (client_get_fd(client) != 0)
 	{
 		ft_vector_add(&env->clients, &client);
 		if (env->opt & OPT_VERBOSE)
 			enqueue_str_by_fd(env, 1, ft_joinf("[%s] connected\n",
-			inet_ntoa(*(struct in_addr *)client_get_address(client))));
+			inet_ntoa(*(struct in_addr *)&((struct sockaddr_in *)
+				client_get_address(client))->sin_addr)));
 	}
 }
 
@@ -69,10 +67,9 @@ void	client_del(t_socket *socket, void *client)
 		ft_vector_find(&env->clients, &client));
 		if (env->opt & OPT_VERBOSE)
 			enqueue_str_by_fd(env, 1, ft_joinf("[%s] disconnected\n",
-			inet_ntoa(*(struct in_addr *)client_get_address(client))));
+			inet_ntoa(*(struct in_addr *)&((struct sockaddr_in *)
+				client_get_address(client))->sin_addr)));
 	}
-	if (data->hostname)
-		free(data->hostname);
 	if (data->username)
 		free(data->username);
 	if (data->realname)
@@ -87,6 +84,7 @@ void	client_excpt(t_socket *socket, void *client)
 	env = socket_get_data(socket);
 	if (client_get_fd(client) != 0)
 		enqueue_str_by_fd(env, 1, ft_joinf("[%s] exception catched\n",
-		inet_ntoa(*(struct in_addr *)client_get_address(client))));
+		inet_ntoa(*(struct in_addr *)&((struct sockaddr_in *)
+			client_get_address(client))->sin_addr)));
 	socket_remove_client(socket, client);
 }

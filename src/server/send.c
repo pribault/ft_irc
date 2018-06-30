@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/10 10:46:50 by pribault          #+#    #+#             */
-/*   Updated: 2018/05/27 11:36:43 by pribault         ###   ########.fr       */
+/*   Updated: 2018/06/30 17:09:28 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ void	send_list(t_env *env, t_data *data, t_channel *channel)
 
 	if (!(s = ft_joinf(":%s %s %s %s %s :%s%s", &data->nickname, RPL_LIST,
 		&data->nickname, channel->name, channel->perms,
-		(channel->topic) ? channel->topic : "no topic 😥", CRLF)))
+		channel->topic, CRLF)))
 		ft_error(2, ERROR_ALLOCATION, NULL);
 	enqueue_write(env->socket, data->client, s, ft_strlen(s));
 }

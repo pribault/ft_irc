@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/01 18:54:30 by pribault          #+#    #+#             */
-/*   Updated: 2018/06/30 13:11:04 by pribault         ###   ########.fr       */
+/*   Updated: 2018/06/30 17:00:25 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -236,6 +236,7 @@ void			recv_join(t_env *env, t_data *data, t_message *msg);
 void			recv_quit(t_env *env, t_data *data, t_message *msg);
 void			recv_who(t_env *env, t_data *data, t_message *msg);
 void			recv_ping(t_env *env, t_data *data, t_message *msg);
+void			recv_privmsg(t_env *env, t_data *data, t_message *msg);
 
 /*
 **	send functions
@@ -263,6 +264,11 @@ void			send_err_no_such_server(t_env *env, t_data *data,
 void			send_end_of_who(t_env *env, t_data *data, char *name);
 void			send_topic(t_env *env, t_data *data, t_channel *channel);
 void			send_name_reply(t_env *env, t_data *data, t_channel *channel);
+void			send_privmsg_user(t_env *env, t_data *data, t_data *to,
+				t_message *msg);
+void			send_privmsg_channel(t_env *env, t_data *data,
+				t_channel *channel, t_message *msg);
+void			send_no_such_nick(t_env *env, t_data *data, char *name);
 
 /*
 **	verif functions

@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/07 14:47:29 by pribault          #+#    #+#             */
-/*   Updated: 2018/05/24 16:37:46 by pribault         ###   ########.fr       */
+/*   Updated: 2018/06/30 17:42:38 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,8 @@ void	message_sended(t_socket *socket, void *client, t_msg *msg)
 		free(msg->ptr);
 	if (client_get_fd(client) != 1 && (env->opt & OPT_VERBOSE))
 		enqueue_str_by_fd(env, 1, ft_joinf("[%s] message sended\n",
-			inet_ntoa(*(struct in_addr *)&client_get_address(client)->addr)));
+			inet_ntoa(*(struct in_addr *)&((struct sockaddr_in *)
+				client_get_address(client))->sin_addr)));
 }
 
 void	message_trashed(t_socket *socket, void *client, t_msg *msg)

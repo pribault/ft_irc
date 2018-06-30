@@ -6,7 +6,7 @@
 #    By: pribault <pribault@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/06/30 10:56:18 by pribault          #+#    #+#              #
-#    Updated: 2018/06/30 11:33:20 by pribault         ###   ########.fr        #
+#    Updated: 2018/06/30 16:40:16 by pribault         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,7 +28,7 @@ SRC =	client.c		flags.c\
 		param.c			receive.c\
 		receive_2.c		receive_3.c\
 		receive_4.c		receive_5.c\
-		receive_6.c\
+		receive_6.c		receive_7.c\
 		user_commands.c	user_commands_2.c
 OBJ =		$(sort $(SRC:%.c=$(OBJ_DIR)/$(DIR)/%.o))
 INCLUDES =	client.h rfc.h

@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/11 00:04:45 by pribault          #+#    #+#             */
-/*   Updated: 2018/06/30 13:12:00 by pribault         ###   ########.fr       */
+/*   Updated: 2018/06/30 17:10:11 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,9 @@ void		create_channel(t_env *env, t_vector *vector, char *name,
 	t_channel	channel;
 
 	ft_bzero(&channel, sizeof(t_channel));
-	channel.name = ft_strdup(name);
+	if (!(channel.name = ft_strdup(name)) ||
+		!(channel.topic = ft_strdup("no topic 😥")))
+		ft_error(2, ERROR_ALLOCATION, NULL);
 	ft_vector_init(&channel.clients, ALLOC_MALLOC, sizeof(t_data *));
 	add_client_to_channel(env, &channel, data);
 	ft_vector_add(vector, &channel);

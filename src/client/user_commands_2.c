@@ -6,11 +6,32 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/24 11:26:40 by pribault          #+#    #+#             */
-/*   Updated: 2018/06/29 15:28:53 by pribault         ###   ########.fr       */
+/*   Updated: 2018/06/30 16:11:40 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "client.h"
+
+void	cmd_msg(t_env *env, char *s)
+{
+	char	target[PARAMS_LEN];
+	size_t	i;
+	size_t	j;
+
+	i = 0;
+	while (s[i] && ft_isof(s[i], WHITESPACES))
+		i++;
+	j = i;
+	while (s[j] && !ft_isof(s[j], WHITESPACES))
+	{
+		target[j - i] = s[j];
+		j++;
+	}
+	target[j - i] = '\0';
+	while (s[j] && ft_isof(s[j], WHITESPACES))
+		j++;
+	send_msg(env->socket, env->client, target, &s[j]);
+}
 
 void	cmd_connect(t_env *env, char *s)
 {

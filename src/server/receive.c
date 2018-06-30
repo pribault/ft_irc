@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/10 08:56:44 by pribault          #+#    #+#             */
-/*   Updated: 2018/06/30 12:10:21 by pribault         ###   ########.fr       */
+/*   Updated: 2018/06/30 15:35:18 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,24 +23,41 @@ void	recv_unknown(t_env *env, t_data *data, t_message *msg)
 			COLOR_CLEAR));
 }
 
-void	recv_nick(t_env *env, t_data *data, t_message *msg)
+int		verif_nickname(t_env *env, t_data *data, t_message *msg)
 {
-	t_bool	error;
-
-	error = FT_FALSE;
-	if (!msg->n_params && (error = FT_TRUE) == FT_TRUE)
+	if (!msg->n_params)
+	{
 		send_error(env, data, ERR_NONICKNAMEGIVEN,
 			"no nickname given");
-	if (ft_strlen((char*)&msg->params[0]) >= NICK_MAX_LEN &&
-		(error = FT_TRUE) == FT_TRUE)
+		return (-1);
+	}
+	if (ft_strlen((char*)&msg->params[0]) >= NICK_MAX_LEN)
+	{
 		send_error(env, data, ERR_ERRONEUSNICKNAME,
 			"nickname too long, max 9 characters");
-	if (is_nickname_valid((char*)&msg->params[0]) == FT_FALSE &&
-		(error = FT_TRUE) == FT_TRUE)
+		return (-1);
+	}
+	if (is_nickname_valid((char*)&msg->params[0]) == FT_FALSE)
+	{
 		send_error(env, data, ERR_ERRONEUSNICKNAME,
 			"nickname contain invalid characters");
-	if (error == FT_TRUE)
+		return (-1);
+	}
+	return (0);
+}
+
+void	recv_nick(t_env *env, t_data *data, t_message *msg)
+{
+	t_data	*client;
+	size_t	i;
+
+	if (verif_nickname(env, data, msg))
 		return ;
+	i = (size_t)-1;
+	while (++i < env->clients.n && (client = client_get_data(
+		*(void **)ft_vector_get(&env->clients, i))))
+		if (!ft_strcmp(client->nickname, msg->params[0]))
+			return (send_error(env, data, ERR_NICKNAMEINUSE, msg->params[0]));
 	if (env->opt & OPT_VERBOSE)
 		enqueue_str_by_fd(env, 1, ft_joinf(
 			"[%s%s!%s@%s%s (%sNick%s)] %s%s%s\n", COLOR_NAME, &data->nickname,
@@ -50,12 +67,12 @@ void	recv_nick(t_env *env, t_data *data, t_message *msg)
 		send_nick(env, data, (char*)&msg->params[0]);
 	ft_memcpy(&data->nickname, &msg->params[0],
 		ft_strlen((char*)&msg->params[0]) + 1);
+	if (data->username && data->nickname)
+		send_first_welcome(env, data);
 }
 
 void	recv_user(t_env *env, t_data *data, t_message *msg)
 {
-	struct hostent	*host;
-	t_addr			*addr;
 	t_bool			error;
 
 	error = FT_FALSE;
@@ -73,12 +90,9 @@ void	recv_user(t_env *env, t_data *data, t_message *msg)
 			data->username, data->hostname, COLOR_CLEAR, COLOR_SYSTEM,
 			COLOR_CLEAR, COLOR_HALF, msg->end, COLOR_CLEAR));
 	data->username = ft_strdup((char*)&msg->params[0]);
-	data->hostname = ft_strdup((char*)&msg->params[2]);
 	data->realname = ft_strdup((char*)&msg->end);
-	addr = client_get_address(data->client);
-	if ((host = gethostbyaddr(&addr->addr, addr->len, env->domain)))
-		data->hostname = ft_strdup(host->h_name);
-	send_first_welcome(env, data);
+	if (ft_strlen(data->nickname))
+		send_first_welcome(env, data);
 }
 
 void	recv_list(t_env *env, t_data *data, t_message *msg)
@@ -98,29 +112,4 @@ void	recv_list(t_env *env, t_data *data, t_message *msg)
 	while (++i < env->channels.n)
 		send_list(env, data, ft_vector_get(&env->channels, i));
 	send_listend(env, data);
-}
-
-void	recv_join(t_env *env, t_data *data, t_message *msg)
-{
-	char		**array;
-	t_channel	*channel;
-	uint32_t	i;
-
-	if (!(array = ft_multisplit((char*)&msg->params[0], ",")))
-		ft_error(2, ERROR_ALLOCATION, NULL);
-	i = (uint32_t)-1;
-	while (array[++i])
-	{
-		if ((channel = find_channel(&env->channels, array[i])) &&
-			!is_client_in_channel(channel, data))
-			add_client_to_channel(env, channel, data);
-		else
-			create_channel(env, &env->channels, array[i], data);
-	}
-	ft_free_array((void**)array, ft_arraylen(array) + 1);
-	if (env->opt & OPT_VERBOSE)
-		enqueue_str_by_fd(env, 1, ft_joinf(
-		"[%s%s!%s@%s%s (%sJoin%s)] %s%s%s\n", COLOR_NAME, &data->nickname,
-		data->username, data->hostname, COLOR_CLEAR, COLOR_SYSTEM,
-		COLOR_CLEAR, COLOR_HALF, msg->end, COLOR_CLEAR));
 }
