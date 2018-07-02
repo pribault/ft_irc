@@ -6,6 +6,7 @@ CLIENT_MAKEFILE = $(MAKE_DIR)/$(CLIENT)$(EXTENSION)
 SERVER_MAKEFILE = $(MAKE_DIR)/$(SERVER)$(EXTENSION)
 LIBFT = libft
 LIBSOCKET = libsocket
+JOBS =	4
 
 .PHONY: all clean fclean re $(CLIENT) $(SERVER) $(LIBFT) $(LIBSOCKET)
 
@@ -18,10 +19,10 @@ $(LIBSOCKET):
 	@make -C $(LIBSOCKET)
 
 $(CLIENT): $(LIBFT) $(LIBSOCKET)
-	@make -f $(CLIENT_MAKEFILE)
+	@make -f $(CLIENT_MAKEFILE) -j $(JOBS)
 
 $(SERVER): $(LIBFT) $(LIBSOCKET)
-	@make -f $(SERVER_MAKEFILE)
+	@make -f $(SERVER_MAKEFILE) -j $(JOBS)
 
 clean:
 	@make -C $(LIBFT) clean
@@ -35,8 +36,4 @@ fclean:
 	@make -f $(CLIENT_MAKEFILE) fclean
 	@make -f $(SERVER_MAKEFILE) fclean
 
-re:
-	@make -C $(LIBFT) re
-	@make -C $(LIBSOCKET) re
-	@make -f $(CLIENT_MAKEFILE) re
-	@make -f $(SERVER_MAKEFILE) re
+re: fclean all
