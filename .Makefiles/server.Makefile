@@ -6,13 +6,13 @@
 #    By: pribault <pribault@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/06/30 11:01:47 by pribault          #+#    #+#              #
-#    Updated: 2018/07/02 20:50:47 by pribault         ###   ########.fr        #
+#    Updated: 2018/07/02 22:10:56 by pribault         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME =	serveur
 CC =	gcc
-FLAGS =	-Wall -Wextra -Werror -g -fsanitize=address
+FLAGS =	-Wall -Wextra -Werror
 
 DIR =		server
 SRC_DIR =	src

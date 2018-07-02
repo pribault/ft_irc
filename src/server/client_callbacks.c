@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/02 12:28:02 by pribault          #+#    #+#             */
-/*   Updated: 2018/07/02 20:41:32 by pribault         ###   ########.fr       */
+/*   Updated: 2018/07/02 22:11:28 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ void	client_del(t_socket *socket, void *client)
 	data = client_get_data(client);
 	if (client_get_fd(client) != 0)
 	{
-		notify_disconnection(env, data, "an undefined reason");
+		notify_disconnection(env, data, data->reason);
 		ft_vector_del_one(&env->clients,
 		ft_vector_find(&env->clients, &client));
 		if (env->opt & OPT_VERBOSE)
