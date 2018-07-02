@@ -6,13 +6,13 @@
 #    By: pribault <pribault@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/06/30 11:01:47 by pribault          #+#    #+#              #
-#    Updated: 2018/06/30 20:25:25 by pribault         ###   ########.fr        #
+#    Updated: 2018/07/02 20:50:47 by pribault         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME =	serveur
 CC =	gcc
-FLAGS =	-Wall -Wextra -Werror
+FLAGS =	-Wall -Wextra -Werror -g -fsanitize=address
 
 DIR =		server
 SRC_DIR =	src
@@ -76,7 +76,7 @@ $(OBJ_DIR)/$(DIR)/%.o: $(SRC_DIR)/$(DIR)/%.c $(INCLUDE) $(DEPENDENCIES) | $(OBJ_
 	@printf "\033[0m\033[38;5;124m[$(DIR) \033[38;5;7m%3u%%\033[38;5;124m] \033[0m🍇  \033[38;5;207m$(@:$(OBJ_DIR)/$(DIR)/%.o=%.o) done\033[0m\n" $(PERCENT)
 
 $(NAME): $(OBJ) $(LIBFT)/libft.a $(LIBSOCKET)/libsocket.a
-	@$(CC) -o $@ $(OBJ) -L $(LIBSOCKET) -lsocket -L $(LIBFT) -lft
+	@$(CC) $(FLAGS) -o $@ $(OBJ) -L $(LIBSOCKET) -lsocket -L $(LIBFT) -lft
 	$(eval COMPILED=true)
 
 clean:

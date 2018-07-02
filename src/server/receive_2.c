@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/22 18:39:44 by pribault          #+#    #+#             */
-/*   Updated: 2018/07/02 19:18:28 by pribault         ###   ########.fr       */
+/*   Updated: 2018/07/02 20:52:47 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ void	recv_quit(t_env *env, t_data *data, t_message *msg)
 		"[%s%s!%s@%s%s (%sQuit%s)] %s%s%s\n", COLOR_NAME, &data->nickname,
 		data->username, data->hostname, COLOR_CLEAR, COLOR_SYSTEM,
 		COLOR_CLEAR, COLOR_HALF, msg->end, COLOR_CLEAR));
-	notify_disconnection(env, data, msg->end);
+	data->reason = ft_strdup(msg->end);
 	socket_remove_client(env->socket, data->client);
 }
 

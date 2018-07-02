@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/01 18:54:30 by pribault          #+#    #+#             */
-/*   Updated: 2018/07/02 19:21:20 by pribault         ###   ########.fr       */
+/*   Updated: 2018/07/02 20:40:30 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,8 +87,8 @@
 **	others
 */
 
-# define TIMEOUT_PING	10
-# define TIMEOUT_PONG	20
+# define TIMEOUT_PING	100
+# define TIMEOUT_PONG	200
 
 /*
 *************
@@ -132,6 +132,7 @@ typedef struct		s_data
 	uint8_t			permissions;
 	struct timeval	last;
 	t_bool			waiting;
+	char			*reason;
 }					t_data;
 
 typedef struct		s_channel

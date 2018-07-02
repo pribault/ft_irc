@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/24 11:26:40 by pribault          #+#    #+#             */
-/*   Updated: 2018/07/01 12:23:09 by pribault         ###   ########.fr       */
+/*   Updated: 2018/07/02 20:10:08 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,4 +87,8 @@ void	cmd_help(t_env *env, char *s)
 	enqueue_str_by_fd(env, 1, ft_strdup("  /list\n"));
 	enqueue_str_by_fd(env, 1, ft_strdup("  /join <channels>\n"));
 	enqueue_str_by_fd(env, 1, ft_strdup("  /who <channels>\n"));
+	enqueue_str_by_fd(env, 1, ft_strdup("  /nick <nickname>\n"));
+	enqueue_str_by_fd(env, 1, ft_strdup("  /topic <channel> <topic>\n"));
+	enqueue_str_by_fd(env, 1, ft_strdup(
+		"  /msg <channel | nickname> <message>\n"));
 }

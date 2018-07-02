@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/10 08:56:44 by pribault          #+#    #+#             */
-/*   Updated: 2018/06/30 18:31:13 by pribault         ###   ########.fr       */
+/*   Updated: 2018/07/02 19:24:45 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ void	recv_nick(t_env *env, t_data *data, t_message *msg)
 		send_nick(env, data, (char*)&msg->params[0]);
 	ft_memcpy(&data->nickname, &msg->params[0],
 		ft_strlen((char*)&msg->params[0]) + 1);
-	if (data->username && data->nickname)
+	if (data->username)
 		send_first_welcome(env, data);
 }
 

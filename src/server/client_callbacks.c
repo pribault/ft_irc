@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/02 12:28:02 by pribault          #+#    #+#             */
-/*   Updated: 2018/06/30 19:55:09 by pribault         ###   ########.fr       */
+/*   Updated: 2018/07/02 20:41:32 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ void	client_add(t_socket *socket, void *client)
 	data.hostname = client_get_address(client)->str;
 	data.last = env->now;
 	data.waiting = FT_FALSE;
+	data.reason = ft_strdup("un undefined reason");
 	client_attach_data(client, ft_memdup(&data, sizeof(t_data)));
 	if (client_get_fd(client) != 0)
 	{
@@ -78,6 +79,8 @@ void	client_del(t_socket *socket, void *client)
 		free(data->username);
 	if (data->realname)
 		free(data->realname);
+	if (data->reason)
+		free(data->reason);
 	free(data);
 }
 
