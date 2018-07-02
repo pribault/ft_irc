@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/07 11:18:20 by pribault          #+#    #+#             */
-/*   Updated: 2018/07/01 12:28:54 by pribault         ###   ########.fr       */
+/*   Updated: 2018/07/03 00:15:27 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,7 @@ void	treat_packet(t_socket *socket, void *client, void *ptr, size_t size)
 	t_data		*data;
 	char		*s;
 
+	ft_bzero(&msg, sizeof(t_message));
 	env = socket_get_data(socket);
 	data = client_get_data(client);
 	if (!(s = malloc(size + 1)))
