@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/01 18:54:30 by pribault          #+#    #+#             */
-/*   Updated: 2018/06/30 20:08:56 by pribault         ###   ########.fr       */
+/*   Updated: 2018/07/01 12:31:33 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -248,6 +248,7 @@ void				recv_quit(t_env *env, t_data *data, t_message *msg);
 void				recv_who(t_env *env, t_data *data, t_message *msg);
 void				recv_ping(t_env *env, t_data *data, t_message *msg);
 void				recv_privmsg(t_env *env, t_data *data, t_message *msg);
+void				recv_topic(t_env *env, t_data *data, t_message *msg);
 
 /*
 **	send functions

@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/22 17:12:03 by pribault          #+#    #+#             */
-/*   Updated: 2018/06/30 17:28:18 by pribault         ###   ########.fr       */
+/*   Updated: 2018/07/01 12:24:15 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,15 @@ void	send_msg(t_socket *socket, void *client, char *target, char *msg)
 	char	*s;
 
 	if (!(s = ft_joinf("%s %s :%s%s", PRIVMSG, target, msg, CRLF)))
+		ft_error(2, ERROR_ALLOCATION, NULL);
+	enqueue_write(socket, client, s, ft_strlen(s));
+}
+
+void	send_topic(t_socket *socket, void *client, char *topic, char *msg)
+{
+	char	*s;
+
+	if (!(s = ft_joinf("%s %s :%s%s", TOPIC, topic, msg, CRLF)))
 		ft_error(2, ERROR_ALLOCATION, NULL);
 	enqueue_write(socket, client, s, ft_strlen(s));
 }

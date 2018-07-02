@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/24 11:26:40 by pribault          #+#    #+#             */
-/*   Updated: 2018/06/30 16:11:40 by pribault         ###   ########.fr       */
+/*   Updated: 2018/07/01 12:23:09 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,27 @@ void	cmd_msg(t_env *env, char *s)
 	while (s[j] && ft_isof(s[j], WHITESPACES))
 		j++;
 	send_msg(env->socket, env->client, target, &s[j]);
+}
+
+void	cmd_topic(t_env *env, char *s)
+{
+	char	topic[PARAMS_LEN];
+	size_t	i;
+	size_t	j;
+
+	i = 0;
+	while (s[i] && ft_isof(s[i], WHITESPACES))
+		i++;
+	j = i;
+	while (s[j] && !ft_isof(s[j], WHITESPACES))
+	{
+		topic[j - i] = s[j];
+		j++;
+	}
+	topic[j - i] = '\0';
+	while (s[j] && ft_isof(s[j], WHITESPACES))
+		j++;
+	send_topic(env->socket, env->client, topic, &s[j]);
 }
 
 void	cmd_connect(t_env *env, char *s)

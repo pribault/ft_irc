@@ -25,6 +25,7 @@ SRC =	server.c	flags.c\
 		prefix.c	param.c\
 		command.c	config.c\
 		receive.c	receive_2.c\
+		receive_3.c\
 		send.c		send_2.c\
 		send_3.c	send_4.c\
 		send_5.c\
