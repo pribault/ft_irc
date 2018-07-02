@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/18 10:54:53 by pribault          #+#    #+#             */
-/*   Updated: 2018/06/30 20:08:06 by pribault         ###   ########.fr       */
+/*   Updated: 2018/07/02 19:21:45 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,8 +90,6 @@ static void	set_sets(t_socket *socket, fd_set *set, int *fd_max, uint8_t flags)
 	if (flags & ALLOW_WRITE)
 		socket_add_write_request_to_set(&set[1], &socket->write_queue, fd_max);
 }
-
-#include <errno.h>
 
 void		socket_poll_events(t_socket *socket, uint8_t flags)
 {

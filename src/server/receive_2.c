@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/22 18:39:44 by pribault          #+#    #+#             */
-/*   Updated: 2018/06/30 17:35:47 by pribault         ###   ########.fr       */
+/*   Updated: 2018/07/02 19:18:28 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,10 +96,10 @@ void	recv_privmsg(t_env *env, t_data *data, t_message *msg)
 	if (!msg->n_params)
 		return (send_error(env, data, ERR_NORECIPIENT,
 			"No recipient given PRIVMSG"));
-	if (msg->n_params == 1 && !ft_strlen(msg->end))
+		if (msg->n_params == 1 && !ft_strlen(msg->end))
 		return (send_error(env, data, ERR_NOTEXTTOSEND,
 			"No text to send"));
-	i = (size_t)-1;
+		i = (size_t)-1;
 	while (++i < env->clients.n &&
 		(client = client_get_data(*(void **)ft_vector_get(&env->clients, i))))
 		if (!ft_strcmp(client->nickname, msg->params[0]))

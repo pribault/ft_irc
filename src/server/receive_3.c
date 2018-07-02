@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/01 12:29:50 by pribault          #+#    #+#             */
-/*   Updated: 2018/07/02 12:54:35 by pribault         ###   ########.fr       */
+/*   Updated: 2018/07/02 19:18:20 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ void		recv_topic(t_env *env, t_data *data, t_message *msg)
 	if (msg->n_params == 1 && !ft_strlen(msg->end))
 		return (send_error(env, data, ERR_NEEDMOREPARAMS,
 			"Not enough parameters"));
-	i = (size_t)-1;
+		i = (size_t)-1;
 	while (++i < env->channels.n &&
 		(channel = ft_vector_get(&env->channels, i)))
 		if (!ft_strcmp(channel->name, msg->params[0]))

@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/01 18:54:30 by pribault          #+#    #+#             */
-/*   Updated: 2018/07/01 12:31:33 by pribault         ###   ########.fr       */
+/*   Updated: 2018/07/02 19:21:20 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -213,9 +213,12 @@ void				client_excpt(t_socket *socket, void *client);
 **	message callbacks
 */
 
-void				message_received(t_socket *socket, void *client, t_msg *msg);
-void				message_sended(t_socket *socket, void *client, t_msg *msg);
-void				message_trashed(t_socket *socket, void *client, t_msg *msg);
+void				message_received(t_socket *socket, void *client,
+					t_msg *msg);
+void				message_sended(t_socket *socket, void *client,
+					t_msg *msg);
+void				message_trashed(t_socket *socket, void *client,
+					t_msg *msg);
 
 /*
 **	packet management
@@ -266,7 +269,8 @@ void				send_pong(t_env *env, t_data *data);
 void				send_motdstart(t_env *env, t_data *data);
 void				send_motd(t_env *env, t_data *data);
 void				send_motdend(t_env *env, t_data *data);
-void				send_quit(t_env *env, t_data *data, t_data *to, char *reason);
+void				send_quit(t_env *env, t_data *data, t_data *to,
+					char *reason);
 void				send_join(t_env *env, t_data *data, t_data *to,
 					t_channel *channel);
 void				send_who_reply(t_env *env, t_data *data, t_data *client,
@@ -275,7 +279,8 @@ void				send_err_no_such_server(t_env *env, t_data *data,
 					char *servname);
 void				send_end_of_who(t_env *env, t_data *data, char *name);
 void				send_topic(t_env *env, t_data *data, t_channel *channel);
-void				send_name_reply(t_env *env, t_data *data, t_channel *channel);
+void				send_name_reply(t_env *env, t_data *data,
+					t_channel *channel);
 void				send_privmsg_user(t_env *env, t_data *data, t_data *to,
 					t_message *msg);
 void				send_privmsg_channel(t_env *env, t_data *data,
@@ -299,13 +304,15 @@ void				add_client_to_channel(t_env *env, t_channel *channel,
 void				create_channel(t_env *env, t_vector *vector, char *name,
 					t_data *data);
 t_bool				is_client_in_channel(t_channel *channel, t_data *client);
-void				remove_client_from_channel(t_channel *channel, t_data *client);
+void				remove_client_from_channel(t_channel *channel,
+					t_data *client);
 
 /*
 **	others
 */
 
-void				notify_disconnection(t_env *env, t_data *data, char *reason);
+void				notify_disconnection(t_env *env, t_data *data,
+					char *reason);
 void				check_clients_activity(t_env *env);
 
 #endif
