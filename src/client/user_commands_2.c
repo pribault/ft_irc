@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/24 11:26:40 by pribault          #+#    #+#             */
-/*   Updated: 2018/07/02 20:10:08 by pribault         ###   ########.fr       */
+/*   Updated: 2018/08/25 15:46:32 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,14 @@ void	cmd_connect(t_env *env, char *s)
 	ft_free_array((void**)array, ft_arraylen(array) + 1);
 }
 
+void	cmd_leave(t_env *env, char *s)
+{
+	if (!env->client)
+		return (ft_error(2, ERROR_DISCONNECTED, NULL));
+	(void)s;
+	send_leave(env->socket, env->client, s);
+}
+
 void	cmd_help(t_env *env, char *s)
 {
 	size_t	i;
@@ -86,6 +94,7 @@ void	cmd_help(t_env *env, char *s)
 	enqueue_str_by_fd(env, 1, ft_strdup("  /quit <reason>\n"));
 	enqueue_str_by_fd(env, 1, ft_strdup("  /list\n"));
 	enqueue_str_by_fd(env, 1, ft_strdup("  /join <channels>\n"));
+	enqueue_str_by_fd(env, 1, ft_strdup("  /leave <channels>\n"));
 	enqueue_str_by_fd(env, 1, ft_strdup("  /who <channels>\n"));
 	enqueue_str_by_fd(env, 1, ft_strdup("  /nick <nickname>\n"));
 	enqueue_str_by_fd(env, 1, ft_strdup("  /topic <channel> <topic>\n"));

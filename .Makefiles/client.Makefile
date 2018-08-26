@@ -6,7 +6,7 @@
 #    By: pribault <pribault@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/06/30 10:56:18 by pribault          #+#    #+#              #
-#    Updated: 2018/07/02 22:10:53 by pribault         ###   ########.fr        #
+#    Updated: 2018/08/25 15:41:29 by pribault         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,7 +23,7 @@ SRC =	client.c		flags.c\
 		message_callbacks.c\
 		packet.c		output.c\
 		send.c			send_2.c\
-		user_command.c\
+		send_3.c		user_command.c\
 		prefix.c		command.c\
 		param.c			receive.c\
 		receive_2.c		receive_3.c\

@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/30 16:40:04 by pribault          #+#    #+#             */
-/*   Updated: 2018/06/30 17:39:16 by pribault         ###   ########.fr       */
+/*   Updated: 2018/08/25 16:27:05 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,4 +55,12 @@ void	recv_name_reply(t_env *env, t_data *data, t_message *msg)
 	enqueue_str_by_fd(env, 1, ft_joinf("[%s%s%s (%s%s%s)] %s%s%s\n",
 		COLOR_NAME, &msg->prefix.name[0], COLOR_CLEAR, COLOR_INFO,
 		"Names", COLOR_CLEAR, COLOR_HALF, msg->end, COLOR_CLEAR));
+}
+
+void	recv_part(t_env *env, t_data *data, t_message *msg)
+{
+	(void)data;
+	enqueue_str_by_fd(env, 1, ft_joinf("[%s%s%s (%s%s%s)] %s%s%s\n",
+			COLOR_NAME, &msg->prefix.name[0], COLOR_CLEAR, COLOR_MESSAGE,
+			"Leave", COLOR_CLEAR, COLOR_HALF, msg->params[0], COLOR_CLEAR));
 }

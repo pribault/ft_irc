@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/01 12:29:50 by pribault          #+#    #+#             */
-/*   Updated: 2018/07/02 19:18:20 by pribault         ###   ########.fr       */
+/*   Updated: 2018/08/25 16:19:27 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,4 +62,29 @@ void		recv_topic(t_env *env, t_data *data, t_message *msg)
 				return (send_topic(env, data, channel));
 			}
 		}
+}
+
+void		recv_part(t_env *env, t_data *data, t_message *msg)
+{
+	char		**array;
+	t_channel	*channel;
+	uint32_t	i;
+
+	if (!(array = ft_multisplit((char*)&msg->params[0], ",")))
+		ft_error(2, ERROR_ALLOCATION, NULL);
+	i = (uint32_t)-1;
+	while (array[++i])
+		if ((channel = find_channel(&env->channels, array[i])))
+		{
+			part_channel(env, data, channel);
+			remove_client_from_channel(channel, data);
+			if (!channel->clients.n)
+				remove_channel(env, channel);
+		}
+	ft_free_array((void**)array, ft_arraylen(array) + 1);
+	if (env->opt & OPT_VERBOSE)
+		enqueue_str_by_fd(env, 1, ft_joinf(
+		"[%s%s!%s@%s%s (%sLeave%s)] %s%s%s\n", COLOR_NAME, &data->nickname,
+		data->username, data->hostname, COLOR_CLEAR, COLOR_SYSTEM,
+		COLOR_CLEAR, COLOR_HALF, msg->end, COLOR_CLEAR));
 }

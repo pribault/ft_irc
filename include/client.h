@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/01 18:59:09 by pribault          #+#    #+#             */
-/*   Updated: 2018/07/01 12:24:35 by pribault         ###   ########.fr       */
+/*   Updated: 2018/08/25 16:24:20 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -178,6 +178,7 @@ void			send_msg(t_socket *socket, void *client, char *target,
 				char *msg);
 void			send_topic(t_socket *socket, void *client, char *topic,
 				char *msg);
+void			send_leave(t_socket *socket, void *client, char *list);
 
 /*
 **	receive functions
@@ -216,6 +217,7 @@ void			recv_no_text_to_send(t_env *env, t_data *data, t_message *msg);
 void			recv_msg(t_env *env, t_data *data, t_message *msg);
 void			recv_topic(t_env *env, t_data *data, t_message *msg);
 void			recv_name_reply(t_env *env, t_data *data, t_message *msg);
+void			recv_part(t_env *env, t_data *data, t_message *msg);
 
 void			recv_error(t_env *env, t_data *data, t_message *msg);
 
@@ -232,6 +234,7 @@ void			cmd_who(t_env *env, char *s);
 void			cmd_msg(t_env *env, char *s);
 void			cmd_topic(t_env *env, char *s);
 void			cmd_connect(t_env *env, char *s);
+void			cmd_leave(t_env *env, char *s);
 void			cmd_help(t_env *env, char *s);
 
 char			*get_prefix(t_prefix *prefix, char *s);

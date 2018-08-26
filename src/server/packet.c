@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/07 11:18:20 by pribault          #+#    #+#             */
-/*   Updated: 2018/07/03 00:15:27 by pribault         ###   ########.fr       */
+/*   Updated: 2018/08/25 15:47:28 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ t_cmd	g_recv[] =
 	{PING, &recv_ping},
 	{PRIVMSG, &recv_privmsg},
 	{TOPIC, &recv_topic},
+	{PART, &recv_part},
 	{NULL, NULL}
 };
 

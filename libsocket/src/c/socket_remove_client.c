@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/18 11:20:23 by pribault          #+#    #+#             */
-/*   Updated: 2018/06/30 20:07:47 by pribault         ###   ########.fr       */
+/*   Updated: 2018/08/25 15:31:20 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,26 @@
 
 #include "libsocket.h"
 
+static void	socket_remove_client_messages(t_socket *socket,
+			t_circ_buffer *buffer, t_client *client)
+{
+	t_towrite	*tmp;
+	size_t		i;
+
+	i = ft_circ_buffer_get_size(buffer);
+	while (--i != (size_t)-1)
+		if ((tmp = ft_circ_buffer_dequeue(buffer)))
+		{
+			if (!ft_memcmp(&tmp->client, client, sizeof(t_client)))
+			{
+				if (socket->msg_trash)
+					socket->msg_trash(socket, client, &tmp->data);
+			}
+			else
+				ft_circ_buffer_enqueue(buffer, tmp);
+		}
+}
+
 static void	socket_remove_client_by_fd(t_vector *vector,
 			t_client *client)
 {
@@ -57,6 +77,7 @@ void		socket_remove_client(t_socket *socket, t_client *client)
 	t_vector	*vector;
 
 	vector = &socket->clients;
+	socket_remove_client_messages(socket, &socket->write_queue, client);
 	if (socket->client_del)
 		socket->client_del(socket, client);
 	if (socket->sockfd != client->fd)

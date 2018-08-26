@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/01 18:54:30 by pribault          #+#    #+#             */
-/*   Updated: 2018/07/02 20:40:30 by pribault         ###   ########.fr       */
+/*   Updated: 2018/08/25 16:19:05 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -253,6 +253,7 @@ void				recv_who(t_env *env, t_data *data, t_message *msg);
 void				recv_ping(t_env *env, t_data *data, t_message *msg);
 void				recv_privmsg(t_env *env, t_data *data, t_message *msg);
 void				recv_topic(t_env *env, t_data *data, t_message *msg);
+void				recv_part(t_env *env, t_data *data, t_message *msg);
 
 /*
 **	send functions
@@ -288,6 +289,8 @@ void				send_privmsg_channel(t_env *env, t_data *data,
 					t_channel *channel, t_message *msg);
 void				send_no_such_nick(t_env *env, t_data *data, char *name);
 void				send_ping(t_env *env, t_data *data);
+void				send_part(t_env *env, t_data *data, t_data *to,
+					t_channel *channel);
 
 /*
 **	verif functions
@@ -307,6 +310,9 @@ void				create_channel(t_env *env, t_vector *vector, char *name,
 t_bool				is_client_in_channel(t_channel *channel, t_data *client);
 void				remove_client_from_channel(t_channel *channel,
 					t_data *client);
+void				remove_channel(t_env *env, t_channel *channel);
+void				part_channel(t_env *env, t_data *client,
+					t_channel *channel);
 
 /*
 **	others

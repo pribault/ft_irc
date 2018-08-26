@@ -6,7 +6,7 @@
 #    By: pribault <pribault@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/06/30 11:01:47 by pribault          #+#    #+#              #
-#    Updated: 2018/07/02 22:10:56 by pribault         ###   ########.fr        #
+#    Updated: 2018/08/25 16:10:44 by pribault         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,7 +29,8 @@ SRC =	server.c	flags.c\
 		send.c		send_2.c\
 		send_3.c	send_4.c\
 		send_5.c\
-		verif.c		channels.c
+		verif.c		channels.c\
+		channels_2.c
 OBJ =		$(sort $(SRC:%.c=$(OBJ_DIR)/$(DIR)/%.o))
 INCLUDES =	server.h rfc.h
 INCLUDE =	$(INCLUDES:%.h=include/%.h)
