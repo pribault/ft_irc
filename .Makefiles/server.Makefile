@@ -11,7 +11,7 @@
 # **************************************************************************** #
 
 NAME =	serveur
-CC =	gcc
+CC =	clang
 FLAGS =	-Wall -Wextra -Werror
 
 DIR =		server

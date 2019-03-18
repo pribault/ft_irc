@@ -22,6 +22,7 @@ static t_short_flag	g_short_flags[] =
 static t_long_flag	g_long_flags[] =
 {
 	{"help", 0, {0}, (void*)&print_usage},
+	{"verbose", 0, {0}, (void*)&set_verbose},
 	{"protocol", 1, {PARAM_STR}, (void*)&get_protocol},
 	{"domain", 1, {PARAM_STR}, (void*)&get_domain},
 	{NULL, 0, {0}, NULL}
@@ -100,11 +101,7 @@ int		main(int argc, char **argv)
 	start_socket(&env);
 	enqueue_str_by_fd(&env, 1, ft_strdup("Enter your username:\n"));
 	while (1)
-	{
-		if (check_malloc() != MALLOC_OK)
-			ft_error(2, ERROR_CORRUPTED_MEMORY, NULL);
 		socket_poll_events(env.socket, ACCEPT_CONNECTIONS | ALLOW_READ |
 			ALLOW_WRITE);
-	}
 	return (0);
 }

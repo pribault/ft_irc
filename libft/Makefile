@@ -1,6 +1,6 @@
 NAME = libft.a
 NAME_SO = $(NAME:%.a=%.so)
-CC = gcc
+CC = clang
 FLAGS = -Wall -Wextra -Werror
 LIBFT = libft
 MALLOC = malloc
@@ -18,7 +18,7 @@ all: $(NAME)
 
 $(NAME):
 	@make -f $(DIR)/$(LIBFT).$(EXT) -j$(JOBS)
-	@make -f $(DIR)/$(MALLOC).$(EXT) -j$(JOBS)
+	#@make -f $(DIR)/$(MALLOC).$(EXT) -j$(JOBS)
 	@make -f $(DIR)/$(FT_PRINTF).$(EXT) -j$(JOBS)
 	@make -f $(DIR)/$(FT_JOINF).$(EXT) -j$(JOBS)
 

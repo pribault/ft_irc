@@ -22,6 +22,7 @@ static t_short_flag	g_short_flags[] =
 static t_long_flag	g_long_flags[] =
 {
 	{"help", 0, {0}, (void*)&print_usage},
+	{"verbose", 0, {0}, (void*)&set_verbose},
 	{"protocol", 1, {PARAM_STR}, (void*)&get_protocol},
 	{"domain", 1, {PARAM_STR}, (void*)&get_domain},
 	{NULL, 0, {0}, NULL}
@@ -110,11 +111,6 @@ int		main(int argc, char **argv)
 	start_socket(&env);
 	while (1)
 	{
-		if (check_malloc() != MALLOC_OK)
-		{
-			malloc_print_logs();
-			ft_error(2, ERROR_CORRUPTED_MEMORY, NULL);
-		}
 		gettimeofday(&env.now, NULL);
 		check_clients_activity(&env);
 		socket_poll_events(env.socket, ACCEPT_CONNECTIONS | ALLOW_READ |

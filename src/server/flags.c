@@ -23,6 +23,8 @@ void	print_usage(void)
 	ft_printf(" %savailable options:%s\n", COLOR_HALF, COLOR_CLEAR);
 	ft_printf("  %s--help%s or %s-h%s: %sprint usage%s\n", COLOR_UNDERLINED,
 		COLOR_CLEAR, COLOR_UNDERLINED, COLOR_CLEAR, COLOR_HALF, COLOR_CLEAR);
+	ft_printf("  %s--verbose%s or %s-v%s: %sverbose mode%s\n", COLOR_UNDERLINED,
+		COLOR_CLEAR, COLOR_UNDERLINED, COLOR_CLEAR, COLOR_HALF, COLOR_CLEAR);
 	ft_printf("  %s--protocol%s <protocool>: %stcp or udp%s\n",
 		COLOR_UNDERLINED, COLOR_CLEAR, COLOR_HALF, COLOR_CLEAR);
 	ft_printf("  %s--domain%s <domain>: %sipv4 or ipv6%s\n", COLOR_UNDERLINED,
