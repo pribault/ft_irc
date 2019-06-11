@@ -47,10 +47,10 @@ static int	iter_on_addresses(t_socket *socket, t_client *client,
 			ft_memcpy(&client->addr, addr->ai_addr, addr->ai_addrlen);
 			client->addr.len = addr->ai_addrlen;
 			client->write_type = WRITE_BY_FD;
-			ft_vector_add(&socket->clients, client);
+			ft_vector_add(&socket->clients, &client);
 			if (socket->client_add)
-				socket->client_add(socket, ft_vector_get(&socket->clients,
-				socket->clients.n - 1));
+				socket->client_add(socket, *(t_client**)ft_vector_get(
+					&socket->clients, socket->clients.n - 1));
 			freeaddrinfo(result);
 			return (1);
 		}
@@ -63,21 +63,23 @@ static int	iter_on_addresses(t_socket *socket, t_client *client,
 int			socket_connect(t_socket *msocket, t_method method, char *address,
 			char *port)
 {
-	t_client		client;
+	t_client		*client;
 	struct addrinfo	hints;
 	struct addrinfo	*result;
 
 	ft_bzero(&hints, sizeof(struct addrinfo));
-	ft_bzero(&client, sizeof(t_client));
+	if (!(client = malloc(sizeof(t_client))))
+		return (1);
+	ft_bzero(client, sizeof(t_client));
 	hints.ai_family = method.domain;
 	hints.ai_socktype = method.protocol;
 	result = NULL;
 	if (getaddrinfo(address, port, &hints, &result) != 0 ||
-		(client.fd = socket(method.domain, method.protocol, 0)) < 0)
+		(client->fd = socket(method.domain, method.protocol, 0)) < 0)
 	{
 		if (result)
 			freeaddrinfo(result);
 		return (0);
 	}
-	return (iter_on_addresses(msocket, &client, result));
+	return (iter_on_addresses(msocket, client, result));
 }

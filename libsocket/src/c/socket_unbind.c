@@ -50,7 +50,7 @@ void		socket_unbind(t_socket *socket)
 	i = (size_t)-1;
 	if (socket->protocol == TCP)
 		while (++i < socket->clients.n)
-			if ((client = ft_vector_get(&socket->clients, i)))
+			if ((client = *(t_client**)ft_vector_get(&socket->clients, i)))
 				close(client->fd);
 	ft_vector_resize(&socket->clients, 0);
 	close(socket->sockfd);

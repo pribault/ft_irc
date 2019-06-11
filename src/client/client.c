@@ -101,8 +101,6 @@ int		main(int argc, char **argv)
 	enqueue_str_by_fd(&env, 1, ft_strdup("Enter your username:\n"));
 	while (1)
 	{
-		if (check_malloc() != MALLOC_OK)
-			ft_error(2, ERROR_CORRUPTED_MEMORY, NULL);
 		socket_poll_events(env.socket, ACCEPT_CONNECTIONS | ALLOW_READ |
 			ALLOW_WRITE);
 	}

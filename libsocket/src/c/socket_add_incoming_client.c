@@ -37,21 +37,23 @@
 void	socket_add_incoming_client(t_socket *socket, int *n_evts)
 {
 	struct hostent	*host;
-	t_client		client;
+	t_client		*client;
 
-	ft_bzero(&client, sizeof(t_client));
-	client.addr.len = sizeof(struct sockaddr);
-	if ((*n_evts) < 1 ||
-		(client.fd = accept(socket->sockfd, (void*)&client.addr,
-		&client.addr.len)) < 0)
+	if (!(client = malloc(sizeof(t_client))))
 		return ;
-	if ((host = gethostbyaddr(&client.addr.addr, client.addr.len,
+	ft_bzero(client, sizeof(t_client));
+	client->addr.len = sizeof(struct sockaddr);
+	if ((*n_evts) < 1 ||
+		(client->fd = accept(socket->sockfd, (void*)&client->addr,
+		&client->addr.len)) < 0)
+		return ;
+	if ((host = gethostbyaddr(&client->addr.addr, client->addr.len,
 		socket->domain)))
-		client.addr.str = ft_strdup(host->h_name);
-	client.write_type = WRITE_BY_ADDR;
+		client->addr.str = ft_strdup(host->h_name);
+	client->write_type = WRITE_BY_ADDR;
 	(*n_evts)--;
 	ft_vector_add(&socket->clients, &client);
 	if (socket->client_add)
-		socket->client_add(socket, ft_vector_get(&socket->clients,
+		socket->client_add(socket, *(t_client**)ft_vector_get(&socket->clients,
 		socket->clients.n - 1));
 }

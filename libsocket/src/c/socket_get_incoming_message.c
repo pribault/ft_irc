@@ -44,9 +44,9 @@ static void	socket_add_client_udp(t_socket *socket, t_client *client)
 	if ((host = gethostbyaddr(&client->addr.addr, client->addr.len,
 		socket->domain)))
 		client->addr.str = ft_strdup(host->h_name);
-	ft_vector_add(&socket->clients, client);
+	ft_vector_add(&socket->clients, &client);
 	if (socket->client_add)
-		socket->client_add(socket, ft_vector_get(&socket->clients,
+		socket->client_add(socket, *(t_client**)ft_vector_get(&socket->clients,
 	socket->clients.n - 1));
 }
 
@@ -70,7 +70,7 @@ void		socket_get_incoming_message(t_socket *socket, int *n_evts)
 	if (socket->msg_recv)
 	{
 		msg = (t_msg){&buffer, ret};
-		socket->msg_recv(socket, ft_vector_get(&socket->clients,
+		socket->msg_recv(socket, *(t_client**)ft_vector_get(&socket->clients,
 		socket->clients.n - 1), &msg);
 	}
 }

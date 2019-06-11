@@ -110,11 +110,6 @@ int		main(int argc, char **argv)
 	start_socket(&env);
 	while (1)
 	{
-		if (check_malloc() != MALLOC_OK)
-		{
-			malloc_print_logs();
-			ft_error(2, ERROR_CORRUPTED_MEMORY, NULL);
-		}
 		gettimeofday(&env.now, NULL);
 		check_clients_activity(&env);
 		socket_poll_events(env.socket, ACCEPT_CONNECTIONS | ALLOW_READ |

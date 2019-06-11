@@ -36,13 +36,15 @@
 
 void	socket_add_client_by_fd(t_socket *socket, int fd)
 {
-	t_client	client;
+	t_client	*client;
 
-	ft_bzero(&client, sizeof(t_client));
-	client.fd = fd;
-	client.write_type = WRITE_BY_FD;
+	if (!(client = malloc(sizeof(t_client))))
+		return ;
+	ft_bzero(client, sizeof(t_client));
+	client->fd = fd;
+	client->write_type = WRITE_BY_FD;
 	ft_vector_add(&socket->clients, &client);
 	if (socket->client_add)
-		socket->client_add(socket, ft_vector_get(&socket->clients,
+		socket->client_add(socket, *(t_client**)ft_vector_get(&socket->clients,
 		socket->clients.n - 1));
 }

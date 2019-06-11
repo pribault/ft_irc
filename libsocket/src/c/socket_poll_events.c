@@ -45,7 +45,7 @@ static void	socket_add_clients_to_set(fd_set *set, fd_set *err_set,
 	i = (size_t)clients->n;
 	while (--i != (size_t)-1)
 	{
-		if ((client = ft_vector_get(clients, i)))
+		if ((client = *(t_client**)ft_vector_get(clients, i)))
 		{
 			if (!FD_ISSET(client->fd, set) ||
 				!FD_ISSET(client->fd, err_set))

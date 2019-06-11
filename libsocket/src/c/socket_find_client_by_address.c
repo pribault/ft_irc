@@ -44,7 +44,7 @@ t_client	*socket_find_client_by_address(t_socket *socket,
 	i = (size_t)-1;
 	vector = &socket->clients;
 	while (++i < vector->n)
-		if (!(client = ft_vector_get(vector, i)))
+		if (!(client = *(t_client**)ft_vector_get(vector, i)))
 			return (NULL);
 		else if (!memcmp(&client->addr, addr, sizeof(struct sockaddr)))
 			return (client);

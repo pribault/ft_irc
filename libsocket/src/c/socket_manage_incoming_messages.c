@@ -66,7 +66,7 @@ void		socket_manage_incoming_messages(t_socket *socket, fd_set *set,
 	i = vector->n;
 	while (--i != (size_t)-1 && (*n_evts))
 	{
-		if ((client = ft_vector_get(vector, i)))
+		if ((client = *(t_client**)ft_vector_get(vector, i)))
 		{
 			if (FD_ISSET(client->fd, err_set))
 			{

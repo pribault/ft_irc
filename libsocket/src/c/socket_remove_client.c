@@ -42,16 +42,14 @@ static void	socket_remove_client_messages(t_socket *socket,
 
 	i = ft_circ_buffer_get_size(buffer);
 	while (--i != (size_t)-1)
-		if ((tmp = ft_circ_buffer_dequeue(buffer)))
+		if ((tmp = ft_circ_buffer_dequeue(buffer)) &&
+			tmp->client.fd == client->fd)
 		{
-			if (!ft_memcmp(&tmp->client, client, sizeof(t_client)))
-			{
-				if (socket->msg_trash)
-					socket->msg_trash(socket, client, &tmp->data);
-			}
-			else
-				ft_circ_buffer_enqueue(buffer, tmp);
+			if (socket->msg_trash)
+				socket->msg_trash(socket, client, &tmp->data);
 		}
+		else
+			ft_circ_buffer_enqueue(buffer, tmp);
 }
 
 static void	socket_remove_client_by_fd(t_vector *vector,
@@ -63,10 +61,11 @@ static void	socket_remove_client_by_fd(t_vector *vector,
 	i = vector->n;
 	while (--i != (size_t)-1)
 	{
-		if ((tmp = ft_vector_get(vector, i)) &&
+		if ((tmp = *(t_client**)ft_vector_get(vector, i)) &&
 			tmp->fd == client->fd)
 		{
 			ft_vector_del_one(vector, i);
+			free(tmp);
 			return ;
 		}
 	}
@@ -82,10 +81,5 @@ void		socket_remove_client(t_socket *socket, t_client *client)
 		socket->client_del(socket, client);
 	if (socket->sockfd != client->fd)
 		close(client->fd);
-	if ((void*)client >= vector->ptr &&
-		(void*)client < vector->ptr + vector->size)
-		ft_vector_del_one(vector, ((void*)client - vector->ptr) /
-		vector->type);
-	else
-		socket_remove_client_by_fd(vector, client);
+	socket_remove_client_by_fd(vector, client);
 }

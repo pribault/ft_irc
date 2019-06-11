@@ -49,7 +49,7 @@ t_socket	*socket_new(void)
 	if (!(socket = (t_socket*)malloc(sizeof(t_socket))))
 		return (NULL);
 	ft_bzero(socket, sizeof(t_socket));
-	ft_vector_init(&socket->clients, ALLOC_MALLOC, sizeof(t_client));
+	ft_vector_init(&socket->clients, ALLOC_MALLOC, sizeof(t_client*));
 	ft_circ_buffer_init(&socket->write_queue, ALLOC_MALLOC,
 	sizeof(t_towrite), CIRCULAR_BUFFER_SIZE);
 	ft_circ_buffer_set_trash_callback(&socket->write_queue,
