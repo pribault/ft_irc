@@ -6,7 +6,7 @@
 #    By: pribault <pribault@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/04/16 11:40:05 by pribault          #+#    #+#              #
-#    Updated: 2018/07/03 00:05:46 by pribault         ###   ########.fr        #
+#    Updated: 2019/06/12 09:58:27 by pribault         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -37,7 +37,7 @@ $(CMAKEFILE):
 	@make -f $(CMAKEFILE) -j $(JOBS)
 
 $(CPPMAKEFILE):
-	@make -f $(CPPMAKEFILE) -j $(JOBS)
+	#@make -f $(CPPMAKEFILE) -j $(JOBS)
 
 test: $(NAME)
 	@make -f $(TESTMAKEFILE)

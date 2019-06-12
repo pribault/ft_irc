@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/18 11:17:20 by pribault          #+#    #+#             */
-/*   Updated: 2018/04/28 13:18:44 by pribault         ###   ########.fr       */
+/*   Updated: 2019/06/12 10:58:36 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ t_client	*socket_find_client_by_address(t_socket *socket,
 	while (++i < vector->n)
 		if (!(client = *(t_client**)ft_vector_get(vector, i)))
 			return (NULL);
-		else if (!memcmp(&client->addr, addr, sizeof(struct sockaddr)))
+		else if (!ft_memcmp(&client->addr, addr, sizeof(struct sockaddr_in)))
 			return (client);
 	return (NULL);
 }

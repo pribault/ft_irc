@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/01 18:38:42 by pribault          #+#    #+#             */
-/*   Updated: 2018/06/30 12:55:37 by pribault         ###   ########.fr       */
+/*   Updated: 2019/06/12 10:05:46 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,6 +101,8 @@ int		main(int argc, char **argv)
 	enqueue_str_by_fd(&env, 1, ft_strdup("Enter your username:\n"));
 	while (1)
 	{
+		if (check_malloc() != MALLOC_OK)
+			ft_error(2, ERROR_CORRUPTED_MEMORY, NULL);
 		socket_poll_events(env.socket, ACCEPT_CONNECTIONS | ALLOW_READ |
 			ALLOW_WRITE);
 	}

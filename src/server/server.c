@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/01 18:38:44 by pribault          #+#    #+#             */
-/*   Updated: 2018/08/25 15:17:07 by pribault         ###   ########.fr       */
+/*   Updated: 2019/06/12 10:59:12 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,6 @@ void	buffer_full(t_socket *socket)
 	static uint32_t	n = 0;
 
 	n++;
-	ft_printf("n=%u\n", n);
 	socket_poll_events(socket, ALLOW_WRITE);
 	n--;
 }
@@ -110,6 +109,8 @@ int		main(int argc, char **argv)
 	start_socket(&env);
 	while (1)
 	{
+		if (check_malloc() != MALLOC_OK)
+			ft_error(2, ERROR_CORRUPTED_MEMORY, NULL);
 		gettimeofday(&env.now, NULL);
 		check_clients_activity(&env);
 		socket_poll_events(env.socket, ACCEPT_CONNECTIONS | ALLOW_READ |

@@ -6,13 +6,13 @@
 #    By: pribault <pribault@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/06/30 10:56:18 by pribault          #+#    #+#              #
-#    Updated: 2018/08/25 15:41:29 by pribault         ###   ########.fr        #
+#    Updated: 2019/06/12 11:01:22 by pribault         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME =	client
 CC =	clang
-FLAGS =	-Wall -Wextra -Werror -g -fsanitize=address
+FLAGS =	-Wall -Wextra -Werror
 
 DIR =		client
 SRC_DIR =	src

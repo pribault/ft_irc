@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/18 11:01:35 by pribault          #+#    #+#             */
-/*   Updated: 2018/07/03 00:21:27 by pribault         ###   ########.fr       */
+/*   Updated: 2019/06/12 10:57:10 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,18 +36,25 @@
 
 #include "libsocket.h"
 
-static void	socket_add_client_udp(t_socket *socket, t_client *client)
+static void	socket_add_client_udp(t_socket *socket, t_client *client,
+	t_msg *msg)
 {
+	t_client		*copy;
 	struct hostent	*host;
 
-	client->write_type = WRITE_BY_ADDR;
-	if ((host = gethostbyaddr(&client->addr.addr, client->addr.len,
+	if (!(copy = ft_memdup(client, sizeof(t_client))))
+		return ;
+	copy->write_type = WRITE_BY_ADDR;
+	if ((host = gethostbyaddr(&copy->addr.addr, copy->addr.len,
 		socket->domain)))
-		client->addr.str = ft_strdup(host->h_name);
-	ft_vector_add(&socket->clients, &client);
+		copy->addr.str = ft_strdup(host->h_name);
+	ft_vector_add(&socket->clients, &copy);
 	if (socket->client_add)
 		socket->client_add(socket, *(t_client**)ft_vector_get(&socket->clients,
 	socket->clients.n - 1));
+	if (socket->msg_recv)
+		socket->msg_recv(socket, *(t_client**)ft_vector_get(&socket->clients,
+	socket->clients.n - 1), msg);
 }
 
 void		socket_get_incoming_message(t_socket *socket, int *n_evts)
@@ -65,12 +72,9 @@ void		socket_get_incoming_message(t_socket *socket, int *n_evts)
 		0, (void*)&client.addr.addr, &client.addr.len)) == -1)
 		return ;
 	(*n_evts)--;
+	msg = (t_msg){&buffer, ret};
 	if (!(new = socket_find_client_by_address(socket, &client.addr.addr)))
-		socket_add_client_udp(socket, &client);
-	if (socket->msg_recv)
-	{
-		msg = (t_msg){&buffer, ret};
-		socket->msg_recv(socket, *(t_client**)ft_vector_get(&socket->clients,
-		socket->clients.n - 1), &msg);
-	}
+		socket_add_client_udp(socket, &client, &msg);
+	else if (socket->msg_recv)
+		socket->msg_recv(socket, new, &msg);
 }

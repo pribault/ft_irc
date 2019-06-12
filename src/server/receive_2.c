@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/22 18:39:44 by pribault          #+#    #+#             */
-/*   Updated: 2018/07/02 20:52:47 by pribault         ###   ########.fr       */
+/*   Updated: 2019/06/12 10:36:56 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,10 @@ void	recv_join(t_env *env, t_data *data, t_message *msg)
 		if ((channel = find_channel(&env->channels, array[i])) &&
 			!is_client_in_channel(channel, data))
 			add_client_to_channel(env, channel, data);
-		else
+		else if (!channel)
 			create_channel(env, &env->channels, array[i], data);
+		else
+			send_no_such_nick(env, data, array[i]);
 	}
 	ft_free_array((void**)array, ft_arraylen(array) + 1);
 	if (env->opt & OPT_VERBOSE)
